@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import slayin.model.InputController;
 import slayin.model.Knight;
 import slayin.model.P2d;
+import slayin.model.Vector2d;
 
 public class TestKnight {
     
@@ -14,16 +15,17 @@ public class TestKnight {
 
     @BeforeEach                                         
     void setUp() {
-        k = new Knight(new P2d(0, 0));
+        k = new Knight(new P2d(0, 0), new Vector2d(3, 9));
         controller= new InputController();
     }
 
     @Test
-    public void testPos(){
+    public void testVel(){
         controller.setMoveUp();
         for(int i=0;i<100;i++){
-            k.updatePos(controller);
+            k.updateVel(controller);
         }
-        assertEquals(100, k.getPos().getY());
+        //il modulo resta lo stesso anche se l'ogetto cambia direzione
+        assertEquals((double)Math.sqrt(3*3+9*9), k.getVectorMouvement().module());
     }
 }

@@ -2,20 +2,28 @@ package slayin.model;
 
 public class Knight extends GameObject{
 
-    public Knight(P2d pos) {
-        super(pos);
+    public Knight(P2d pos,Vector2d VectorMouvement) {
+        super(pos,VectorMouvement);
     }
 
-    public void updatePos(InputController input){
+    @Override
+    public void updateVel(InputController input) {
+        double speed= this.vectorMouvement.module();
         if(input.isMoveUp()){
-           this.pos.setY(pos.getY()+1);
-        }else if(input.isMoveDown()){
-            this.pos.setY(pos.getY()-1);
-        }else if(input.isMoveLeft()){
-            this.pos.setX(pos.getX()-1);
-        }else if(input.isMoveRight()){
-            this.pos.setX(pos.getX()+1);
-        }
+            this.setVectorMouvement(new Vector2d(0, 1).mul(speed));
+         }else if(input.isMoveDown()){
+            this.setVectorMouvement(new Vector2d(0,-1).mul(speed));
+         }else if(input.isMoveLeft()){
+            this.setVectorMouvement(new Vector2d(-1, 0).mul(speed));
+         }else if(input.isMoveRight()){
+            this.setVectorMouvement(new Vector2d(1, 0).mul(speed));
+         }
+    }
+
+    @Override
+    public void updatePos() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'updatePos'");
     }
     
 }
