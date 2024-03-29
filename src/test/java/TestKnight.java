@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import slayin.model.InputController;
 import slayin.model.Knight;
 import slayin.model.P2d;
-import slayin.model.Vector2d;
 
 public class TestKnight {
     
