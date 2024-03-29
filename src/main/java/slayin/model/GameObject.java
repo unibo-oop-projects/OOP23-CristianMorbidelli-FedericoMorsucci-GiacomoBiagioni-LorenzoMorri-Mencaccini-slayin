@@ -1,7 +1,7 @@
 package slayin.model;
 
 abstract class GameObject {
-    private P2d pos;
+    protected P2d pos;
 
 
     public GameObject(P2d pos){
@@ -14,6 +14,10 @@ abstract class GameObject {
 
     public P2d setPos(){
         return this.pos;
+    }
+
+    public void updatePos(InputController input){
+
     }
 
 
