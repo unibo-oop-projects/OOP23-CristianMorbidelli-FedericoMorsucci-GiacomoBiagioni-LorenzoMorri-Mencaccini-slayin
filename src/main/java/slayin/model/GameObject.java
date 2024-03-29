@@ -2,12 +2,12 @@ package slayin.model;
 
 public abstract class GameObject {
     protected P2d pos;
-    protected Vector2d vectorMouvement;
+    protected double speed;
 
 
-    public GameObject(P2d pos,Vector2d vectorMouvement){
+    public GameObject(P2d pos,double speed){
         this.pos=pos;
-        this.vectorMouvement=vectorMouvement;
+        this.speed=speed;
     }
 
     public P2d getPos(){
@@ -18,18 +18,14 @@ public abstract class GameObject {
         this.pos = pos;
     }
 
-    public Vector2d getVectorMouvement() {
-        return vectorMouvement;
+    public double getSpeed() {
+        return speed;
     }
 
-    public void setVectorMouvement(Vector2d vectorMouvement) {
-        this.vectorMouvement = vectorMouvement;
-    }
-
-
-    public abstract void updateVel(InputController input);   
+    public void updateSpeed(double speed) {
+        this.speed = speed;
+    } 
     
-    public abstract void updatePos();
-
+    public abstract void updatePos(InputController input);
 
 }

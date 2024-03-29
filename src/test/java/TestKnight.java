@@ -15,7 +15,7 @@ public class TestKnight {
 
     @BeforeEach                                         
     void setUp() {
-        k = new Knight(new P2d(0, 0), new Vector2d(3, 9));
+        k = new Knight(new P2d(0, 0), 2);
         controller= new InputController();
     }
 
@@ -23,9 +23,8 @@ public class TestKnight {
     public void testVel(){
         controller.setMoveUp();
         for(int i=0;i<100;i++){
-            k.updateVel(controller);
+            k.updatePos(controller);
         }
-        //il modulo resta lo stesso anche se l'ogetto cambia direzione
-        assertEquals((double)Math.sqrt(3*3+9*9), k.getVectorMouvement().module());
+        assertEquals(200, k.getPos().getY());
     }
 }
