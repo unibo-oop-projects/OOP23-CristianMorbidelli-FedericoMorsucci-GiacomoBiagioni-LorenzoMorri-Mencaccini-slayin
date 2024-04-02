@@ -1,9 +1,6 @@
 package slayin.model;
 
-/**
- * BoundingBox
- */
 public interface BoundingBox {
 
-    
+    public boolean isCollidedWith(P2d point,BoundingBox boundingBox);
 }

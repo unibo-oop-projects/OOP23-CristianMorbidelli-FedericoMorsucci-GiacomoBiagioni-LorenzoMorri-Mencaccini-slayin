@@ -2,8 +2,8 @@ package slayin.model;
 
 public class Knight extends GameObject{
 
-    public Knight(P2d pos,Vector2d VectorMouvement) {
-        super(pos,VectorMouvement);
+    public Knight(P2d pos,Vector2d VectorMouvement,BoundingBox boundingBox) {
+        super(pos,VectorMouvement,boundingBox);
     }
 
     @Override

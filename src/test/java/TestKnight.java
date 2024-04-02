@@ -15,7 +15,7 @@ public class TestKnight {
 
     @BeforeEach                                         
     void setUp() {
-        k = new Knight(new P2d(0, 0), new Vector2d(3, 9));
+        k = new Knight(new P2d(0, 0), new Vector2d(3, 9), null);
         controller= new InputController();
     }
 

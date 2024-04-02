@@ -3,11 +3,12 @@ package slayin.model;
 public abstract class GameObject {
     protected P2d pos;
     protected Vector2d vectorMouvement;
+    private BoundingBox boundingBox;
 
-
-    public GameObject(P2d pos,Vector2d vectorMouvement){
+    public GameObject(P2d pos,Vector2d vectorMouvement, BoundingBox boundingBox){
         this.pos=pos;
         this.vectorMouvement=vectorMouvement;
+        this.boundingBox=boundingBox;
     }
 
     public P2d getPos(){
@@ -24,6 +25,10 @@ public abstract class GameObject {
 
     public void setVectorMouvement(Vector2d vectorMouvement) {
         this.vectorMouvement = vectorMouvement;
+    }
+
+    public BoundingBox getBoundingBox() {
+        return boundingBox;
     }
 
 
