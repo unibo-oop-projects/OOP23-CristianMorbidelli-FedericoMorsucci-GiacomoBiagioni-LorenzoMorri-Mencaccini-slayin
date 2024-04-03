@@ -39,8 +39,8 @@ public class BoundingBoxImplRet implements BoundingBox{
             || this.y + this.height < bBox.getY() || bBox.getY() + bBox.getHeight() < this.y);
         }else if(b instanceof BoundingBoxImplCirc){
             BoundingBoxImplCirc bBox = (BoundingBoxImplCirc) b;
-            outcome= !(this.x + this.width < bBox.getX() || bBox.getX() + bBox.getRadius() < this.x 
-            || this.y + this.height < bBox.getY() || bBox.getY() + bBox.getRadius() < this.y);
+            outcome= !(this.x + this.width < bBox.getX()-bBox.getRadius() || bBox.getX() + bBox.getRadius() < this.x 
+            || this.y + this.height < bBox.getY()-bBox.getRadius() || bBox.getY() + bBox.getRadius() < this.y);
         }
         return outcome;
     }
