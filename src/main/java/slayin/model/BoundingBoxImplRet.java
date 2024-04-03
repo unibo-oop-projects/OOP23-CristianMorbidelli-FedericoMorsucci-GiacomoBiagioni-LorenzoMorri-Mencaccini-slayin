@@ -14,6 +14,14 @@ public class BoundingBoxImplRet implements BoundingBox{
         this.width=width;
     }
 
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
     public double getWidht() {
         return width;
     }
@@ -23,16 +31,18 @@ public class BoundingBoxImplRet implements BoundingBox{
     }
 
     @Override
-    public boolean isCollidedWithRettagle(P2d point, double widht, double height) {
-        double x= point.getX()-(widht/2);
-        double y= point.getY()+(height/2);
-        return !(this.x + this.width < x || x + width < this.x || this.y + this.height < y || y + height < this.y);
-    }
-
-    @Override
-    public boolean isCollidedWithCircle(P2d point, double radius) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isCollidedWithCircle'");
+    public boolean isCollidedWith(BoundingBox b) {
+        boolean outcome=false;
+        if(b instanceof BoundingBoxImplRet){
+            BoundingBoxImplRet bBox = (BoundingBoxImplRet) b;
+            outcome= !(this.x + this.width < bBox.getX() || bBox.getX() + bBox.getWidht() < this.x 
+            || this.y + this.height < bBox.getY() || bBox.getY() + bBox.getHeight() < this.y);
+        }else if(b instanceof BoundingBoxImplCirc){
+            BoundingBoxImplCirc bBox = (BoundingBoxImplCirc) b;
+            outcome= !(this.x + this.width < bBox.getX() || bBox.getX() + bBox.getRadius() < this.x 
+            || this.y + this.height < bBox.getY() || bBox.getY() + bBox.getRadius() < this.y);
+        }
+        return outcome;
     }
 
 
