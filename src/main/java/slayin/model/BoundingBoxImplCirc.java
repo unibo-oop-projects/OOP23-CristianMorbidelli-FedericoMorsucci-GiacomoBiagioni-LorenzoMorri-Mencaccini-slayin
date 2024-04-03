@@ -2,20 +2,24 @@ package slayin.model;
 
 public class BoundingBoxImplCirc implements BoundingBox{
 
-    private double radius,x,y;
+    private double radius;
+    private P2d center;
 
     public BoundingBoxImplCirc(P2d point, double radius){
-        x= point.getX();
-        y= point.getY();
+        this.center= new P2d(point);
         this.radius=radius;
     }
 
     public double getX() {
-        return x;
+        return this.center.getX();
     }
 
     public double getY() {
-        return y;
+        return this.center.getY();
+    }
+
+    public P2d getCenter(){
+        return this.center;
     }
 
     public double getRadius() {
@@ -24,8 +28,15 @@ public class BoundingBoxImplCirc implements BoundingBox{
 
     @Override
     public boolean isCollidedWith(BoundingBox b) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isCollidedWith'");
+        boolean outcome=false;
+        if(b instanceof BoundingBoxImplRet){
+            BoundingBoxImplRet bBox = (BoundingBoxImplRet) b;
+            outcome= bBox.isCollidedWith(this);
+        }else if(b instanceof BoundingBoxImplCirc){
+            BoundingBoxImplCirc bBox = (BoundingBoxImplCirc) b;
+            outcome= ((this.radius + bBox.getRadius()) <= this.center.distanceFromPoint(bBox.getCenter()));
+        }
+        return outcome;
     }
     
 }
