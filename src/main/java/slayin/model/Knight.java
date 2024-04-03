@@ -21,7 +21,7 @@ public class Knight extends GameObject{
     }
 
     @Override
-    public void updatePos() {
+    public void updatePos(int dt) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'updatePos'");
     }
