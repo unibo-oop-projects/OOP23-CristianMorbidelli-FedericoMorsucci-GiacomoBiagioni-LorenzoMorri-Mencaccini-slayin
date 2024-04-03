@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import slayin.model.BoundingBox;
+import slayin.model.BoundingBoxImplCirc;
 import slayin.model.BoundingBoxImplRet;
 import slayin.model.P2d;
 import java.util.ArrayList;
@@ -23,6 +24,14 @@ public class TestBoundingBoxImplRet {
         list.add(new BoundingBoxImplRet(new P2d(10, 6), 6, 4));
         list.add(new BoundingBoxImplRet(new P2d(11, 6), 6, 4));
         list.add(new BoundingBoxImplRet(new P2d(12, 6), 6, 4));
+        list.add(new BoundingBoxImplCirc(new P2d(9, 6), 3));
+        list.add(new BoundingBoxImplCirc(new P2d(11, 9), 3));
+        list.add(new BoundingBoxImplCirc(new P2d(13, 6), 3));
+        list.add(new BoundingBoxImplCirc(new P2d(9, 11), 3));
+        list.add(new BoundingBoxImplCirc(new P2d(-2, 8), 2));
+        list.add(new BoundingBoxImplCirc(new P2d(0, 6), 3));
+        list.add(new BoundingBoxImplRet(new P2d(-1, 6), 8, 4));
+        list.add(new BoundingBoxImplRet(new P2d(-1, 6), 4, 4));
     }
 
     @Test
@@ -33,6 +42,14 @@ public class TestBoundingBoxImplRet {
         assertTrue(x.isCollidedWith(list.get(0)));
         assertTrue(x.isCollidedWith(list.get(1)));
         assertFalse(x.isCollidedWith(list.get(2)));
+        assertTrue(x.isCollidedWith(list.get(3)));
+        assertTrue(x.isCollidedWith(list.get(4)));
+        assertFalse(x.isCollidedWith(list.get(5)));
+        assertTrue(x.isCollidedWith(list.get(6)));
+        assertFalse(x.isCollidedWith(list.get(7)));
+        assertTrue(x.isCollidedWith(list.get(8)));
+        assertTrue(x.isCollidedWith(list.get(9)));
+        assertFalse(x.isCollidedWith(list.get(10)));
     }
 
 }
