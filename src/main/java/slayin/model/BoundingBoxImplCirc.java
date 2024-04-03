@@ -34,7 +34,7 @@ public class BoundingBoxImplCirc implements BoundingBox{
             outcome= bBox.isCollidedWith(this);
         }else if(b instanceof BoundingBoxImplCirc){
             BoundingBoxImplCirc bBox = (BoundingBoxImplCirc) b;
-            outcome= ((this.radius + bBox.getRadius()) <= this.center.distanceFromPoint(bBox.getCenter()));
+            outcome= ((this.radius + bBox.getRadius()) >= this.center.distanceFromPoint(bBox.getCenter()));
         }
         return outcome;
     }
