@@ -1,4 +1,4 @@
-package slayin.model;
+package slayin.model.utility;
 
 public class P2d {
     private double x,y;

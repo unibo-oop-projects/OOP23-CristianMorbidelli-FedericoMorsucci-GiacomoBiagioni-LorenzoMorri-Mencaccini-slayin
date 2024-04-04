@@ -1,4 +1,4 @@
-package slayin.model;
+package slayin.model.bounding;
 
 public interface BoundingBox {
 

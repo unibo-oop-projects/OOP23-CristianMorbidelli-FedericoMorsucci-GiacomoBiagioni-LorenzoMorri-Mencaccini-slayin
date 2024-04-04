@@ -1,5 +1,9 @@
 package slayin.model;
 
+import slayin.model.bounding.BoundingBox;
+import slayin.model.utility.P2d;
+import slayin.model.utility.Vector2d;
+
 public abstract class GameObject {
     protected P2d pos;
     protected Vector2d vectorMouvement;

@@ -1,4 +1,4 @@
-package slayin.model;
+package slayin.model.utility;
 
 public class Vector2d {
     public double x,y;

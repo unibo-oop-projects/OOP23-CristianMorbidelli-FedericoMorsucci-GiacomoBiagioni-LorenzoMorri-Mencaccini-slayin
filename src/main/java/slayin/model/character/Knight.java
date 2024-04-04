@@ -1,4 +1,10 @@
-package slayin.model;
+package slayin.model.character;
+
+import slayin.model.GameObject;
+import slayin.model.InputController;
+import slayin.model.bounding.BoundingBox;
+import slayin.model.utility.P2d;
+import slayin.model.utility.Vector2d;
 
 public class Knight extends GameObject{
 

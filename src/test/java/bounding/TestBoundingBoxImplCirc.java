@@ -1,13 +1,15 @@
+package bounding;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import slayin.model.BoundingBox;
-import slayin.model.BoundingBoxImplCirc;
-import slayin.model.BoundingBoxImplRet;
-import slayin.model.P2d;
+import slayin.model.bounding.BoundingBox;
+import slayin.model.bounding.BoundingBoxImplCirc;
+import slayin.model.bounding.BoundingBoxImplRet;
+import slayin.model.utility.P2d;
+
 import java.util.ArrayList;
 
 

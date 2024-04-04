@@ -1,4 +1,6 @@
-package slayin.model;
+package slayin.model.bounding;
+
+import slayin.model.utility.P2d;
 
 public class BoundingBoxImplCirc implements BoundingBox{
 
