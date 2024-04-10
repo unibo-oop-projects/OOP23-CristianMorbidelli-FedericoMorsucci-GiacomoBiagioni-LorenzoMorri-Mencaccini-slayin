@@ -9,13 +9,16 @@ public class Slayin {
     public static void main(String[] args) {
 		Engine core = new Engine();
 		long startTime, timePassed;
+
+		core.initGame();	/* Initialize the game (set the GameStatus object) */
 		
 		while(core.stopLoop()){		/* Game loop */
 			startTime = System.currentTimeMillis();
 
 			/* TODO: check input */
 
-			/* TODO: update game status */
+			/* update game status */
+			core.updateGameStatus((int) startTime);
 
 			/* TODO: render updates */
 
