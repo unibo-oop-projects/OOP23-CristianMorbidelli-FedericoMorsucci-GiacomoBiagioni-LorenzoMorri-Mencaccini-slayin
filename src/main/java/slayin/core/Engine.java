@@ -8,7 +8,7 @@ public class Engine {
 	GameStatus status;
 
 	public void initGame(){
-		GameStatus status = new GameStatus();
+		status = new GameStatus();
 	}
 
     public boolean stopLoop(){
@@ -17,9 +17,13 @@ public class Engine {
 	}
 
 	public void updateGameStatus(int startTime) {
+
+		// Update the logical position of the main character and the enemies on the scene
 		for(GameObject object : status.getObjects()){
 			object.updatePos(startTime);
 		}
+
+		/* TODO: check for collisions */
 	}
     
 }
