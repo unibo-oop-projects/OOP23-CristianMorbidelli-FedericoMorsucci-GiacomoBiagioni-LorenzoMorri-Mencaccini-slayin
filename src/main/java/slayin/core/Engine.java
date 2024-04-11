@@ -5,7 +5,7 @@ import slayin.model.GameStatus;
 import slayin.model.events.GameEventListener;
 import slayin.model.events.QuitGameEvent;
 import slayin.model.events.StartGameEvent;
-import slayin.views.MainMenuScene;
+import slayin.model.utility.SceneType;
 
 public class Engine {
     private long tickTime = 25; /* 40 fps */
@@ -26,14 +26,10 @@ public class Engine {
         status = new GameStatus();
     }
 
-    public void switchScene(GameScene scene) {
-        sceneController.switchScene(scene);
-    }
-
     public void startGameLoop() {
         long startTime, timePassed;
 
-        this.switchScene(new MainMenuScene(this.eventListener));
+        sceneController.switchScene(SceneType.MAIN_MENU);
         this.initGame();
 
         while (this.running) { /* Game loop */
@@ -80,9 +76,10 @@ public class Engine {
     private void processEvents() {
         eventListener.getEvents().forEach(e -> {
             if (e instanceof StartGameEvent) {
-                System.out.println("Start Game Event");
+                System.out.println("[EVENT] Starting game");
+                sceneController.switchScene(SceneType.GAME_LEVEL);
             } else if (e instanceof QuitGameEvent) {
-                System.out.println("Quit Game Event");
+                System.out.println("[EVENT] Closing game");
                 this.running = false;
             }
         });

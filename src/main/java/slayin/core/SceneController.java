@@ -7,6 +7,8 @@ import javax.swing.JFrame;
 
 import slayin.model.events.GameEventListener;
 import slayin.model.utility.SceneType;
+import slayin.views.GameLevelScene;
+import slayin.views.MainMenuScene;
 
 public class SceneController {
     private Optional<GameScene> currentScene;
@@ -34,7 +36,19 @@ public class SceneController {
         this.gameFrame.dispose();
     }
 
-    public void switchScene(GameScene menu) {
+    public void switchScene(SceneType sceneType) {
+        GameScene menu = null;
+        switch (sceneType) {
+            case MAIN_MENU:
+                menu = new MainMenuScene(eventListener);
+                break;
+            case GAME_LEVEL:
+                menu = new GameLevelScene();
+                break;
+            default:
+                break;
+        }
+
         currentScene = Optional.of(menu);
         this.gameFrame.setContentPane(menu.getContent());
         this.updateScene();
