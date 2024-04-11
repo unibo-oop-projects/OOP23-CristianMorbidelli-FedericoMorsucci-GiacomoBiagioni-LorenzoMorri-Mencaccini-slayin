@@ -5,18 +5,20 @@ import java.util.Optional;
 
 import javax.swing.JFrame;
 
+import slayin.model.events.GameEventListener;
 import slayin.model.utility.SceneType;
 
 public class SceneController {
     private Optional<GameScene> currentScene;
-
+    private GameEventListener eventListener;
     private JFrame gameFrame;
 
-    public SceneController() {
+    public SceneController(GameEventListener eventListener) {
         this.currentScene = Optional.empty();
+        this.eventListener = eventListener;
     }
 
-    public void createSceneWindow() {
+    public void createWindow() {
         this.gameFrame = new JFrame("Slayin");
         this.gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -25,6 +27,11 @@ public class SceneController {
         this.gameFrame.pack();
         this.gameFrame.setLocationRelativeTo(null);
         this.gameFrame.setVisible(true);
+    }
+
+    public void closeWindow() {
+        this.gameFrame.setVisible(false);
+        this.gameFrame.dispose();
     }
 
     public void switchScene(GameScene menu) {

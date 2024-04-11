@@ -2,16 +2,24 @@ package slayin.core;
 
 import slayin.model.GameObject;
 import slayin.model.GameStatus;
+import slayin.model.events.GameEventListener;
+import slayin.model.events.QuitGameEvent;
+import slayin.model.events.StartGameEvent;
+import slayin.views.MainMenuScene;
 
 public class Engine {
     private long tickTime = 25; /* 40 fps */
-    private SceneController sceneController;
+    private boolean running = true;
 
-    GameStatus status;
+    private SceneController sceneController;
+    private GameStatus status;
+
+    private GameEventListener eventListener;
 
     public Engine() {
-        sceneController = new SceneController();
-        sceneController.createSceneWindow();
+        eventListener = new GameEventListener();
+        sceneController = new SceneController(eventListener);
+        sceneController.createWindow();
     }
 
     private void initGame() {
@@ -25,15 +33,17 @@ public class Engine {
     public void startGameLoop() {
         long startTime, timePassed;
 
+        this.switchScene(new MainMenuScene(this.eventListener));
         this.initGame();
 
-        while (this.stopLoop()) { /* Game loop */
+        while (this.running) { /* Game loop */
             startTime = System.currentTimeMillis();
 
             /* TODO: check input */
 
             /* TODO: update game status */
             this.updateGameStatus((int) startTime);
+            this.processEvents();
 
             /* TODO: render updates */
             sceneController.updateScene();
@@ -42,6 +52,8 @@ public class Engine {
             waitForNextTick(timePassed);
             // System.out.println(System.currentTimeMillis() - startTime);
         }
+
+        sceneController.closeWindow();
     }
 
     private void waitForNextTick(long timePassed) {
@@ -54,11 +66,6 @@ public class Engine {
         }
     }
 
-    private boolean stopLoop() {
-        /* TODO: check delle condizioni per terminare la partita */
-        return true;
-    }
-
     private void updateGameStatus(int startTime) {
 
         // Update the logical position of the main character and the enemies on the
@@ -68,5 +75,18 @@ public class Engine {
         }
 
         /* TODO: check for collisions */
+    }
+
+    private void processEvents() {
+        eventListener.getEvents().forEach(e -> {
+            if (e instanceof StartGameEvent) {
+                System.out.println("Start Game Event");
+            } else if (e instanceof QuitGameEvent) {
+                System.out.println("Quit Game Event");
+                this.running = false;
+            }
+        });
+
+        eventListener.clearEvents();
     }
 }
