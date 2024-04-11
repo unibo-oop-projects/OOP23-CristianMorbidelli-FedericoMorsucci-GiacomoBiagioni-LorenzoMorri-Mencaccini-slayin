@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import slayin.model.InputController;
+import slayin.model.World;
 import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.character.Knight;
 import slayin.model.utility.P2d;
@@ -40,6 +41,7 @@ public class TestKnight {
     InputController controller;
     canva c;
     int prevX,prevY;
+    World w;
 
     @BeforeEach                                         
     void setUp() {
@@ -48,6 +50,7 @@ public class TestKnight {
         c = new canva();
         prevX=0;
         prevY=0;
+        w = new World(1000, 1000, 610);
     }
 
     @Test
@@ -64,7 +67,7 @@ public class TestKnight {
 		for(int i=0;i<1000;i++){/* Game loop */
 			startTime = System.currentTimeMillis();
             System.out.println((int)(startTime-lastTime));
-            k.updatePos((int)(startTime-lastTime));
+            k.updatePos((int)(startTime-lastTime),w);
             this.render(k);
             System.out.println(k.getPos());
             lastTime=System.currentTimeMillis();

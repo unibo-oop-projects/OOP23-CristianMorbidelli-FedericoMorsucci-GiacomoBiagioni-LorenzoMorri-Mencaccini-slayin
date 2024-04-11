@@ -2,6 +2,7 @@ package slayin.model.character;
 
 import slayin.model.GameObject;
 import slayin.model.InputController;
+import slayin.model.World;
 import slayin.model.bounding.BoundingBox;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
@@ -44,7 +45,7 @@ public class Character extends GameObject{
     }
 
     @Override
-    public void updatePos(int dt) {
+    public void updatePos(int dt, World world) {
         this.setPos(this.getPos().sum(this.getVectorMouvement().mul(0.001*dt)));
     }
 

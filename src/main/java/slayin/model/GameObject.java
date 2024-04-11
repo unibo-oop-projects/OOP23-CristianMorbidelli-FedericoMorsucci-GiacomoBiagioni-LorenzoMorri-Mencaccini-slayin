@@ -38,7 +38,7 @@ public abstract class GameObject {
 
     public abstract void updateVel(InputController input);   
     
-    public abstract void updatePos(int dt);
+    public abstract void updatePos(int dt, World world);
 
 
 }

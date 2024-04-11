@@ -20,7 +20,7 @@ public class Engine {
 
 		// Update the logical position of the main character and the enemies on the scene
 		for(GameObject object : status.getObjects()){
-			object.updatePos(startTime);
+			//object.updatePos(startTime);
 		}
 
 		/* TODO: check for collisions */

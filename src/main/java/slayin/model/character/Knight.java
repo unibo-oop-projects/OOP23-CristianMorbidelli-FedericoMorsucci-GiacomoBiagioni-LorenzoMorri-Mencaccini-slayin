@@ -1,6 +1,7 @@
 package slayin.model.character;
 
 import slayin.model.InputController;
+import slayin.model.World;
 import slayin.model.bounding.BoundingBox;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
@@ -15,6 +16,7 @@ public class Knight extends Character{
         super(pos,VectorMouvement,boundingBox,life);
         velocity= new Vector2d(0, 0);
         gravity= new Vector2d(0, GRAVITY);
+        
     }
 
     @Override
@@ -30,31 +32,31 @@ public class Knight extends Character{
     }
 
     //I reset the y if it's touching the ground
-    private boolean resetY(){
+    private boolean resetY(World world){
         boolean out=false;
-        if(this.getPos().getY()>=610/*word.getXGround() */ && !jump){
+        if(this.getPos().getY()>=world.getGround() && !jump){
             // azzero la y del vettore velocity
             this.velocity= new Vector2d(this.velocity.getX(), 0);
-            this.setPos(new P2d(this.getPos().getX(),610/*word.getXGround() */));
+            this.setPos(new P2d(this.getPos().getX(),world.getGround()));
             out=true;
         }
         return out;
     }
     //I check if I can stop with the jump
-    private void stopJump(){
-        if(jump && 610-this.getPos().getY()>DELTAJUMP/*word.getXGround() */){
+    private void stopJump(World world){
+        if(jump && world.getGround()-this.getPos().getY()>DELTAJUMP){
             jump=false;
             this.setVectorMouvement(new Vector2d(0, 0));
         }
     }
 
     @Override
-    public void updatePos(int dt) {
-        if(!(resetY())){
+    public void updatePos(int dt, World world) {
+        if(!(resetY(world))){
             //add the gravity 
             this.velocity= this.velocity.sum(gravity.mul(0.001*dt));
         }
-        stopJump();
+        stopJump(world);
         if(jump){
             this.velocity= this.velocity.sum(this.getVectorMouvement().mul(0.001*dt));
         }
