@@ -20,14 +20,6 @@ public class Engine {
         while (this.stopLoop()) { /* Game loop */
             startTime = System.currentTimeMillis();
 
-            // If the menu is still open, wait for the next tick
-            // otherwise close the menu and resume the main game loop
-            if (sceneController.isInMenu()) {
-                timePassed = System.currentTimeMillis() - startTime;
-                waitForNextTick(timePassed);
-                continue;
-            }
-
             /* TODO: check input */
 
             /* TODO: update game status */
@@ -37,8 +29,7 @@ public class Engine {
 
             timePassed = System.currentTimeMillis() - startTime;
             waitForNextTick(timePassed);
-
-            System.out.println(System.currentTimeMillis() - startTime);
+            // System.out.println(System.currentTimeMillis() - startTime);
         }
     }
 
