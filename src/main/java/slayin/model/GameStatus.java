@@ -9,6 +9,8 @@ import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
 
 public class GameStatus {
+
+    World world;
     
     GameObject character;
     List<GameObject> enemies;
@@ -16,6 +18,7 @@ public class GameStatus {
     public GameStatus(){
         character = new Knight(new P2d(0, 0), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), 30, 30),10);
         enemies = new ArrayList<>();
+        world = new World(1000, 400, 80);
     }
 
     public List<GameObject> getObjects(){   
@@ -32,5 +35,9 @@ public class GameStatus {
 
     public void removeEnemy(GameObject entity){
         enemies.remove(entity);
+    }
+
+    public World getWorld(){
+        return this.world;
     }
 }
