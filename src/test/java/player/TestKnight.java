@@ -23,7 +23,8 @@ class canva extends Frame {
     public canva() 
     { 
         setVisible(true); 
-        setSize(500, 600); 
+        //setSize(500, 600); 
+        setSize(1000, 1000); 
         addWindowListener(new WindowAdapter() { 
             @Override
             public void windowClosing(WindowEvent e) 
@@ -35,7 +36,7 @@ class canva extends Frame {
     public void paint(Graphics g) 
     { 
         //g.drawRect(100, 100, 100, 50); 
-        g.drawLine(0,400 , 500, 400);
+        g.drawLine(0,660 , 1000, 660);
     } 
 }
 
@@ -48,7 +49,7 @@ public class TestKnight {
 
     @BeforeEach                                         
     void setUp() {
-        k = new Knight(new P2d(300, 370), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), 5, 5),10);
+        k = new Knight(new P2d(600, 610), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), 10, 10),10);
         controller= new InputController();
         c = new canva();
         prevX=0;
@@ -70,8 +71,6 @@ public class TestKnight {
 			startTime = System.currentTimeMillis();
             System.out.println((int)(startTime-lastTime));
             k.updatePos((int)(startTime-lastTime));
-            //if(k.getPos().getY()<350){
-            //}
             this.render(k);
             System.out.println(k.getPos());
             lastTime=System.currentTimeMillis();
@@ -89,11 +88,11 @@ public class TestKnight {
 
     public void render(Knight k){
         Graphics g = c.getGraphics();
-        //g.clearRect(prevX, prevY, 50, 50);
-        g.drawLine(0,400 , 500, 400);
+        g.clearRect(prevX, prevY, 60, 60);
+        g.drawLine(0,660 , 1000, 660);
         prevX=(int)k.getPos().getX();
         prevY=(int)k.getPos().getY();
-        g.drawOval(prevX, prevY, 20, 30); 
+        g.drawOval(prevX, prevY, 40, 50); 
 
     }
 }

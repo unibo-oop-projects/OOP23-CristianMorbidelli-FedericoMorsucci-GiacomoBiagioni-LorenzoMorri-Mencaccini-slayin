@@ -7,12 +7,23 @@ import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
 
 public class Character extends GameObject{
+
+    public static enum Direction { LEFT, RIGHT }
     private int life;
+    private Direction dir;
 
 
     public Character(P2d pos, Vector2d vectorMouvement, BoundingBox boundingBox,int life) {
         super(pos, vectorMouvement, boundingBox);
         this.life=life;
+    }
+
+    public void setDir(Direction dir){
+        this.dir=dir;
+    }
+
+    public Direction getDir(){
+        return this.dir;
     }
 
     public boolean isAlive(){
