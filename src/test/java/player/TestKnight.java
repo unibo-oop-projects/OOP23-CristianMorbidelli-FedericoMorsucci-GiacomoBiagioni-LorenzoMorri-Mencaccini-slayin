@@ -1,21 +1,15 @@
 package player;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import slayin.model.InputController;
-import slayin.model.bounding.BoundingBox;
 import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.character.Knight;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
 import java.awt.*;
-import javax.swing.*;
-import java.awt.event.*;
 
-
-import java.awt.*; 
 import java.awt.event.WindowAdapter; 
 import java.awt.event.WindowEvent; 
   
