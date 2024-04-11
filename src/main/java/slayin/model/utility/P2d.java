@@ -37,7 +37,7 @@ public class P2d {
     }
 
     public P2d sum(Vector2d v){
-        return new P2d(x+v.x,y+v.y);
+        return new P2d(x+v.getX(),y+v.getY());
     }
 
     @Override

@@ -48,7 +48,7 @@ public class TestKnight {
 
     @BeforeEach                                         
     void setUp() {
-        k = new Knight(new P2d(100, 370), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), 5, 5));
+        k = new Knight(new P2d(300, 370), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), 5, 5),10);
         controller= new InputController();
         c = new canva();
         prevX=0;
@@ -57,6 +57,9 @@ public class TestKnight {
 
     @Test
     public void testVel(){
+        controller.setMoveLeft();
+        k.updateVel(controller);
+        controller.unSetMoveLeft();
         controller.setMoveUp();
         k.updateVel(controller);
 
@@ -67,11 +70,8 @@ public class TestKnight {
 			startTime = System.currentTimeMillis();
             System.out.println((int)(startTime-lastTime));
             k.updatePos((int)(startTime-lastTime));
-            if(k.getPos().getY()<350){
-                controller.unSetMoveUp();
-                controller.setMoveRight();
-                k.updateVel(controller);
-            }
+            //if(k.getPos().getY()<350){
+            //}
             this.render(k);
             System.out.println(k.getPos());
             lastTime=System.currentTimeMillis();
@@ -89,7 +89,7 @@ public class TestKnight {
 
     public void render(Knight k){
         Graphics g = c.getGraphics();
-        g.clearRect(prevX, prevY, 50, 50);
+        //g.clearRect(prevX, prevY, 50, 50);
         g.drawLine(0,400 , 500, 400);
         prevX=(int)k.getPos().getX();
         prevY=(int)k.getPos().getY();
