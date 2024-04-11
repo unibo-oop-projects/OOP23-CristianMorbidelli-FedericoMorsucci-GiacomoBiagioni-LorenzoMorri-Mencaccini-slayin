@@ -1,6 +1,5 @@
 package slayin.model.character;
 
-import slayin.model.GameObject;
 import slayin.model.InputController;
 import slayin.model.bounding.BoundingBox;
 import slayin.model.utility.P2d;

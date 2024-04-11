@@ -25,14 +25,16 @@ public class Character extends GameObject{
 
     @Override
     public void updateVel(InputController input) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateVel'");
+        if(input.isMoveLeft()){
+            this.getVectorMouvement().setX(-150);
+        }else if(input.isMoveRight()){
+            this.getVectorMouvement().setX(150);
+        }
     }
 
     @Override
     public void updatePos(int dt) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updatePos'");
+        this.setPos(this.getPos().sum(this.getVectorMouvement().mul(0.001*dt)));
     }
 
     
