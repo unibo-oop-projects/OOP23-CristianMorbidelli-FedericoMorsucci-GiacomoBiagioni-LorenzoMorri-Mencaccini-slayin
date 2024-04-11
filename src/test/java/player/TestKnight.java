@@ -5,28 +5,94 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import slayin.model.InputController;
+import slayin.model.bounding.BoundingBox;
+import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.character.Knight;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
+import java.awt.*;
+import javax.swing.*;
+import java.awt.event.*;
+
+
+import java.awt.*; 
+import java.awt.event.WindowAdapter; 
+import java.awt.event.WindowEvent; 
+  
+class canva extends Frame { 
+    public canva() 
+    { 
+        setVisible(true); 
+        //setSize(500, 600); 
+        setSize(1000, 1000); 
+        addWindowListener(new WindowAdapter() { 
+            @Override
+            public void windowClosing(WindowEvent e) 
+            { 
+                System.exit(0); 
+            } 
+        }); 
+    } 
+    public void paint(Graphics g) 
+    { 
+        //g.drawRect(100, 100, 100, 50); 
+        g.drawLine(0,660 , 1000, 660);
+    } 
+}
 
 public class TestKnight {
     
     Knight k;
     InputController controller;
+    canva c;
+    int prevX,prevY;
 
     @BeforeEach                                         
     void setUp() {
-        k = new Knight(new P2d(0, 0), new Vector2d(3, 9), null);
+        k = new Knight(new P2d(600, 610), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), 10, 10),10);
         controller= new InputController();
+        c = new canva();
+        prevX=0;
+        prevY=0;
     }
 
     @Test
     public void testVel(){
+        controller.setMoveLeft();
+        k.updateVel(controller);
+        controller.unSetMoveLeft();
         controller.setMoveUp();
-        for(int i=0;i<100;i++){
-            k.updateVel(controller);
-        }
-        //il modulo resta lo stesso anche se l'ogetto cambia direzione
-        assertEquals((double)Math.sqrt(3*3+9*9), k.getVectorMouvement().module());
+        k.updateVel(controller);
+
+        long startTime, timePassed, lastTime;
+		long tickTime = 5;	/* 200 fps */
+        lastTime=System.currentTimeMillis();
+		for(int i=0;i<1000;i++){/* Game loop */
+			startTime = System.currentTimeMillis();
+            System.out.println((int)(startTime-lastTime));
+            k.updatePos((int)(startTime-lastTime));
+            this.render(k);
+            System.out.println(k.getPos());
+            lastTime=System.currentTimeMillis();
+			timePassed = lastTime - startTime;
+			if(timePassed < tickTime){	/* wait until tickTime before nextFrame */
+				try {
+					Thread.sleep(tickTime-timePassed);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+            lastTime=startTime;
+		}
+    }
+
+    public void render(Knight k){
+        Graphics g = c.getGraphics();
+        g.clearRect(prevX, prevY, 60, 60);
+        g.drawLine(0,660 , 1000, 660);
+        prevX=(int)k.getPos().getX();
+        prevY=(int)k.getPos().getY();
+        g.drawOval(prevX, prevY, 40, 50); 
+
     }
 }

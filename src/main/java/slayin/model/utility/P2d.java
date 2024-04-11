@@ -28,17 +28,21 @@ public class P2d {
         this.y = y;
     }
 
-    @Override
-    public String toString() {
-        return "P2d [x=" + x + ", y=" + y + "]";
-    }
-
     public double distanceFromPoint(double x, double y) {
         return Math.sqrt(Math.pow((this.x - x), 2) + Math.pow((this.y - y), 2));
     }
 
     public double distanceFromPoint(P2d point) {
         return Math.sqrt(Math.pow((this.x - point.getX()), 2) + Math.pow((this.y - point.getY()), 2));
+    }
+
+    public P2d sum(Vector2d v){
+        return new P2d(x+v.getX(),y+v.getY());
+    }
+
+    @Override
+    public String toString() {
+        return "P2d [x=" + x + ", y=" + y + "]";
     }
 
 }
