@@ -10,5 +10,4 @@ public class Slayin {
         core.switchScene(new MainMenuScene());
         core.startGameLoop();
     }
-
 }

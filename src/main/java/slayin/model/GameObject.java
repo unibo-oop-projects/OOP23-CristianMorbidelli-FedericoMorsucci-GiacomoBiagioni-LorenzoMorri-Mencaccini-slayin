@@ -5,8 +5,8 @@ import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
 
 public abstract class GameObject {
-    protected P2d pos;
-    protected Vector2d vectorMouvement;
+    private P2d pos;
+    private Vector2d vectorMouvement;
     private BoundingBox boundingBox;
 
     public GameObject(P2d pos,Vector2d vectorMouvement, BoundingBox boundingBox){
@@ -38,7 +38,7 @@ public abstract class GameObject {
 
     public abstract void updateVel(InputController input);   
     
-    public abstract void updatePos(int dt);
+    public abstract void updatePos(int dt, World world);
 
 
 }
