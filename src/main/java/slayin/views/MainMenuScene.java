@@ -3,9 +3,12 @@ package slayin.views;
 import java.awt.Container;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 
 import slayin.core.GameScene;
 import slayin.model.utility.SceneType;
+import slayin.views.utils.JBackgroundImage;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -14,9 +17,11 @@ import java.awt.Dimension;
 public class MainMenuScene implements GameScene {
     @Override
     public Container getContent() {
-        Container container = new Container();
+        JComponent container = new JBackgroundImage("/assets/backgrounds/mainmenu_bg.jpg");
         container.setLayout(new GridBagLayout());
 
+        JLabel title = new JLabel("Slayin");
+        title.setFont(title.getFont().deriveFont(64.0f));
         JButton playBtn = new JButton("Gioca");
         JButton button2 = new JButton("Button 2");
         JButton quitBtn = new JButton("Esci");
@@ -29,8 +34,9 @@ public class MainMenuScene implements GameScene {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weighty = 1; // This will center the buttons vertically
+        gbc.weighty = 1; // Distribute extra space between components centering vertically
 
+        container.add(title, gbc);
         container.add(playBtn, gbc);
         container.add(button2, gbc);
         container.add(quitBtn, gbc);
