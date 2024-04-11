@@ -7,21 +7,25 @@ import slayin.model.utility.P2d;
  */
 public class BoundingBoxImplRet implements BoundingBox{
 
-    private double width, height,x,y;
+    private double width, height;
+    private P2d point;
 
     public BoundingBoxImplRet(P2d point,double width, double height){
-        x= point.getX()-(width/2);
-        y= point.getY()+(height/2);
+        this.point=point;
         this.height=height;
         this.width=width;
     }
 
     public double getX() {
-        return x;
+        return point.getX()-(this.width/2);
     }
 
     public double getY() {
-        return y;
+        return point.getY()+(this.height/2);
+    }
+    
+    public P2d getPoint(){
+        return this.point;
     }
 
     public double getWidht() {
@@ -34,17 +38,24 @@ public class BoundingBoxImplRet implements BoundingBox{
 
     @Override
     public boolean isCollidedWith(BoundingBox b) {
+        double x= point.getX()-(this.width/2);
+        double y= point.getY()+(this.height/2);
         boolean outcome=false;
         if(b instanceof BoundingBoxImplRet){
             BoundingBoxImplRet bBox = (BoundingBoxImplRet) b;
-            outcome= !(this.x + this.width < bBox.getX() || bBox.getX() + bBox.getWidht() < this.x 
-            || this.y + this.height < bBox.getY() || bBox.getY() + bBox.getHeight() < this.y);
+            outcome= !(x + this.width < bBox.getX() || bBox.getX() + bBox.getWidht() < x 
+            || y + this.height < bBox.getY() || bBox.getY() + bBox.getHeight() < y);
         }else if(b instanceof BoundingBoxImplCirc){
             BoundingBoxImplCirc bBox = (BoundingBoxImplCirc) b;
-            outcome= !(this.x + this.width < bBox.getX()-bBox.getRadius() || bBox.getX() + bBox.getRadius() < this.x 
-            || this.y + this.height < bBox.getY()+bBox.getRadius() || bBox.getY() + bBox.getRadius() < this.y);
+            outcome= !(x + this.width < bBox.getX()-bBox.getRadius() || bBox.getX() + bBox.getRadius() < x 
+            || y + this.height < bBox.getY()+bBox.getRadius() || bBox.getY() + bBox.getRadius() < y);
         }
         return outcome;
+    }
+
+    @Override
+    public void updatePoint(P2d p) {
+        this.point=p;
     }
 
 

@@ -45,7 +45,8 @@ public class TestKnight {
 
     @BeforeEach                                         
     void setUp() {
-        k = new Knight(new P2d(600, 610), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), 10, 10),10);
+        P2d point = new P2d(600, 590);
+        k = new Knight(point, new Vector2d(1, 0), new BoundingBoxImplRet(point, 40, 50),10);
         controller= new InputController();
         c = new canva();
         prevX=0;
@@ -66,10 +67,12 @@ public class TestKnight {
         lastTime=System.currentTimeMillis();
 		for(int i=0;i<1000;i++){/* Game loop */
 			startTime = System.currentTimeMillis();
-            System.out.println((int)(startTime-lastTime));
+            //System.out.println((int)(startTime-lastTime));
             k.updatePos((int)(startTime-lastTime),w);
             this.render(k);
             System.out.println(k.getPos());
+            BoundingBoxImplRet r =(BoundingBoxImplRet)k.getBoundingBox();
+            System.out.println(r.getPoint());
             lastTime=System.currentTimeMillis();
 			timePassed = lastTime - startTime;
 			if(timePassed < tickTime){	/* wait until tickTime before nextFrame */

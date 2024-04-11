@@ -40,5 +40,10 @@ public class BoundingBoxImplCirc implements BoundingBox{
         }
         return outcome;
     }
+
+    @Override
+    public void updatePoint(P2d p) {
+        this.center=p;
+    }
     
 }
