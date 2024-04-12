@@ -23,7 +23,7 @@ public class BoundingBoxImplRet implements BoundingBox{
     public double getY() {
         return point.getY()+(this.height/2);
     }
-    
+    @Override
     public P2d getPoint(){
         return this.point;
     }

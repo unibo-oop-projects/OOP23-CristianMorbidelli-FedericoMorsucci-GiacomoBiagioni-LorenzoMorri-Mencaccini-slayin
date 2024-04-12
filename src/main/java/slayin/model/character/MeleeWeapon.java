@@ -6,11 +6,14 @@ import slayin.model.utility.P2d;
 public class MeleeWeapon {
     private int damage;
     private BoundingBox boxWeapon;
+    private int heightFromPlayer,widthFromPlayer;
 
 
-    public MeleeWeapon(int damage, BoundingBox boxWeapon) {
+    public MeleeWeapon(int damage, BoundingBox boxWeapon,int heightFromPlayer,int widthFromPlayer) {
         this.damage = damage;
         this.boxWeapon = boxWeapon;
+        this.heightFromPlayer= heightFromPlayer;
+        this.widthFromPlayer= widthFromPlayer;
     }
 
     public BoundingBox getBoxWeapon() {
@@ -23,6 +26,14 @@ public class MeleeWeapon {
 
     public void updateBoxWeapon(P2d p){
         this.boxWeapon.updatePoint(p);
+    }
+
+    public int getHeightFromPlayer() {
+        return this.heightFromPlayer;
+    }
+
+    public int getWidthFromPlayer() {
+        return this.widthFromPlayer;
     }
 
     

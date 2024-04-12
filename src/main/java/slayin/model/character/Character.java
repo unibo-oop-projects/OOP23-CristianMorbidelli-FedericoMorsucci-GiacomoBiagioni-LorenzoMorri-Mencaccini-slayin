@@ -22,6 +22,8 @@ public class Character extends GameObject{
         super(pos, vectorMouvement, boundingBox);
         this.life=life;
         this.weapons= new ArrayList<>(Arrays.asList(weapons));
+        //For now I'll default to LEFT, I'll probably change later
+        this.dir=Direction.LEFT;
     }
 
     public List<MeleeWeapon> getWeapons(){

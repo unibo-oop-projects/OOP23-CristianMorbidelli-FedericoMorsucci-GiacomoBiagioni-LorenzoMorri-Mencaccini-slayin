@@ -43,5 +43,11 @@ public class BoundingBoxBorder implements BoundingBox{
     public void updatePoint(P2d p) {
         this.limit=p.getX();
     }
+
+    @Override
+    public P2d getPoint() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getPoint'");
+    }
     
 }
