@@ -1,5 +1,7 @@
-package slayin.model;
+package slayin.model.entities;
 
+import slayin.model.InputController;
+import slayin.model.World;
 import slayin.model.bounding.BoundingBox;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;

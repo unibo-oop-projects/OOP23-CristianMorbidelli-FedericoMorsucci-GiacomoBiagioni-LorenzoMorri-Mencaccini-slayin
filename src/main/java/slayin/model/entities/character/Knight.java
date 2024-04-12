@@ -1,4 +1,4 @@
-package slayin.model.character;
+package slayin.model.entities.character;
 
 import java.util.List;
 import slayin.model.InputController;

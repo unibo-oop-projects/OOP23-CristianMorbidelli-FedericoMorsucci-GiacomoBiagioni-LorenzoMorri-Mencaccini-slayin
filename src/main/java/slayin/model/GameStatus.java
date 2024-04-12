@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import slayin.model.bounding.BoundingBoxImplRet;
-import slayin.model.character.Knight;
+import slayin.model.entities.GameObject;
+import slayin.model.entities.character.Knight;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
 
 public class GameStatus {
 
     World world;
+    
     
     GameObject character;
     List<GameObject> enemies;
