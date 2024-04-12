@@ -23,10 +23,10 @@ public class LevelFactory {
      * @return the corrisponding Level object
      */
     public static Level buildLevel(int level){
+        // it gets the list of enemies objects based on the current level
         List<GameObject> enemies = getEnemies(level);
 
         Level lvl = new Level(enemies);
-
         return lvl;
     }
 
@@ -36,12 +36,17 @@ public class LevelFactory {
      * @return a list which contains all the GameObjects of the enemies of that level
      */
     private static List<GameObject> getEnemies(int level){
+        // access the resource and reads the path of the config file
         URL path = LevelFactory.class.getClass().getResource(enemiesConfigFile);
         try {
+            // the levels in the json are ordered in a JSON array that contains 
+            // infos about the i-th level at its i-th position
             JSONArray levels = new JSONArray(Files.readString(Path.of(path.toURI())));
             JSONObject levelJSON = levels.getJSONObject(level);
 
+            // from the JSON object corrisponding to the wanted level, it parse the infos about enemies
             JSONArray enemiesJSON = levelJSON.getJSONArray("enemies");
+            // the enemies list gets parsed from JSON and put in a GameObject list
             List<GameObject> enemies = parseEnemies(enemiesJSON);
             
             return enemies;
@@ -63,6 +68,7 @@ public class LevelFactory {
         List<GameObject> enemies = new ArrayList<>();
         for(int i=0; i<enemiesJSON.length(); i++){
             JSONObject enemy = enemiesJSON.getJSONObject(i);
+            // for each element of the JSON Array, it builds "qnt" enemies corrisponding to "id"
             enemies.addAll(buildEnemy(enemy.getInt("id"), enemy.getInt("qnt")));
         }
 
