@@ -6,6 +6,10 @@ import java.util.Optional;
 
 import slayin.model.entities.GameObject;
 
+/**
+ * A class to represent the infos about each level: it contains a list
+ * of the enemies that have yet to appear in that level.
+ */
 public class Level {
     
     private final List<GameObject> enemyToDispatch;
