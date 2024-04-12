@@ -4,10 +4,11 @@ package slayin.model.entities.character;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import slayin.model.InputController;
+
 import slayin.model.World;
 import slayin.model.bounding.BoundingBox;
 import slayin.model.entities.GameObject;
+import slayin.model.movement.MovementController;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
 
@@ -48,10 +49,10 @@ public class Character extends GameObject{
     }
 
     @Override
-    public void updateVel(InputController input) {
-        if(input.isMoveLeft()){
+    public void updateVel(MovementController input) {
+        if(input.isMovingLeft()){
             this.getVectorMouvement().setX(-150);
-        }else if(input.isMoveRight()){
+        }else if(input.isMovingRight()){
             this.getVectorMouvement().setX(150);
         }
     }

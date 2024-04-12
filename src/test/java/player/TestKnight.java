@@ -3,11 +3,11 @@ package player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import slayin.model.InputController;
 import slayin.model.World;
 import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.entities.character.Knight;
 import slayin.model.entities.character.MeleeWeapon;
+import slayin.model.movement.InputController;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
 import java.awt.*;
@@ -59,10 +59,10 @@ public class TestKnight {
 
     @Test
     public void testVel(){
-        controller.setMoveLeft();
+        controller.setMovingLeft(true);
         k.updateVel(controller);
-        controller.unSetMoveLeft();
-        controller.setMoveUp();
+        controller.setMovingLeft(false);
+        controller.setJumping(true);
         k.updateVel(controller);
 
         long startTime, timePassed, lastTime;
@@ -70,10 +70,10 @@ public class TestKnight {
         lastTime=System.currentTimeMillis();
 		for(int i=0;i<1000;i++){/* Game loop */
 			startTime = System.currentTimeMillis();
-            //System.out.println((int)(startTime-lastTime));
+            // System.out.println((int)(startTime-lastTime));
             k.updatePos((int)(startTime-lastTime),w);
             this.render(k);
-            System.out.println(k.getPos());
+            // System.out.println(controller.isJumping());
             k.getWeapons().stream().forEach(t->{
                 BoundingBoxImplRet r=(BoundingBoxImplRet)t.getBoxWeapon();
                 System.out.println("il punto della spada è:"+r.getPoint());

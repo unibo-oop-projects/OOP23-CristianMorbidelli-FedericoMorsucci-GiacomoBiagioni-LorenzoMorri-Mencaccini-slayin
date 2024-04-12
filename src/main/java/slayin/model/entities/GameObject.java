@@ -1,8 +1,8 @@
 package slayin.model.entities;
 
-import slayin.model.InputController;
 import slayin.model.World;
 import slayin.model.bounding.BoundingBox;
+import slayin.model.movement.MovementController;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
 
@@ -38,7 +38,7 @@ public abstract class GameObject {
     }
 
 
-    public abstract void updateVel(InputController input);   
+    public abstract void updateVel(MovementController input);   
     
     public abstract void updatePos(int dt, World world);
 

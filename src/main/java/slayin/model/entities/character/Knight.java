@@ -1,10 +1,11 @@
 package slayin.model.entities.character;
 
 import java.util.List;
-import slayin.model.InputController;
+
 import slayin.model.World;
 import slayin.model.World.Edge;
 import slayin.model.bounding.BoundingBox;
+import slayin.model.movement.MovementController;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
 
@@ -24,15 +25,22 @@ public class Knight extends Character{
     }
 
     @Override
-    public void updateVel(InputController input) {
-        if(input.isMoveUp() && this.getPos().getY()==590 /*word.getXGround() */){
+    public void updateVel(MovementController input) {
+        // Check if the player is already moving in the direction of the input
+        // to prevent double setting the same direction
+        if (this.getDir() == Direction.LEFT && input.isMovingLeft() ||
+            this.getDir() == Direction.RIGHT && input.isMovingRight()) {
+            return;
+        }
+
+        if(input.isJumping() && this.getPos().getY()==590 /*word.getXGround() */){
             this.setVectorMouvement(new Vector2d(0, FJUMP));
             jump=true;
             y_start_jump=(int)this.getPos().getY();
-        }else if(input.isMoveLeft() && !jump){
+        }else if(input.isMovingLeft() && !jump){
             this.velocity.setX(FLEFT);
             this.setDir(Direction.LEFT);
-        }else if(input.isMoveRight() && !jump){
+        }else if(input.isMovingRight() && !jump){
             this.velocity.setX(FRIGHT);
             this.setDir(Direction.RIGHT);
         }
