@@ -59,7 +59,11 @@ public class Character extends GameObject{
     public void updatePos(int dt, World world) {
         this.setPos(this.getPos().sum(this.getVectorMouvement().mul(0.001*dt)));
         //update the boundingBox
-        weapons.stream().forEach(t->t.updateBoxWeapon(this.getPos()));
+        if(this.getDir()==Direction.LEFT){
+            this.getWeapons().stream().forEach(t->t.updateBoxWeapon(new P2d(this.getPos().getX()-t.getWidthFromPlayer(),this.getPos().getY()+t.getHeightFromPlayer())));
+        }else{
+            this.getWeapons().stream().forEach(t->t.updateBoxWeapon(new P2d(this.getPos().getX()+t.getWidthFromPlayer(),this.getPos().getY()+t.getHeightFromPlayer())));
+        }
     }
 
     
