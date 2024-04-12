@@ -7,7 +7,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import slayin.core.GameScene;
-import slayin.model.entities.GameObject;
 import slayin.model.events.GameEventListener;
 import slayin.model.events.QuitGameEvent;
 import slayin.model.events.StartGameEvent;
@@ -57,7 +56,7 @@ public class MainMenuScene implements GameScene {
     }
 
     @Override
-    public void drawGraphics(GameObject mainCharacter) {}
+    public void drawGraphics() {}
 
     @Override
     public SceneType getSceneType() {
