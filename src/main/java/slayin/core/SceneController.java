@@ -63,7 +63,6 @@ public class SceneController {
         if (currentScene.isEmpty())
             return false;
 
-        return currentScene.get().getSceneType() == SceneType.MAIN_MENU
-                || currentScene.get().getSceneType() == SceneType.PAUSE_MENU;
+        return currentScene.get().getSceneType().isMenu();
     }
 }
