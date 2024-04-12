@@ -6,6 +6,7 @@ import java.util.List;
 import slayin.model.bounding.BoundingBox;
 import slayin.model.bounding.BoundingBoxBorder;
 import slayin.model.bounding.BoundingBoxBorder.TypeAxis;
+import slayin.model.entities.GameObject;
 
 public class World {
 

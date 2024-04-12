@@ -5,9 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import slayin.model.GameObject;
+import slayin.model.entities.GameObject;
 import slayin.model.GameStatus;
-import slayin.model.character.Knight;
+import slayin.model.entities.character.Knight;
 
 public class TestGameStatus {
 

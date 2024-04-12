@@ -1,6 +1,6 @@
 package slayin.core;
 
-import slayin.model.GameObject;
+import slayin.model.entities.GameObject;
 import slayin.model.GameStatus;
 import slayin.model.InputController;
 import slayin.model.events.GameEventListener;
