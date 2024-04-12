@@ -25,9 +25,9 @@ public class LevelFactory {
     public static Level buildLevel(int level){
         List<GameObject> enemies = getEnemies(level);
 
-        Level lev = new Level(enemies);
+        Level lvl = new Level(enemies);
 
-        return lev;
+        return lvl;
     }
 
     /**

@@ -4,9 +4,11 @@ import slayin.model.entities.GameObject;
 import slayin.model.GameStatus;
 import slayin.model.InputController;
 import slayin.model.Level;
+import slayin.model.LevelFactory;
 import slayin.model.events.GameEventListener;
 import slayin.model.events.QuitGameEvent;
 import slayin.model.events.StartGameEvent;
+import slayin.model.events.collisions.WeaponCollisionEvent;
 import slayin.views.MainMenuScene;
 
 public class Engine {
@@ -80,6 +82,10 @@ public class Engine {
         }
 
         /* TODO: check for collisions */
+        // Temporary test, adding once a collision with an entity if there's one
+        if(status.getObjects().size()>1){
+            eventListener.addEvent(new WeaponCollisionEvent(status.getObjects().get(1)));
+        }
     }
     
     private void InputController(){
@@ -91,10 +97,14 @@ public class Engine {
             if (e instanceof StartGameEvent) {
                 System.out.println("Start Game Event");
 
-                //this.status.setLevel(new Level(null));
+                this.status.setLevel(LevelFactory.buildLevel(0));   // setto il livello a 0; è un livello
+                                                                          // di prova che ha soltanto un'entità immobile
             } else if (e instanceof QuitGameEvent) {
                 System.out.println("Quit Game Event");
                 this.running = false;
+            } else if (e instanceof WeaponCollisionEvent) {
+                System.out.println("Weapon Collision Event");
+                System.out.println("With: " + ((WeaponCollisionEvent) e).getCollidedObject());
             }
         });
 
