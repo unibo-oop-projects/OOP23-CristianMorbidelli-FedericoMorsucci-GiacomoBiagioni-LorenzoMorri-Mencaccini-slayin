@@ -75,6 +75,7 @@ public class Knight extends Character{
         }
         //update BoundingBox
         this.getBoundingBox().updatePoint(this.getPos());
+        this.getWeapons().stream().forEach(t->t.updateBoxWeapon(this.getPos()));
     }
     
 }

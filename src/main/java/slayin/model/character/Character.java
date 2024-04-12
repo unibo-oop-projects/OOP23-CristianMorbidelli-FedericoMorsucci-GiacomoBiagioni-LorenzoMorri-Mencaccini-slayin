@@ -1,5 +1,8 @@
 package slayin.model.character;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import slayin.model.GameObject;
 import slayin.model.InputController;
 import slayin.model.World;
@@ -12,11 +15,17 @@ public class Character extends GameObject{
     public static enum Direction { LEFT, RIGHT }
     private int life;
     private Direction dir;
+    private List<MeleeWeapon> weapons;
 
 
-    public Character(P2d pos, Vector2d vectorMouvement, BoundingBox boundingBox,int life) {
+    public Character(P2d pos, Vector2d vectorMouvement, BoundingBox boundingBox,int life, MeleeWeapon ... weapons) {
         super(pos, vectorMouvement, boundingBox);
         this.life=life;
+        this.weapons= new ArrayList<>(Arrays.asList(weapons));
+    }
+
+    public List<MeleeWeapon> getWeapons(){
+        return this.weapons;
     }
 
     public void setDir(Direction dir){
@@ -47,6 +56,8 @@ public class Character extends GameObject{
     @Override
     public void updatePos(int dt, World world) {
         this.setPos(this.getPos().sum(this.getVectorMouvement().mul(0.001*dt)));
+        //update the boundingBox
+        weapons.stream().forEach(t->t.updateBoxWeapon(this.getPos()));
     }
 
     
