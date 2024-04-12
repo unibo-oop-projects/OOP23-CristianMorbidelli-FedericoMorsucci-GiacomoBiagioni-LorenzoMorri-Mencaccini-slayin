@@ -3,6 +3,7 @@ package slayin.core;
 import slayin.model.entities.GameObject;
 import slayin.model.GameStatus;
 import slayin.model.InputController;
+import slayin.model.Level;
 import slayin.model.events.GameEventListener;
 import slayin.model.events.QuitGameEvent;
 import slayin.model.events.StartGameEvent;
@@ -89,6 +90,8 @@ public class Engine {
         eventListener.getEvents().forEach(e -> {
             if (e instanceof StartGameEvent) {
                 System.out.println("Start Game Event");
+
+                //this.status.setLevel(new Level(null));
             } else if (e instanceof QuitGameEvent) {
                 System.out.println("Quit Game Event");
                 this.running = false;
