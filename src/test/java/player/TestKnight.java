@@ -8,6 +8,7 @@ import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.entities.character.Knight;
 import slayin.model.entities.character.MeleeWeapon;
 import slayin.model.movement.InputController;
+import slayin.model.movement.MovementController;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
 import java.awt.*;
@@ -39,7 +40,7 @@ class canva extends Frame {
 public class TestKnight {
     
     Knight k;
-    InputController controller;
+    MovementController controller;
     canva c;
     int prevX,prevY;
     World w;
@@ -48,13 +49,13 @@ public class TestKnight {
     @BeforeEach                                         
     void setUp() {
         P2d point = new P2d(600, 590);
+        w = new World(1000, 1000, 610);
         m= new MeleeWeapon(1, new BoundingBoxImplRet(new P2d(620,590), 5, 5),0,20);
-        k = new Knight(point, new Vector2d(1, 0), new BoundingBoxImplRet(point, 40, 50),10,m);
-        controller= new InputController();
+        k = new Knight(point, new Vector2d(1, 0), new BoundingBoxImplRet(point, 40, 50),w,10,m);
+        controller= new MovementController();
         c = new canva();
         prevX=0;
         prevY=0;
-        w = new World(1000, 1000, 610);
     }
 
     @Test
@@ -71,7 +72,7 @@ public class TestKnight {
 		for(int i=0;i<1000;i++){/* Game loop */
 			startTime = System.currentTimeMillis();
             // System.out.println((int)(startTime-lastTime));
-            k.updatePos((int)(startTime-lastTime),w);
+            k.updatePos((int)(startTime-lastTime));
             this.render(k);
             // System.out.println(controller.isJumping());
             k.getWeapons().stream().forEach(t->{

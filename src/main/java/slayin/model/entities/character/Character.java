@@ -20,8 +20,8 @@ public class Character extends GameObject{
     private List<MeleeWeapon> weapons;
 
 
-    public Character(P2d pos, Vector2d vectorMouvement, BoundingBox boundingBox,int life, MeleeWeapon ... weapons) {
-        super(pos, vectorMouvement, boundingBox);
+    public Character(P2d pos, Vector2d vectorMouvement, BoundingBox boundingBox,int life,World world, MeleeWeapon ... weapons) {
+        super(pos, vectorMouvement, boundingBox,world);
         this.life=life;
         this.weapons= new ArrayList<>(Arrays.asList(weapons));
         //For now I'll default to LEFT, I'll probably change later
@@ -51,15 +51,15 @@ public class Character extends GameObject{
     @Override
     public void updateVel(MovementController input) {
         if(input.isMovingLeft()){
-            this.getVectorMouvement().setX(-150);
+            this.getVectorMovement().setX(-150);
         }else if(input.isMovingRight()){
-            this.getVectorMouvement().setX(150);
+            this.getVectorMovement().setX(150);
         }
     }
 
     @Override
-    public void updatePos(int dt, World world) {
-        this.setPos(this.getPos().sum(this.getVectorMouvement().mul(0.001*dt)));
+    public void updatePos(int dt) {
+        this.setPos(this.getPos().sum(this.getVectorMovement().mul(0.001*dt)));
         //update the boundingBox
         if(this.getDir()==Direction.LEFT){
             this.getWeapons().stream().forEach(t->t.updateBoxWeapon(new P2d(this.getPos().getX()-t.getWidthFromPlayer(),this.getPos().getY()+t.getHeightFromPlayer())));

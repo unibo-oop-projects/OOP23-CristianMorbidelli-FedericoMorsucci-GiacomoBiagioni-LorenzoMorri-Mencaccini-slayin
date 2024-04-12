@@ -36,6 +36,10 @@ public class World {
         return this.height;
     }
 
+    public boolean isTouchingGround(GameObject obj){
+        return borderGround.isCollidedWith(obj.getBoundingBox());
+    }
+
     // TODO: sostituire BoundingBox
     public List<Edge> collidingWith(GameObject obj){
         BoundingBox bBox= obj.getBoundingBox();

@@ -5,6 +5,7 @@ import java.util.List;
 import slayin.model.World;
 import slayin.model.World.Edge;
 import slayin.model.bounding.BoundingBox;
+import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.movement.MovementController;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
@@ -16,8 +17,8 @@ public class Knight extends Character{
     private boolean jump;
     private int y_start_jump;
 
-    public Knight(P2d pos,Vector2d VectorMouvement,BoundingBox boundingBox, int life,MeleeWeapon ... weapons) {
-        super(pos,VectorMouvement,boundingBox,life, weapons);
+    public Knight(P2d pos,Vector2d VectorMouvement,BoundingBox boundingBox,World world, int life,MeleeWeapon ... weapons) {
+        super(pos,VectorMouvement,boundingBox,life,world, weapons);
         velocity= new Vector2d(0, 0);
         gravity= new Vector2d(0, GRAVITY);
         jump=false;
@@ -26,15 +27,10 @@ public class Knight extends Character{
 
     @Override
     public void updateVel(MovementController input) {
-        // Check if the player is already moving in the direction of the input
-        // to prevent double setting the same direction
-        if (this.getDir() == Direction.LEFT && input.isMovingLeft() ||
-            this.getDir() == Direction.RIGHT && input.isMovingRight()) {
-            return;
-        }
 
-        if(input.isJumping() && this.getPos().getY()==590 /*word.getXGround() */){
-            this.setVectorMouvement(new Vector2d(0, FJUMP));
+        if(input.isJumping() && this.getWorld().isTouchingGround(this)){
+            this.setVectorMovement(new Vector2d(0, FJUMP));
+            input.setJumping(false);
             jump=true;
             y_start_jump=(int)this.getPos().getY();
         }else if(input.isMovingLeft() && !jump){
@@ -47,15 +43,15 @@ public class Knight extends Character{
     }
 
     @Override
-    public void updatePos(int dt, World world) {
+    public void updatePos(int dt) {
         List<Edge> collision;
         //jump management
         if(jump){
             if(y_start_jump-this.getPos().getY()>DELTAJUMP){
                 jump=false;
-                this.setVectorMouvement(new Vector2d(0, 0));
+                this.setVectorMovement(new Vector2d(0, 0));
             }else{
-                this.velocity= this.velocity.sum(this.getVectorMouvement().mul(0.001*dt));
+                this.velocity= this.velocity.sum(this.getVectorMovement().mul(0.001*dt));
             }
         }
         //add the gravity 
@@ -63,7 +59,7 @@ public class Knight extends Character{
         //actual movement
         this.setPos(this.getPos().sum(this.velocity.mul(0.001*dt)));
         //collision control
-        collision= world.collidingWith(this);
+        collision= this.getWorld().collidingWith(this);
         for(var col : collision){
 
             if(col == Edge.LEFT_BORDER && this.getDir()==Direction.LEFT){
@@ -73,13 +69,14 @@ public class Knight extends Character{
 
             if(col == Edge.RIGHT_BORDER && this.getDir()==Direction.RIGHT){
                 this.velocity.setX(0);
-                this.getPos().setX(world.getWidth());
+                this.getPos().setX(this.getWorld().getWidth());
             }
 
             if(col == Edge.BOTTOM_BORDER && !jump){
                 //reset the y of the velocity vector
                 this.velocity= new Vector2d(this.velocity.getX(), 0);
-                this.setPos(new P2d(this.getPos().getX(),world.getGround()));
+                BoundingBoxImplRet bBox = (BoundingBoxImplRet) this.getBoundingBox();
+                this.setPos(new P2d(this.getPos().getX(),this.getWorld().getGround()-(bBox.getHeight()/2)));
             }
         }
 

@@ -28,7 +28,7 @@ public class BoundingBoxImplRet implements BoundingBox{
         return this.point;
     }
 
-    public double getWidht() {
+    public double getWidth() {
         return width;
     }
 
@@ -43,7 +43,7 @@ public class BoundingBoxImplRet implements BoundingBox{
         boolean outcome=false;
         if(b instanceof BoundingBoxImplRet){
             BoundingBoxImplRet bBox = (BoundingBoxImplRet) b;
-            outcome= !(x + this.width < bBox.getX() || bBox.getX() + bBox.getWidht() < x 
+            outcome= !(x + this.width < bBox.getX() || bBox.getX() + bBox.getWidth() < x 
             || y + this.height < bBox.getY() || bBox.getY() + bBox.getHeight() < y);
         }else if(b instanceof BoundingBoxImplCirc){
             BoundingBoxImplCirc bBox = (BoundingBoxImplCirc) b;

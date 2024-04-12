@@ -68,17 +68,20 @@ public class Engine {
     }
 
     private void updateGameStatus(int deltaTime) {
-
+        if(sceneController.isInMenu()) return;
+        
         // Update the logical position of the main character and the enemies on the
         // scene
         for (GameObject object : status.getObjects()) {
-            object.updatePos(deltaTime, status.getWorld());
+            object.updatePos(deltaTime);
+            System.out.println(object.getPos());
         }
 
         /* TODO: check for collisions */
     }
 
     private void processInputs() {
+        if(sceneController.isInMenu()) return;
         this.status.getCharacter().updateVel(inputController);
     }
 

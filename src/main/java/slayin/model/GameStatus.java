@@ -18,9 +18,9 @@ public class GameStatus {
     List<GameObject> enemies;
 
     public GameStatus(){
-        character = new Knight(new P2d(0, 0), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), 30, 30),10);
-        enemies = new ArrayList<>();
         world = new World(1000, 400, 80);
+        character = new Knight(new P2d(500, 95), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), 30, 30),world,10);
+        enemies = new ArrayList<>();
     }
 
     public List<GameObject> getObjects(){   
