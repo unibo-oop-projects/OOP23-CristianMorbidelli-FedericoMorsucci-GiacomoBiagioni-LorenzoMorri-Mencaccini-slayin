@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
@@ -15,10 +16,12 @@ public class JBackgroundImage extends JComponent {
     public JBackgroundImage(String imagePath) {
         try {
             URL path = this.getClass().getResource(imagePath);
-            this.backgroundImage = ImageIO.read(new File(path.getPath()));
+            this.backgroundImage = ImageIO.read(new File(path.toURI()));
+        } catch (URISyntaxException e) {
+            System.out.println("Impossibile caricare l'immagine di sfondo ");
+            e.printStackTrace();
         } catch (IOException e) {
-            System.out.println("Impossibile caricare l'immagine di sfondo " +
-                    backgroundImage);
+            System.out.println("Impossibile caricare l'immagine di sfondo ");
             e.printStackTrace();
         }
     }
