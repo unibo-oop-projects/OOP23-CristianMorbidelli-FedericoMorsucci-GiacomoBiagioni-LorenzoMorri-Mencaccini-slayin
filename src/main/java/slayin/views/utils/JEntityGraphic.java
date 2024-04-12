@@ -20,7 +20,6 @@ public class JEntityGraphic extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
         g.drawRect((int) pos.getX(), (int) pos.getY(), 50, 50);
     }
 }
