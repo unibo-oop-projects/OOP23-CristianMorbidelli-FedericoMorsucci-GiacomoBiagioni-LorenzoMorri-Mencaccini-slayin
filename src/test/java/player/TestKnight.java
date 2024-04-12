@@ -98,10 +98,7 @@ public class TestKnight {
         prevX=(int)k.getPos().getX();
         prevY=(int)k.getPos().getY();
         g.drawOval(prevX, prevY, 40, 50); 
-        for(var w : k.getWeapons()){
-            var bBox = w.getBoxWeapon();            
-            g.drawOval((int)bBox.getPoint().getX(),(int) bBox.getPoint().getY(), 50, 20); 
-        }
+        for(var w : k.getWeapons()) g.drawOval((int)w.getBoxWeapon().getPoint().getX(),(int) w.getBoxWeapon().getPoint().getY(), 50, 20);
 
     }
 }
