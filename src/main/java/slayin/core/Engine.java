@@ -1,12 +1,11 @@
 package slayin.core;
 
 import slayin.model.entities.GameObject;
-import slayin.model.entities.character.Knight;
 import slayin.model.GameStatus;
-import slayin.model.InputController;
 import slayin.model.events.GameEventListener;
 import slayin.model.events.QuitGameEvent;
 import slayin.model.events.StartGameEvent;
+import slayin.model.movement.InputController;
 import slayin.model.utility.SceneType;
 
 public class Engine {
