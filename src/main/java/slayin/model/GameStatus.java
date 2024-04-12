@@ -40,4 +40,8 @@ public class GameStatus {
     public World getWorld(){
         return this.world;
     }
+
+    public GameObject getCharacter(){
+        return this.character;
+    }
 }

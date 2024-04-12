@@ -2,6 +2,7 @@ package slayin.core;
 
 import slayin.model.GameObject;
 import slayin.model.GameStatus;
+import slayin.model.InputController;
 import slayin.model.events.GameEventListener;
 import slayin.model.events.QuitGameEvent;
 import slayin.model.events.StartGameEvent;
@@ -13,13 +14,14 @@ public class Engine {
 
     private SceneController sceneController;
     private GameStatus status;
-
+    private InputController controllerInput;
     private GameEventListener eventListener;
 
     public Engine() {
         eventListener = new GameEventListener();
         sceneController = new SceneController(eventListener);
         sceneController.createWindow();
+        controllerInput= new InputController();
     }
 
     private void initGame() {
@@ -40,6 +42,7 @@ public class Engine {
             startTime = System.currentTimeMillis();
 
             /* TODO: check input */
+            this.InputController();
 
             /* TODO: update game status */
             this.updateGameStatus((int) startTime);
@@ -75,6 +78,10 @@ public class Engine {
         }
 
         /* TODO: check for collisions */
+    }
+    
+    private void InputController(){
+        this.status.getCharacter().updateVel(controllerInput);
     }
 
     private void processEvents() {
