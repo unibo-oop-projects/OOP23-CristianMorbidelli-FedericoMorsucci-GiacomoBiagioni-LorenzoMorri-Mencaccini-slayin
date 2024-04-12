@@ -1,6 +1,7 @@
 package slayin.core;
 
 import slayin.model.entities.GameObject;
+import slayin.model.entities.character.Knight;
 import slayin.model.GameStatus;
 import slayin.model.InputController;
 import slayin.model.events.GameEventListener;
@@ -14,14 +15,15 @@ public class Engine {
 
     private SceneController sceneController;
     private GameStatus status;
-    private InputController controllerInput;
+    private InputController inputController;
     private GameEventListener eventListener;
 
     public Engine() {
         eventListener = new GameEventListener();
-        sceneController = new SceneController(eventListener);
+        inputController = new InputController();
+
+        sceneController = new SceneController(eventListener, inputController);
         sceneController.createWindow();
-        controllerInput= new InputController();
     }
 
     private void initGame() {
@@ -29,27 +31,27 @@ public class Engine {
     }
 
     public void startGameLoop() {
-        long startTime, timePassed,previousTime;
+        long startTime, timePassed, previousTime;
 
         sceneController.switchScene(SceneType.MAIN_MENU);
         this.initGame();
 
-        previousTime=System.currentTimeMillis();
+        previousTime = System.currentTimeMillis();
         while (this.running) { /* Game loop */
             startTime = System.currentTimeMillis();
 
             /* TODO: check input */
-            this.InputController();
+            this.processInputs();
 
             /* TODO: update game status */
-            this.updateGameStatus((int) (startTime-previousTime));
+            this.updateGameStatus((int) (startTime - previousTime));
             this.processEvents();
 
             /* TODO: render updates */
             sceneController.updateScene();
             timePassed = System.currentTimeMillis() - startTime;
             waitForNextTick(timePassed);
-            previousTime=startTime;
+            previousTime = startTime;
             // System.out.println(System.currentTimeMillis() - startTime);
         }
 
@@ -76,9 +78,9 @@ public class Engine {
 
         /* TODO: check for collisions */
     }
-    
-    private void InputController(){
-        this.status.getCharacter().updateVel(controllerInput);
+
+    private void processInputs() {
+        this.status.getCharacter().updateVel(inputController);
     }
 
     private void processEvents() {

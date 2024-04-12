@@ -5,19 +5,22 @@ import java.util.Optional;
 
 import javax.swing.JFrame;
 
+import slayin.model.InputController;
 import slayin.model.events.GameEventListener;
 import slayin.model.utility.SceneType;
 import slayin.views.GameLevelScene;
 import slayin.views.MainMenuScene;
 
 public class SceneController {
+    private JFrame gameFrame;
     private Optional<GameScene> currentScene;
     private GameEventListener eventListener;
-    private JFrame gameFrame;
+    private InputController inputController;
 
-    public SceneController(GameEventListener eventListener) {
+    public SceneController(GameEventListener eventListener, InputController inputController) {
         this.currentScene = Optional.empty();
         this.eventListener = eventListener;
+        this.inputController = inputController;
     }
 
     public void createWindow() {
@@ -41,16 +44,19 @@ public class SceneController {
         switch (sceneType) {
             case MAIN_MENU:
                 menu = new MainMenuScene(eventListener);
+                this.gameFrame.setContentPane(menu.getContent());
                 break;
             case GAME_LEVEL:
-                menu = new GameLevelScene();
+                menu = new GameLevelScene(eventListener, inputController);
+                this.gameFrame.setContentPane(menu.getContent());
+                // this.gameFrame.addKeyListener(inputController);
+                // this.gameFrame.requestFocusInWindow();
                 break;
             default:
                 break;
         }
 
         currentScene = Optional.of(menu);
-        this.gameFrame.setContentPane(menu.getContent());
         this.updateScene();
     }
 
