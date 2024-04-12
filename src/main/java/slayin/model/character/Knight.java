@@ -15,8 +15,8 @@ public class Knight extends Character{
     private boolean jump;
     private int y_start_jump;
 
-    public Knight(P2d pos,Vector2d VectorMouvement,BoundingBox boundingBox, int life) {
-        super(pos,VectorMouvement,boundingBox,life);
+    public Knight(P2d pos,Vector2d VectorMouvement,BoundingBox boundingBox, int life,MeleeWeapon ... weapons) {
+        super(pos,VectorMouvement,boundingBox,life, weapons);
         velocity= new Vector2d(0, 0);
         gravity= new Vector2d(0, GRAVITY);
         jump=false;
@@ -31,8 +31,10 @@ public class Knight extends Character{
             y_start_jump=(int)this.getPos().getY();
         }else if(input.isMoveLeft() && !jump){
             this.velocity.setX(FLEFT);
+            this.setDir(Direction.LEFT);
         }else if(input.isMoveRight() && !jump){
             this.velocity.setX(FRIGHT);
+            this.setDir(Direction.RIGHT);
         }
     }
 
@@ -46,7 +48,6 @@ public class Knight extends Character{
                 this.setVectorMouvement(new Vector2d(0, 0));
             }else{
                 this.velocity= this.velocity.sum(this.getVectorMouvement().mul(0.001*dt));
-                System.err.println("ciao");
             }
         }
         //add the gravity 
@@ -57,24 +58,31 @@ public class Knight extends Character{
         collision= world.collidingWith(this);
         for(var col : collision){
 
-            if(col == Edge.LEFT_BORDER && this.velocity.getX()<0){
+            if(col == Edge.LEFT_BORDER && this.getDir()==Direction.LEFT){
                 this.velocity.setX(0);
                 this.getPos().setX(0);
             }
 
-            if(col == Edge.RIGHT_BORDER && this.velocity.getX()>0){
+            if(col == Edge.RIGHT_BORDER && this.getDir()==Direction.RIGHT){
                 this.velocity.setX(0);
                 this.getPos().setX(world.getWidth());
             }
 
             if(col == Edge.BOTTOM_BORDER && !jump){
-                // azzero la y del vettore velocity
+                //reset the y of the velocity vector
                 this.velocity= new Vector2d(this.velocity.getX(), 0);
                 this.setPos(new P2d(this.getPos().getX(),world.getGround()));
             }
         }
+
         //update BoundingBox
         this.getBoundingBox().updatePoint(this.getPos());
+        if(this.getDir()==Direction.LEFT){
+            this.getWeapons().stream().forEach(t->t.updateBoxWeapon(new P2d(this.getPos().getX()-t.getWidthFromPlayer(),this.getPos().getY()+t.getHeightFromPlayer())));
+        }else{
+            this.getWeapons().stream().forEach(t->t.updateBoxWeapon(new P2d(this.getPos().getX()+t.getWidthFromPlayer(),this.getPos().getY()+t.getHeightFromPlayer())));
+        }
+        
     }
     
 }

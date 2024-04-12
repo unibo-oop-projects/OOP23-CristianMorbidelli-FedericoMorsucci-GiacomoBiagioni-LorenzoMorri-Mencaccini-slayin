@@ -35,6 +35,7 @@ public class World {
         return this.height;
     }
 
+    // TODO: sostituire BoundingBox
     public List<Edge> collidingWith(GameObject obj){
         BoundingBox bBox= obj.getBoundingBox();
         List<Edge> out= new ArrayList<>();
