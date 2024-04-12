@@ -12,15 +12,28 @@ import slayin.model.entities.GameObject;
  */
 public class Level {
     
+    /** every level has a set of enemies that will be periodically dispatched in the scene,
+     * this list keep track of the ones that has yet to be added to the game
+     */
     private final List<GameObject> enemyToDispatch;
 
+    /**
+     * The constructor of the Level class that is used by the LevelFactory class to build the levels
+     * @param enemies - the list of enemies
+     */
     public Level(List<GameObject> enemies){
         this.enemyToDispatch = new ArrayList<>(enemies);
     }
 
+    /**
+     * A method that returns an element from the list of enemies (if there is at least one), and then removes it immediately after.
+     * @return an Optional containing the first element of the list, or an empty one if the list has no elements
+     */
     public Optional<GameObject> dispatchEnemy(){
+        // if the list has no more elements, an empty optional is returned
         if(enemyToDispatch.isEmpty())   return Optional.empty();
 
+        // the first element of the list is extracted and then returned inside an Optional
         GameObject tmp = enemyToDispatch.get(0);
         enemyToDispatch.remove(0);
 
