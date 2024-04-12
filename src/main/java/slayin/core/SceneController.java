@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import javax.swing.JFrame;
 
+import slayin.model.entities.GameObject;
 import slayin.model.events.GameEventListener;
 import slayin.model.movement.InputController;
 import slayin.model.utility.SceneType;
@@ -59,9 +60,15 @@ public class SceneController {
         this.updateScene();
     }
 
-    public void updateScene() {
+    private void updateScene() {
         this.gameFrame.revalidate();
         this.gameFrame.repaint();
+    }
+
+    public void render(GameObject o) {
+        if (currentScene.isPresent()) {
+            currentScene.get().drawGraphics(o);
+        }   
     }
 
     public boolean isInMenu() {

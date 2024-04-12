@@ -39,19 +39,16 @@ public class Engine {
         while (this.running) { /* Game loop */
             startTime = System.currentTimeMillis();
 
-            /* TODO: check input */
             this.processInputs();
 
-            /* TODO: update game status */
             this.updateGameStatus((int) (startTime - previousTime));
             this.processEvents();
 
-            /* TODO: render updates */
-            sceneController.updateScene();
+            sceneController.render(status.getObjects().get(0));
+
             timePassed = System.currentTimeMillis() - startTime;
             waitForNextTick(timePassed);
             previousTime = startTime;
-            // System.out.println(System.currentTimeMillis() - startTime);
         }
 
         sceneController.closeWindow();
@@ -74,7 +71,6 @@ public class Engine {
         // scene
         for (GameObject object : status.getObjects()) {
             object.updatePos(deltaTime);
-            System.out.println(object.getPos());
         }
 
         /* TODO: check for collisions */
