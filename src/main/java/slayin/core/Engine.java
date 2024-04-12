@@ -33,11 +33,12 @@ public class Engine {
     }
 
     public void startGameLoop() {
-        long startTime, timePassed;
+        long startTime, timePassed,previousTime;
 
         this.switchScene(new MainMenuScene(this.eventListener));
         this.initGame();
 
+        previousTime=System.currentTimeMillis();
         while (this.running) { /* Game loop */
             startTime = System.currentTimeMillis();
 
@@ -45,14 +46,14 @@ public class Engine {
             this.InputController();
 
             /* TODO: update game status */
-            this.updateGameStatus((int) startTime);
+            this.updateGameStatus((int) (startTime-previousTime));
             this.processEvents();
 
             /* TODO: render updates */
             sceneController.updateScene();
-
             timePassed = System.currentTimeMillis() - startTime;
             waitForNextTick(timePassed);
+            previousTime=startTime;
             // System.out.println(System.currentTimeMillis() - startTime);
         }
 
@@ -69,12 +70,12 @@ public class Engine {
         }
     }
 
-    private void updateGameStatus(int startTime) {
+    private void updateGameStatus(int deltaTime) {
 
         // Update the logical position of the main character and the enemies on the
         // scene
         for (GameObject object : status.getObjects()) {
-            object.updatePos(startTime, status.getWorld());
+            object.updatePos(deltaTime, status.getWorld());
         }
 
         /* TODO: check for collisions */
