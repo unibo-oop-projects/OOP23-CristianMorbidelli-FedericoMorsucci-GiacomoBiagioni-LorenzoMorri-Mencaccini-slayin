@@ -3,8 +3,9 @@ package levels;
 import org.junit.jupiter.api.Test;
 
 import slayin.model.Level;
-import slayin.model.LevelFactory;
 import slayin.model.entities.GameObject;
+import slayin.model.utility.LevelFactory;
+
 import java.util.List;
 import java.util.ArrayList;
 

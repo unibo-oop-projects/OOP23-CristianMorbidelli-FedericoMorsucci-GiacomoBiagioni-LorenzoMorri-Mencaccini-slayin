@@ -1,4 +1,4 @@
-package slayin.model;
+package slayin.model.utility;
 
 import java.net.URL;
 import java.nio.file.Files;
@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import slayin.model.Level;
 import slayin.model.entities.GameObject;
 
 public class LevelFactory {

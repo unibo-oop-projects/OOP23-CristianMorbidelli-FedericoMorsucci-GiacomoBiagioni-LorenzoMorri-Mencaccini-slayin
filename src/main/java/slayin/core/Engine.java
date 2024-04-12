@@ -6,9 +6,8 @@ import slayin.model.events.GameEventListener;
 import slayin.model.events.QuitGameEvent;
 import slayin.model.events.StartGameEvent;
 import slayin.model.movement.InputController;
+import slayin.model.utility.LevelFactory;
 import slayin.model.utility.SceneType;
-
-import slayin.model.LevelFactory;
 import slayin.model.events.collisions.WeaponCollisionEvent;
 
 public class Engine {
