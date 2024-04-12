@@ -19,8 +19,8 @@ public class BoundingBoxImplCirc implements BoundingBox{
     public double getY() {
         return this.center.getY();
     }
-
-    public P2d getCenter(){
+    @Override
+    public P2d getPoint(){
         return this.center;
     }
 
@@ -36,7 +36,7 @@ public class BoundingBoxImplCirc implements BoundingBox{
             outcome= bBox.isCollidedWith(this);
         }else if(b instanceof BoundingBoxImplCirc){
             BoundingBoxImplCirc bBox = (BoundingBoxImplCirc) b;
-            outcome= ((this.radius + bBox.getRadius()) >= this.center.distanceFromPoint(bBox.getCenter()));
+            outcome= ((this.radius + bBox.getRadius()) >= this.center.distanceFromPoint(bBox.getPoint()));
         }
         return outcome;
     }
