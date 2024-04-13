@@ -1,31 +1,38 @@
 package slayin.views;
 
 import java.awt.Container;
+import java.awt.Graphics;
+
+import javax.swing.JPanel;
 
 import slayin.core.GameScene;
-import slayin.model.entities.GameObject;
-import slayin.model.events.GameEventListener;
+import slayin.model.GameStatus;
 import slayin.model.utility.SceneType;
-import slayin.views.utils.JEntityGraphic;
 
-public class GameLevelScene implements GameScene {
-    private GameEventListener eventListener;
-    private JEntityGraphic entity;
+public class GameLevelScene extends JPanel implements GameScene {
+    private GameStatus gameStatus;
 
-    public GameLevelScene(GameEventListener eventListener) {
-        this.eventListener = eventListener;
+    public GameLevelScene(GameStatus gameStatus) {
+        this.gameStatus = gameStatus;
     }
 
     @Override
     public Container getContent() {
-        entity = new JEntityGraphic();        
-        return entity;
+        return this;
     }
 
     @Override
-    public void drawGraphics(GameObject mainCharacter) {
-        entity.updatePos(mainCharacter.getPos());
-        entity.repaint();
+    public void drawGraphics() {
+        this.repaint();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        gameStatus.getObjects().forEach(e -> {
+            // e.draw(g);
+        });
     }
 
     @Override
