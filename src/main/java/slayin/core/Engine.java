@@ -1,6 +1,11 @@
 package slayin.core;
 
 import slayin.model.entities.GameObject;
+import slayin.model.entities.character.Character;
+import slayin.model.entities.character.MeleeWeapon;
+
+import java.util.List;
+
 import slayin.model.GameStatus;
 import slayin.model.events.GameEventListener;
 import slayin.model.events.QuitGameEvent;
@@ -79,10 +84,14 @@ public class Engine {
         }
 
         /* TODO: check for collisions */
-        // Temporary test, adding once a collision with an entity if there's one
-        if(status.getObjects().size()>1){
-            eventListener.addEvent(new WeaponCollisionEvent(status.getObjects().get(1)));
-        }
+        Character character = status.getCharacter();
+        List<MeleeWeapon> weapons = character.getWeapons();
+        // collisoni con le weapon del cavalliere
+        status.getEnemies().stream().forEach(t->{
+            weapons.stream().forEach(weapon->{
+                if(weapon.getBoxWeapon().isCollidedWith(t.getBoundingBox())) eventListener.addEvent(new WeaponCollisionEvent(t));
+            });
+        });
     }
 
     private void processInputs() {
@@ -102,7 +111,7 @@ public class Engine {
                 this.running = false;
             } else if (e instanceof WeaponCollisionEvent) {
                 System.out.println("Weapon Collision Event");
-                System.out.println("With: " + ((WeaponCollisionEvent) e).getCollidedObject());
+                //System.out.println("With: " + ((WeaponCollisionEvent) e).getCollidedObject());
             }
         });
 
