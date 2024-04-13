@@ -12,7 +12,7 @@ import slayin.model.utility.Vector2d;
 
 public class Knight extends Character{
     //values ​​for a window 1000*1000
-    final static int GRAVITY=+3000,FJUMP=-20000,FLEFT=-300,FRIGHT=300,DELTAJUMP=40;
+    final static int GRAVITY=+3000,FJUMP=-17000,FLEFT=-430,FRIGHT=430,DELTAJUMP=40;
     private Vector2d velocity,gravity;
     private boolean jump;
     private int y_start_jump;
@@ -58,6 +58,10 @@ public class Knight extends Character{
         this.velocity= this.velocity.sum(gravity.mul(0.001*dt));
         //actual movement
         this.setPos(this.getPos().sum(this.velocity.mul(0.001*dt)));
+
+        //update BoundingBox
+        this.getBoundingBox().updatePoint(this.getPos());
+
         //collision control
         collision= this.getWorld().collidingWith(this);
         for(var col : collision){
@@ -71,23 +75,22 @@ public class Knight extends Character{
                 this.velocity.setX(0);
                 this.getPos().setX(this.getWorld().getWidth());
             }
-
             if(col == Edge.BOTTOM_BORDER && !jump){
                 //reset the y of the velocity vector
                 this.velocity= new Vector2d(this.velocity.getX(), 0);
                 BoundingBoxImplRet bBox = (BoundingBoxImplRet) this.getBoundingBox();
                 this.setPos(new P2d(this.getPos().getX(),this.getWorld().getGround()-(bBox.getHeight()/2)));
             }
+            // aggiorno di nuovo la BoundinBox
+            this.getBoundingBox().updatePoint(this.getPos());
         }
 
-        //update BoundingBox
-        this.getBoundingBox().updatePoint(this.getPos());
+        //update BoundingBox weapon
         if(this.getDir()==Direction.LEFT){
             this.getWeapons().stream().forEach(t->t.updateBoxWeapon(new P2d(this.getPos().getX()-t.getWidthFromPlayer(),this.getPos().getY()+t.getHeightFromPlayer())));
         }else{
             this.getWeapons().stream().forEach(t->t.updateBoxWeapon(new P2d(this.getPos().getX()+t.getWidthFromPlayer(),this.getPos().getY()+t.getHeightFromPlayer())));
         }
-        
     }
     
 }

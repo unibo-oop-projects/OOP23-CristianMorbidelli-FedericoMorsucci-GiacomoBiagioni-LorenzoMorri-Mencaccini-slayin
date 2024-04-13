@@ -18,7 +18,20 @@ public class InputController extends MovementController implements KeyListener {
     public void keyTyped(KeyEvent e) {}
 
     @Override
-    public void keyReleased(KeyEvent e) {}
+    public void keyReleased(KeyEvent e) {
+        switch (e.getKeyCode()) {
+
+            case KeyEvent.VK_W:
+            case KeyEvent.VK_UP:
+            case KeyEvent.VK_SPACE:
+                this.setJumping(false);
+                break;
+
+            default:
+                break;
+        }
+
+    }
 
     @Override
     public void keyPressed(KeyEvent e) {

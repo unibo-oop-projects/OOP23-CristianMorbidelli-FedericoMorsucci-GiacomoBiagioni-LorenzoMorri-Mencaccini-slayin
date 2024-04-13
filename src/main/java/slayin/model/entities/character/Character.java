@@ -8,6 +8,8 @@ import java.util.List;
 import slayin.model.World;
 import slayin.model.bounding.BoundingBox;
 import slayin.model.entities.GameObject;
+import slayin.model.entities.graphics.DrawComponent;
+import slayin.model.entities.graphics.DrawComponentFactory;
 import slayin.model.movement.MovementController;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
@@ -46,6 +48,11 @@ public class Character extends GameObject{
 
     public void decLife(int damage){
         this.life= life-damage;
+    }
+
+    @Override
+    public DrawComponent getDrawComponent(){
+        return DrawComponentFactory.graphicsComponentCharacter(this);
     }
 
     @Override
