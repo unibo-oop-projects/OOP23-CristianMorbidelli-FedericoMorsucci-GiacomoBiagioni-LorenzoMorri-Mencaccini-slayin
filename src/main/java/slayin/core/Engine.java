@@ -22,20 +22,20 @@ public class Engine {
     public Engine() {
         eventListener = new GameEventListener();
         inputController = new InputController();
-
-        sceneController = new SceneController(eventListener, inputController);
-        sceneController.createWindow();
     }
 
     private void initGame() {
         status = new GameStatus();
+        sceneController = new SceneController(eventListener, inputController, status);
+        
+        sceneController.createWindow();
     }
 
     public void startGameLoop() {
         long startTime, timePassed, previousTime;
 
-        sceneController.switchScene(SceneType.MAIN_MENU);
         this.initGame();
+        sceneController.switchScene(SceneType.MAIN_MENU);
 
         previousTime = System.currentTimeMillis();
         while (this.running) { /* Game loop */
@@ -46,11 +46,11 @@ public class Engine {
             this.updateGameStatus((int) (startTime - previousTime));
             this.processEvents();
 
-            sceneController.updateScene();
+            sceneController.renderEntitiesInScene();
+            
             timePassed = System.currentTimeMillis() - startTime;
             waitForNextTick(timePassed);
             previousTime = startTime;
-            // System.out.println(System.currentTimeMillis() - startTime);
         }
 
         sceneController.closeWindow();
@@ -73,7 +73,6 @@ public class Engine {
         // scene
         for (GameObject object : status.getObjects()) {
             object.updatePos(deltaTime);
-            System.out.println(object.getPos());
         }
 
         /* TODO: check for collisions */

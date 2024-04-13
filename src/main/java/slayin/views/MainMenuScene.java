@@ -56,6 +56,9 @@ public class MainMenuScene implements GameScene {
     }
 
     @Override
+    public void drawGraphics() {}
+
+    @Override
     public SceneType getSceneType() {
         return SceneType.MAIN_MENU;
     }

@@ -1,31 +1,38 @@
 package slayin.views;
 
-import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Graphics;
 
-import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import slayin.core.GameScene;
-import slayin.model.events.GameEventListener;
+import slayin.model.GameStatus;
 import slayin.model.utility.SceneType;
 
-public class GameLevelScene implements GameScene {
-    private GameEventListener eventListener;
+public class GameLevelScene extends JPanel implements GameScene {
+    private GameStatus gameStatus;
 
-    public GameLevelScene(GameEventListener eventListener) {
-        this.eventListener = eventListener;
+    public GameLevelScene(GameStatus gameStatus) {
+        this.gameStatus = gameStatus;
     }
 
     @Override
     public Container getContent() {
-        Container container = new Container();
-        container.setLayout(new BorderLayout());
+        return this;
+    }
 
-        // Create a test label
-        JLabel testLabel = new JLabel("I'm inside the game level scene!");
-        container.add(testLabel, BorderLayout.CENTER);
+    @Override
+    public void drawGraphics() {
+        this.repaint();
+    }
 
-        return container;
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        gameStatus.getObjects().forEach(e -> {
+            // e.draw(g);
+        });
     }
 
     @Override

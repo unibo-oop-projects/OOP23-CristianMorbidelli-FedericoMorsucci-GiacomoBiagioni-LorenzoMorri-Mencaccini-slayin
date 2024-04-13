@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import javax.swing.JFrame;
 
+import slayin.model.GameStatus;
 import slayin.model.events.GameEventListener;
 import slayin.model.movement.InputController;
 import slayin.model.utility.SceneType;
@@ -16,11 +17,13 @@ public class SceneController {
     private Optional<GameScene> currentScene;
     private GameEventListener eventListener;
     private InputController inputController;
+    private GameStatus gameStatus;
 
-    public SceneController(GameEventListener eventListener, InputController inputController) {
+    public SceneController(GameEventListener eventListener, InputController inputController, GameStatus gameStatus) {
         this.currentScene = Optional.empty();
         this.eventListener = eventListener;
         this.inputController = inputController;
+        this.gameStatus = gameStatus;
     }
 
     public void createWindow() {
@@ -46,7 +49,7 @@ public class SceneController {
                 menu = new MainMenuScene(eventListener);
                 break;
             case GAME_LEVEL:
-                menu = new GameLevelScene(eventListener);
+                menu = new GameLevelScene(gameStatus);
                 this.gameFrame.addKeyListener(inputController);
                 this.gameFrame.requestFocusInWindow();
                 break;
@@ -59,9 +62,15 @@ public class SceneController {
         this.updateScene();
     }
 
-    public void updateScene() {
+    private void updateScene() {
         this.gameFrame.revalidate();
         this.gameFrame.repaint();
+    }
+
+    public void renderEntitiesInScene() {
+        if (currentScene.isEmpty()) return;
+
+        currentScene.get().drawGraphics();
     }
 
     public boolean isInMenu() {
