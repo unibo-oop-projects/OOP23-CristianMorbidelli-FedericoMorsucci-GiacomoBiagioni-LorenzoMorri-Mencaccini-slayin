@@ -31,7 +31,7 @@ public class GameLevelScene extends JPanel implements GameScene {
         super.paintComponent(g);
 
         gameStatus.getObjects().forEach(e -> {
-            // e.draw(g);
+            e.getDrawComponent().draw(g);
         });
     }
 
