@@ -12,7 +12,7 @@ import slayin.model.utility.Vector2d;
 
 public class Knight extends Character{
     //values ​​for a window 1000*1000
-    final static int GRAVITY=+3000,FJUMP=-17000,FLEFT=-300,FRIGHT=300,DELTAJUMP=40;
+    final static int GRAVITY=+3000,FJUMP=-17000,FLEFT=-430,FRIGHT=430,DELTAJUMP=40;
     private Vector2d velocity,gravity;
     private boolean jump;
     private int y_start_jump;
@@ -81,6 +81,8 @@ public class Knight extends Character{
                 BoundingBoxImplRet bBox = (BoundingBoxImplRet) this.getBoundingBox();
                 this.setPos(new P2d(this.getPos().getX(),this.getWorld().getGround()-(bBox.getHeight()/2)));
             }
+            // aggiorno di nuovo la BoundinBox
+            this.getBoundingBox().updatePoint(this.getPos());
         }
 
         //update BoundingBox weapon
@@ -89,7 +91,6 @@ public class Knight extends Character{
         }else{
             this.getWeapons().stream().forEach(t->t.updateBoxWeapon(new P2d(this.getPos().getX()+t.getWidthFromPlayer(),this.getPos().getY()+t.getHeightFromPlayer())));
         }
-        
     }
     
 }

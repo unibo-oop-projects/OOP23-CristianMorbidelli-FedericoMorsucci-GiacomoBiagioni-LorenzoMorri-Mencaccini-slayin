@@ -28,7 +28,7 @@ public class BoundingBoxBorder implements BoundingBox{
             if(this.axis==TypeAxis.AXIS_X_LEFT && bBox.getX()<this.limit ) outcome= true;
             else if(this.axis==TypeAxis.AXIS_X_RIGHT && bBox.getX()+bBox.getWidth()>this.limit) outcome= true;
             else if(this.axis==TypeAxis.AXIS_Y_TOP && bBox.getY()-bBox.getHeight()<this.limit) outcome= true;
-            else if(this.axis==TypeAxis.AXIS_Y_DOWN && bBox.getY()>=this.limit) outcome= true;
+            else if(this.axis==TypeAxis.AXIS_Y_DOWN && bBox.getPoint().getY()+(bBox.getHeight()/2)>=this.limit) outcome= true;
         }else if(b instanceof BoundingBoxImplCirc){
             BoundingBoxImplCirc bBox = (BoundingBoxImplCirc) b;
             if(this.axis==TypeAxis.AXIS_X_LEFT && bBox.getX()<this.limit ) outcome= true;
