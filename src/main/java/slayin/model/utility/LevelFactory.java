@@ -11,19 +11,29 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import slayin.model.Level;
+import slayin.model.World;
 import slayin.model.entities.GameObject;
 
 public class LevelFactory {
 
     /* the path to the file which contains infos about the enemies contained in each level */
-    private static final String enemiesConfigFile = "config/levels/enemies.json";
+    private static final String enemiesConfigFile = "/configs/levels/enemies.json";
+    private final World world;
+
+    /**
+     * The constructor of a LevelFactory. It builds an object that can build as many levels as needed
+     * @param world - the world of the actual game (needed to set the positions in which entities appear)
+     */
+    public LevelFactory(World world){
+        this.world = world;
+    }
     
     /**
      * Returns a Level object with the infos about the wanted level
      * @param level - the number of the level
      * @return the corrisponding Level object
      */
-    public static Level buildLevel(int level){
+    public Level buildLevel(int level){
         // it gets the list of enemies objects based on the current level
         List<GameObject> enemies = getEnemies(level);
 
@@ -36,13 +46,13 @@ public class LevelFactory {
      * @param level - the number of the level
      * @return a list which contains all the GameObjects of the enemies of that level
      */
-    private static List<GameObject> getEnemies(int level){
+    private List<GameObject> getEnemies(int level){
         // access the resource and reads the path of the config file
-        URL path = LevelFactory.class.getClass().getResource(enemiesConfigFile);
+        URL path = this.getClass().getResource(enemiesConfigFile);
         try {
             // the levels in the json are ordered in a JSON array that contains 
             // infos about the i-th level at its i-th position
-            JSONArray levels = new JSONArray(Files.readString(Path.of(path.toURI())));
+            JSONArray levels = new JSONObject(Files.readString(Path.of(path.toURI()))).getJSONArray("levels");
             JSONObject levelJSON = levels.getJSONObject(level);
 
             // from the JSON object corrisponding to the wanted level, it parse the infos about enemies
@@ -51,7 +61,11 @@ public class LevelFactory {
             List<GameObject> enemies = parseEnemies(enemiesJSON);
             
             return enemies;
-        } catch (Exception e) {return List.of();}
+        } catch (Exception e) {
+            System.out.println("Can't read enemies from config file");
+            e.printStackTrace();
+            return List.of();
+        }
         
     }
 
@@ -65,7 +79,7 @@ public class LevelFactory {
      * @return a list which contains the GameObjects of the enemies in the JSON array
      * @throws JSONException
      */
-    private static List<GameObject> parseEnemies(JSONArray enemiesJSON) throws JSONException{
+    private List<GameObject> parseEnemies(JSONArray enemiesJSON) throws JSONException{
         List<GameObject> enemies = new ArrayList<>();
         for(int i=0; i<enemiesJSON.length(); i++){
             JSONObject enemy = enemiesJSON.getJSONObject(i);
@@ -85,16 +99,24 @@ public class LevelFactory {
      * final lenght of the returned list
      * @return the list of enemies
      */
-    private static List<GameObject> buildEnemy(int id, int qnt){
+    private List<GameObject> buildEnemy(int id, int qnt){
         if(qnt<=0){
             return List.of();
         }
 
-        switch(id){
-            case 0: // Dummy entity; not an actual enemy in the final game
-                return List.of();   // TODO: implement an EnemyFactory to build the enemies
-            default:
-                return List.of();
+        EntityFactory entityFactory = new EntityFactory(world);
+        List<GameObject> enemies = new ArrayList<>();
+
+        for(int i=0; i<qnt; i++){
+            switch(id){
+                case 0: // Dummy entity; not an actual enemy in the final game
+                    enemies.add(entityFactory.buildDummy());
+                    break;
+                default:
+                    return List.of();
+            }
         }
+
+        return enemies;
     }
 }

@@ -19,6 +19,8 @@ public class Engine {
     private InputController inputController;
     private GameEventListener eventListener;
 
+    private LevelFactory levelFactory;
+
     public Engine() {
         eventListener = new GameEventListener();
         inputController = new InputController();
@@ -26,6 +28,7 @@ public class Engine {
 
     private void initGame() {
         status = new GameStatus();
+        levelFactory = new LevelFactory(status.getWorld());
         sceneController = new SceneController(eventListener, inputController, status);
         
         sceneController.createWindow();
@@ -92,7 +95,7 @@ public class Engine {
             if (e instanceof StartGameEvent) {
                 System.out.println("[EVENT] Starting game");
                 sceneController.switchScene(SceneType.GAME_LEVEL);
-                this.status.setLevel(LevelFactory.buildLevel(0));   // setto il livello a 0; è un livello
+                this.status.setLevel(levelFactory.buildLevel(0));   // setto il livello a 0; è un livello
                                                                           // di prova che ha soltanto un'entità immobile
             } else if (e instanceof QuitGameEvent) {
                 System.out.println("[EVENT] Closing game");
