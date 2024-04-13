@@ -12,7 +12,7 @@ import slayin.model.entities.Dummy;
  * In this class are described how different entities are created (starting positions, bounding boxes, etc...)
  */
 public class EntityFactory {
-    // TODO
+
     private final World world;
     private final Random rn;
 
