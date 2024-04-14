@@ -79,10 +79,7 @@ public class Engine {
         }
 
         /* TODO: check for collisions */
-        // Temporary test, adding once a collision with an entity if there's one
-        if(status.getObjects().size()>1){
-            eventListener.addEvent(new WeaponCollisionEvent(status.getObjects().get(1)));
-        }
+        
     }
 
     private void processInputs() {
