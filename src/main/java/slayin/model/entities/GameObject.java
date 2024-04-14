@@ -55,5 +55,13 @@ public abstract class GameObject {
     
     public abstract void updatePos(int dt);
 
-
+    /**
+     * This method gets called whenever the engine resolve a WeaponCollisionEvent regarding a specific GameObject.
+     * Every GameObject instance can override this function to add a specific behavior when it gets hit. By 
+     * default, it returns a true boolean meaning that the GameObject will "die" after resolving the event
+     * @return {@code true} if the object must be removed from the scene; {@code false} otherwise
+     */
+    public boolean onHit(){
+        return true;
+    }
 }
