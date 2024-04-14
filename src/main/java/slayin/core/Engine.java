@@ -86,7 +86,6 @@ public class Engine {
     }
 
     private void processInputs() {
-        if(sceneController.isInMenu()) return;
         this.status.getCharacter().updateVel(inputController);
     }
 

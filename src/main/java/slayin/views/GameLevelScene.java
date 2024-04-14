@@ -29,9 +29,10 @@ public class GameLevelScene extends JPanel implements GameScene {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        
         g.drawLine(0,365,1280,365);
         gameStatus.getObjects().forEach(e -> {
-            e.getDrawComponent().draw(g);    
+            e.getDrawComponent().draw(g);
         });
     }
 

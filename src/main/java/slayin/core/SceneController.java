@@ -67,7 +67,7 @@ public class SceneController {
                 this.gameFrame.requestFocusInWindow();
                 break;
             case PAUSE_MENU:
-                newScene = new PauseMenuScene(eventListener);
+                newScene = new PauseMenuScene(eventListener, gameStatus);
                 break;
             default:
                 break;
@@ -98,7 +98,7 @@ public class SceneController {
         if (inMenu)
             this.switchScene(SceneType.PAUSE_MENU);
         else
-            this.switchScene(SceneType.GAME_LEVEL);
+            this.showGameScene();
     }
 
     public boolean isInMenu() {
