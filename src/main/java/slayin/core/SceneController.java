@@ -1,12 +1,15 @@
 package slayin.core;
 
 import java.awt.Dimension;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Optional;
 
 import javax.swing.JFrame;
 
 import slayin.model.GameStatus;
 import slayin.model.events.GameEventListener;
+import slayin.model.events.menus.QuitGameEvent;
 import slayin.model.movement.InputController;
 import slayin.model.utility.SceneType;
 import slayin.views.GameLevelScene;
@@ -29,7 +32,14 @@ public class SceneController {
 
     public void createWindow() {
         this.gameFrame = new JFrame("Slayin");
-        this.gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.gameFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.gameFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e)
+            {
+                eventListener.addEvent(new QuitGameEvent());
+            }
+        });
 
         this.gameFrame.setPreferredSize(new Dimension(1280, 720));
         this.gameFrame.setResizable(false);
