@@ -97,12 +97,18 @@ public class Engine {
                 sceneController.switchScene(SceneType.GAME_LEVEL);
                 this.status.setLevel(levelFactory.buildLevel(0));   // setto il livello a 0; è un livello
                                                                           // di prova che ha soltanto un'entità immobile
+                this.status.addEnemy(this.status.getLevel().dispatchEnemy().get());
             } else if (e instanceof QuitGameEvent) {
                 System.out.println("[EVENT] Closing game");
                 this.running = false;
             } else if (e instanceof WeaponCollisionEvent) {
+                GameObject collided = ((WeaponCollisionEvent) e).getCollidedObject();
                 System.out.println("Weapon Collision Event");
-                System.out.println("With: " + ((WeaponCollisionEvent) e).getCollidedObject());
+                System.out.println("With: " + collided);
+                if(collided.onHit()){
+                    // if the GameObject that has been collided returns true; then it must be removed from the scene
+                    status.removeEnemy(collided);
+                }
             }
         });
 
