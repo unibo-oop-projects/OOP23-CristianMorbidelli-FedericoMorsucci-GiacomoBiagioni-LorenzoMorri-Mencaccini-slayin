@@ -3,12 +3,12 @@ package slayin.core;
 import slayin.model.entities.GameObject;
 import slayin.model.GameStatus;
 import slayin.model.events.GameEventListener;
-import slayin.model.events.QuitGameEvent;
-import slayin.model.events.StartGameEvent;
 import slayin.model.movement.InputController;
 import slayin.model.utility.LevelFactory;
 import slayin.model.utility.SceneType;
 import slayin.model.events.collisions.WeaponCollisionEvent;
+import slayin.model.events.menus.QuitGameEvent;
+import slayin.model.events.menus.StartGameEvent;
 
 public class Engine {
     private long tickTime = 25; /* 40 fps */
@@ -23,7 +23,7 @@ public class Engine {
 
     public Engine() {
         eventListener = new GameEventListener();
-        inputController = new InputController();
+        inputController = new InputController(eventListener);
     }
 
     private void initGame() {

@@ -3,12 +3,17 @@ package slayin.model.movement;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import slayin.model.events.GameEventListener;
+
 /*
  * This class is used to control the input of the player
  */
 public class InputController extends MovementController implements KeyListener {
-    public InputController() {
+    private GameEventListener eventListener;
+
+    public InputController(GameEventListener eventListener) {
         super();
+        this.eventListener = eventListener;
 
         // Set default moving direction (RIGHT)
         this.setMovingRight(true);
@@ -55,7 +60,7 @@ public class InputController extends MovementController implements KeyListener {
                 break;
 
             case KeyEvent.VK_ESCAPE:
-                // TODO: Trigger the game pause event
+                // eventListener.addEvent();
                 break;
 
             default:

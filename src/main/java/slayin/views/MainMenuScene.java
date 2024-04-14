@@ -8,8 +8,8 @@ import javax.swing.JLabel;
 
 import slayin.core.GameScene;
 import slayin.model.events.GameEventListener;
-import slayin.model.events.QuitGameEvent;
-import slayin.model.events.StartGameEvent;
+import slayin.model.events.menus.QuitGameEvent;
+import slayin.model.events.menus.StartGameEvent;
 import slayin.model.utility.SceneType;
 import slayin.views.utils.JBackgroundImage;
 
