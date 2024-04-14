@@ -4,6 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import slayin.model.events.GameEventListener;
+import slayin.model.events.menus.ShowPauseMenuEvent;
 
 /*
  * This class is used to control the input of the player
@@ -60,7 +61,7 @@ public class InputController extends MovementController implements KeyListener {
                 break;
 
             case KeyEvent.VK_ESCAPE:
-                // eventListener.addEvent();
+                eventListener.addEvent(new ShowPauseMenuEvent(true));
                 break;
 
             default:

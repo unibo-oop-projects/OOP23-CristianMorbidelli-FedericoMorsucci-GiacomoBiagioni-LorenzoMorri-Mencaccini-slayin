@@ -11,6 +11,7 @@ import slayin.model.movement.InputController;
 import slayin.model.utility.SceneType;
 import slayin.views.GameLevelScene;
 import slayin.views.MainMenuScene;
+import slayin.views.PauseMenuScene;
 
 public class SceneController {
     private JFrame gameFrame;
@@ -42,8 +43,10 @@ public class SceneController {
         this.gameFrame.dispose();
     }
 
-    public void switchScene(SceneType sceneType) {
+    private void switchScene(SceneType sceneType) {
         GameScene newScene = null;
+        this.gameFrame.removeKeyListener(inputController);
+
         switch (sceneType) {
             case MAIN_MENU:
                 newScene = new MainMenuScene(eventListener);
@@ -53,16 +56,16 @@ public class SceneController {
                 this.gameFrame.addKeyListener(inputController);
                 this.gameFrame.requestFocusInWindow();
                 break;
+            case PAUSE_MENU:
+                newScene = new PauseMenuScene(eventListener);
+                break;
             default:
                 break;
         }
 
         this.gameFrame.setContentPane(newScene.getContent());
         activeScene = Optional.of(newScene);
-        this.updateScene();
-    }
-
-    private void updateScene() {
+        
         this.gameFrame.revalidate();
         this.gameFrame.repaint();
     }
@@ -73,10 +76,29 @@ public class SceneController {
         activeScene.get().drawGraphics();
     }
 
+    public void showMainMenuScene() {
+        this.switchScene(SceneType.MAIN_MENU);
+    }
+
+    public void showGameScene() {
+        this.switchScene(SceneType.GAME_LEVEL);
+    }
+
+    public void setPauseMenuOpen(boolean inMenu) {
+        if (inMenu)
+            this.switchScene(SceneType.PAUSE_MENU);
+        else
+            this.switchScene(SceneType.GAME_LEVEL);
+    }
+
     public boolean isInMenu() {
         if (activeScene.isEmpty())
             return false;
 
         return activeScene.get().getSceneType().isMenu();
+    }
+
+    public Optional<GameScene> getActiveScene() {
+        return this.activeScene;
     }
 }

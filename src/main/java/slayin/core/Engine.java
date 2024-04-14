@@ -5,9 +5,9 @@ import slayin.model.GameStatus;
 import slayin.model.events.GameEventListener;
 import slayin.model.movement.InputController;
 import slayin.model.utility.LevelFactory;
-import slayin.model.utility.SceneType;
 import slayin.model.events.collisions.WeaponCollisionEvent;
 import slayin.model.events.menus.QuitGameEvent;
+import slayin.model.events.menus.ShowPauseMenuEvent;
 import slayin.model.events.menus.StartGameEvent;
 
 public class Engine {
@@ -38,7 +38,7 @@ public class Engine {
         long startTime, timePassed, previousTime;
 
         this.initGame();
-        sceneController.switchScene(SceneType.MAIN_MENU);
+        sceneController.showMainMenuScene();
 
         previousTime = System.currentTimeMillis();
         while (this.running) { /* Game loop */
@@ -94,7 +94,7 @@ public class Engine {
         eventListener.getEvents().forEach(e -> {
             if (e instanceof StartGameEvent) {
                 System.out.println("[EVENT] Starting game");
-                sceneController.switchScene(SceneType.GAME_LEVEL);
+                sceneController.showGameScene();
                 this.status.setLevel(levelFactory.buildLevel(0));   // setto il livello a 0; è un livello
                                                                           // di prova che ha soltanto un'entità immobile
             } else if (e instanceof QuitGameEvent) {
@@ -103,6 +103,9 @@ public class Engine {
             } else if (e instanceof WeaponCollisionEvent) {
                 System.out.println("Weapon Collision Event");
                 System.out.println("With: " + ((WeaponCollisionEvent) e).getCollidedObject());
+            } else if (e instanceof ShowPauseMenuEvent) {
+                var event = (ShowPauseMenuEvent) e;
+                sceneController.setPauseMenuOpen(event.shouldShowPauseMenu());
             }
         });
 
