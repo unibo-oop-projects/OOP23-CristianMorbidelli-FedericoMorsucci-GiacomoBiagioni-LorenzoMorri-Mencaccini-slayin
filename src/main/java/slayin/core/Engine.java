@@ -105,10 +105,30 @@ public class Engine {
                 if(collided.onHit()){
                     // if the GameObject that has been collided returns true; then it must be removed from the scene
                     status.removeEnemy(collided);
+
+                    // since an enemy is dead, it needs to be checked if the level has been completed
+                    if(isLevelCompleted()){
+                        // current level has been completed
+                        // TODO: prepare next level
+                    }
+                    // if the current level is not completed yet, nothing more happens
                 }
             }
         });
 
         eventListener.clearEvents();
+    }
+
+    /**
+     * a private method that checks whether the current level has been completed or not.
+     * A level is said "completed" only when the character has succesfully killed all the enemies that had to be dispatched.
+     * @return {@code true} if the enemyList is empty, and the Level object can't supply any more entities; {@code false} otherwise
+     */
+    private boolean isLevelCompleted(){
+        if(status.getObjects().size() > 1){
+            return false;
+        }
+
+        return !status.getLevel().hasEnemiesLeft();
     }
 }
