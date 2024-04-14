@@ -14,13 +14,13 @@ import slayin.views.MainMenuScene;
 
 public class SceneController {
     private JFrame gameFrame;
-    private Optional<GameScene> currentScene;
+    private Optional<GameScene> activeScene;
     private GameEventListener eventListener;
     private InputController inputController;
     private GameStatus gameStatus;
 
     public SceneController(GameEventListener eventListener, InputController inputController, GameStatus gameStatus) {
-        this.currentScene = Optional.empty();
+        this.activeScene = Optional.empty();
         this.eventListener = eventListener;
         this.inputController = inputController;
         this.gameStatus = gameStatus;
@@ -43,13 +43,13 @@ public class SceneController {
     }
 
     public void switchScene(SceneType sceneType) {
-        GameScene menu = null;
+        GameScene newScene = null;
         switch (sceneType) {
             case MAIN_MENU:
-                menu = new MainMenuScene(eventListener);
+                newScene = new MainMenuScene(eventListener);
                 break;
             case GAME_LEVEL:
-                menu = new GameLevelScene(gameStatus);
+                newScene = new GameLevelScene(gameStatus);
                 this.gameFrame.addKeyListener(inputController);
                 this.gameFrame.requestFocusInWindow();
                 break;
@@ -57,8 +57,8 @@ public class SceneController {
                 break;
         }
 
-        this.gameFrame.setContentPane(menu.getContent());
-        currentScene = Optional.of(menu);
+        this.gameFrame.setContentPane(newScene.getContent());
+        activeScene = Optional.of(newScene);
         this.updateScene();
     }
 
@@ -68,15 +68,15 @@ public class SceneController {
     }
 
     public void renderEntitiesInScene() {
-        if (currentScene.isEmpty()) return;
+        if (activeScene.isEmpty()) return;
 
-        currentScene.get().drawGraphics();
+        activeScene.get().drawGraphics();
     }
 
     public boolean isInMenu() {
-        if (currentScene.isEmpty())
+        if (activeScene.isEmpty())
             return false;
 
-        return currentScene.get().getSceneType().isMenu();
+        return activeScene.get().getSceneType().isMenu();
     }
 }
