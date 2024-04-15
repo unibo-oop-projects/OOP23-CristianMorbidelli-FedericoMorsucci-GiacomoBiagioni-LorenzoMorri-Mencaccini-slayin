@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import slayin.model.bounding.BoundingBoxImplRet;
+import slayin.model.entities.Dummy;
 import slayin.model.entities.GameObject;
 import slayin.model.entities.character.Knight;
+import slayin.model.entities.character.Character;
 import slayin.model.entities.character.MeleeWeapon;
 import slayin.model.utility.Constants;
 import slayin.model.utility.P2d;
@@ -15,7 +17,7 @@ public class GameStatus {
     World world;
     Level level;
     
-    GameObject character;
+    Character character;
     List<GameObject> enemies;
 
     public GameStatus(){
@@ -23,6 +25,7 @@ public class GameStatus {
         MeleeWeapon weapon = new MeleeWeapon(10, new BoundingBoxImplRet(new P2d(0, 0), 20, 15), 0, 30);
         character = new Knight(new P2d(500, 350), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), 30, 30),world,10,weapon);
         enemies = new ArrayList<>();
+        enemies.add(new Dummy(new P2d(100,350),  null, new BoundingBoxImplRet(new P2d(100,350), 40, 30),world));
     }
 
     public List<GameObject> getObjects(){   
@@ -45,9 +48,14 @@ public class GameStatus {
         return this.world;
     }
 
-    public GameObject getCharacter(){
+    public Character getCharacter(){
         return this.character;
     }
+
+    public List<GameObject> getEnemies(){
+        return this.enemies;
+    }
+
 
     public void setLevel(Level level){
         this.level = level;
