@@ -9,7 +9,7 @@ import slayin.model.events.GameEvent;
  */
 public class CharacterCollisionEvent implements GameEvent {
     
-     /*
+     /**
      * A reference of the enemy that has got hit.
      */
     private final GameObject collided;
