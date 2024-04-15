@@ -8,13 +8,13 @@ import java.util.List;
 
 import slayin.model.GameStatus;
 import slayin.model.events.GameEventListener;
-import slayin.model.events.QuitGameEvent;
-import slayin.model.events.StartGameEvent;
 import slayin.model.movement.InputController;
 import slayin.model.utility.LevelFactory;
-import slayin.model.utility.SceneType;
 import slayin.model.events.collisions.CharacterCollisionEvent;
 import slayin.model.events.collisions.WeaponCollisionEvent;
+import slayin.model.events.menus.QuitGameEvent;
+import slayin.model.events.menus.ShowPauseMenuEvent;
+import slayin.model.events.menus.StartGameEvent;
 
 public class Engine {
     private long tickTime = 25; /* 40 fps */
@@ -29,7 +29,7 @@ public class Engine {
 
     public Engine() {
         eventListener = new GameEventListener();
-        inputController = new InputController();
+        inputController = new InputController(eventListener);
     }
 
     private void initGame() {
@@ -44,7 +44,7 @@ public class Engine {
         long startTime, timePassed, previousTime;
 
         this.initGame();
-        sceneController.switchScene(SceneType.MAIN_MENU);
+        sceneController.showMainMenuScene();
 
         previousTime = System.currentTimeMillis();
         while (this.running) { /* Game loop */
@@ -102,7 +102,6 @@ public class Engine {
 
 
     private void processInputs() {
-        if(sceneController.isInMenu()) return;
         this.status.getCharacter().updateVel(inputController);
     }
 
@@ -110,7 +109,7 @@ public class Engine {
         eventListener.getEvents().forEach(e -> {
             if (e instanceof StartGameEvent) {
                 System.out.println("[EVENT] Starting game");
-                sceneController.switchScene(SceneType.GAME_LEVEL);
+                sceneController.showGameScene();
                 this.status.setLevel(levelFactory.buildLevel(0));   // setto il livello a 0; è un livello
                                                                           // di prova che ha soltanto un'entità immobile
             } else if (e instanceof QuitGameEvent) {
@@ -118,6 +117,10 @@ public class Engine {
                 this.running = false;
             } else if (e instanceof WeaponCollisionEvent) {
                 System.out.println("Weapon Collision Event");
+                System.out.println("With: " + ((WeaponCollisionEvent) e).getCollidedObject());
+            } else if (e instanceof ShowPauseMenuEvent) {
+                var event = (ShowPauseMenuEvent) e;
+                sceneController.setPauseMenuOpen(event.shouldShowPauseMenu());
                 //System.out.println("With: " + ((WeaponCollisionEvent) e).getCollidedObject());
             }else if(e instanceof CharacterCollisionEvent){
                 System.out.println("Character Collision Event");

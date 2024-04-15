@@ -19,10 +19,7 @@ import slayin.model.utility.Vector2d;
  *  by default the character only moves left and right
  */
 public class Character extends GameObject{
-
-    public static enum Direction { LEFT, RIGHT }
     private int life;
-    private Direction dir;
     private List<MeleeWeapon> weapons;
 
     /**
@@ -38,8 +35,6 @@ public class Character extends GameObject{
         super(pos, vectorMouvement, boundingBox,world);
         this.life=life;
         this.weapons= new ArrayList<>(Arrays.asList(weapons));
-        //For now I'll default to LEFT, I'll probably change later
-        this.dir=Direction.LEFT;
     }
 
     /**
@@ -48,21 +43,6 @@ public class Character extends GameObject{
      */
     public List<MeleeWeapon> getWeapons(){
         return this.weapons;
-    }
-
-    /**
-     * A setter for the direction attribute
-     */
-    public void setDir(Direction dir){
-        this.dir=dir;
-    }
-
-    /**
-     * A getter for the direction attribute
-     * @return the player's current direction
-     */
-    public Direction getDir(){
-        return this.dir;
     }
 
     /**
