@@ -9,7 +9,9 @@ import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
 
 public abstract class GameObject {
+    public static enum Direction { LEFT, RIGHT }
     private P2d pos;
+    private Direction dir;
     private Vector2d vectorMovement;
     private BoundingBox boundingBox;
     private World world;
@@ -19,6 +21,8 @@ public abstract class GameObject {
         this.vectorMovement=vectorMovement;
         this.boundingBox=boundingBox;
         this.world=world;
+        //For now I'll default to LEFT, I'll probably change later
+        this.dir=Direction.LEFT;
     }
 
     public P2d getPos(){
@@ -27,6 +31,21 @@ public abstract class GameObject {
 
     public World getWorld(){
         return this.world;
+    }
+    
+    /**
+     * A setter for the direction attribute
+     */
+    public void setDir(Direction dir){
+        this.dir=dir;
+    }
+
+    /**
+     * A getter for the direction attribute
+     * @return the player's current direction
+     */
+    public Direction getDir(){
+        return this.dir;
     }
 
 

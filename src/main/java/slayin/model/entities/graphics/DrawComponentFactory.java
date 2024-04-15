@@ -1,6 +1,5 @@
 package slayin.model.entities.graphics;
 
-import java.awt.Graphics;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.awt.Image;
@@ -12,7 +11,7 @@ import slayin.model.bounding.BoundingBox;
 import slayin.model.bounding.BoundingBoxImplCirc;
 import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.entities.character.Character;
-import slayin.model.entities.character.Character.Direction;
+import slayin.model.entities.GameObject.Direction;
 /**
  * A class that generates the DrawComponent to draw objects.
  */
