@@ -9,8 +9,9 @@ import slayin.core.GameScene;
 import slayin.model.GameStatus;
 import slayin.model.utility.SceneType;
 
-public class GameLevelScene extends JPanel implements GameScene {
+public class GameLevelScene implements GameScene {
     private GameStatus gameStatus;
+    private JPanel gameViewPanel;
 
     public GameLevelScene(GameStatus gameStatus) {
         this.gameStatus = gameStatus;
@@ -18,26 +19,29 @@ public class GameLevelScene extends JPanel implements GameScene {
 
     @Override
     public Container getContent() {
-        return this;
+        this.gameViewPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                drawGame(g);
+            }
+        };
+
+        return this.gameViewPanel;
     }
 
     @Override
     public void drawGraphics() {
-        this.repaint();
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        
-        g.drawLine(0,365,1280,365);
-        gameStatus.getObjects().forEach(e -> {
-            e.getDrawComponent().draw(g);
-        });
+        this.gameViewPanel.repaint();
     }
 
     @Override
     public SceneType getSceneType() {
         return SceneType.GAME_LEVEL;
+    }
+
+    private void drawGame(Graphics g) {
+        g.drawLine(0,365,1280,365);
+        gameStatus.getObjects().forEach(e -> e.getDrawComponent().draw(g));
     }
 }

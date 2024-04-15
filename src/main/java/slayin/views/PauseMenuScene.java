@@ -35,24 +35,14 @@ public class PauseMenuScene implements GameScene {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-
-                g.drawLine(0,365,1280,365);
-                gameStatus.getObjects().forEach(e -> {
-                    e.getDrawComponent().draw(g);
-                });
+                drawGameSnapshot(g);
             }
         };
 
         JLayeredPane menuContainer = new JLayeredPane() {
             @Override
             public void paint(Graphics g) {
-                Graphics2D g2d = (Graphics2D) g.create();
-                
-                g2d.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING,java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
-                g2d.setComposite(java.awt.AlphaComposite.SrcOver.derive(0.8f));
-                g2d.setPaint(Color.GRAY);
-                g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
-                g2d.dispose();
+                drawGlassBackground(g);
                 
                 super.paint(g);
             }
@@ -93,4 +83,17 @@ public class PauseMenuScene implements GameScene {
         return SceneType.PAUSE_MENU;
     }
     
+    private void drawGameSnapshot(Graphics g) {
+        g.drawLine(0,365,1280,365);
+        gameStatus.getObjects().forEach(e -> e.getDrawComponent().draw(g));
+    }
+
+    private void drawGlassBackground(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g.create();
+        g2d.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING,java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setComposite(java.awt.AlphaComposite.SrcOver.derive(0.8f));
+        g2d.setPaint(Color.GRAY);
+        g2d.fillRect(0, 0, 1280, 720);
+        g2d.dispose();
+    }
 }
