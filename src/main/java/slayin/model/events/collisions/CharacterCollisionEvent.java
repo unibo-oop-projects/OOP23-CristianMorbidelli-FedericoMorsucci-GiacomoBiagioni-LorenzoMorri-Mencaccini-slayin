@@ -4,21 +4,21 @@ import slayin.model.entities.GameObject;
 import slayin.model.events.GameEvent;
 
 /**
- * An event that gets raised whenever a weapon (or its bullet, if its ranged) have a collision
+ * An event that gets raised whenever a character have a collision
  * with an enemy.
  */
-public class WeaponCollisionEvent implements GameEvent{
-
-    /**
+public class CharacterCollisionEvent implements GameEvent {
+    
+     /**
      * A reference of the enemy that has got hit.
      */
     private final GameObject collided;
 
     /**
-    *  The constructor of the WeaponCollisionEvent class
+    *  The constructor of the CharacterCollisionEvent class
     *  @param collided - the object that has got hit
     */
-    public WeaponCollisionEvent(GameObject collided) {
+    public CharacterCollisionEvent(GameObject collided) {
         this.collided = collided;
     }
 
@@ -29,5 +29,4 @@ public class WeaponCollisionEvent implements GameEvent{
     public GameObject getCollidedObject(){
         return this.collided;
     }
-    
 }

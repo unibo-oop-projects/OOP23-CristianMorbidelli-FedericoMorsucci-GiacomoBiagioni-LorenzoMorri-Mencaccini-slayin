@@ -1,6 +1,11 @@
 package slayin.core;
 
 import slayin.model.entities.GameObject;
+import slayin.model.entities.character.Character;
+import slayin.model.entities.character.MeleeWeapon;
+
+import java.util.List;
+
 import slayin.model.GameStatus;
 import slayin.model.events.GameEventListener;
 import slayin.model.events.QuitGameEvent;
@@ -8,6 +13,7 @@ import slayin.model.events.StartGameEvent;
 import slayin.model.movement.InputController;
 import slayin.model.utility.LevelFactory;
 import slayin.model.utility.SceneType;
+import slayin.model.events.collisions.CharacterCollisionEvent;
 import slayin.model.events.collisions.WeaponCollisionEvent;
 
 public class Engine {
@@ -79,11 +85,21 @@ public class Engine {
         }
 
         /* TODO: check for collisions */
-        // Temporary test, adding once a collision with an entity if there's one
-        if(status.getObjects().size()>1){
-            eventListener.addEvent(new WeaponCollisionEvent(status.getObjects().get(1)));
-        }
+        checkCharacterCollisions();
     }
+
+    private void checkCharacterCollisions(){
+        Character character = status.getCharacter();
+        List<MeleeWeapon> weapons = character.getWeapons();
+        // collisioni con le weapon del cavaliere
+        status.getEnemies().stream().forEach(enemy->{
+            weapons.stream().forEach(weapon->{
+                if(weapon.getBoxWeapon().isCollidedWith(enemy.getBoundingBox())) eventListener.addEvent(new WeaponCollisionEvent(enemy));
+            });
+            if(character.getBoundingBox().isCollidedWith(enemy.getBoundingBox())) eventListener.addEvent(new CharacterCollisionEvent(enemy));
+        });
+    }
+
 
     private void processInputs() {
         if(sceneController.isInMenu()) return;
@@ -102,7 +118,9 @@ public class Engine {
                 this.running = false;
             } else if (e instanceof WeaponCollisionEvent) {
                 System.out.println("Weapon Collision Event");
-                System.out.println("With: " + ((WeaponCollisionEvent) e).getCollidedObject());
+                //System.out.println("With: " + ((WeaponCollisionEvent) e).getCollidedObject());
+            }else if(e instanceof CharacterCollisionEvent){
+                System.out.println("Character Collision Event");
             }
         });
 

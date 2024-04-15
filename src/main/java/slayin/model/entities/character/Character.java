@@ -14,6 +14,10 @@ import slayin.model.movement.MovementController;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
 
+/**
+ *  Base class for all characters.
+ *  by default the character only moves left and right
+ */
 public class Character extends GameObject{
 
     public static enum Direction { LEFT, RIGHT }
@@ -21,7 +25,15 @@ public class Character extends GameObject{
     private Direction dir;
     private List<MeleeWeapon> weapons;
 
-
+    /**
+     * The constructor of the Character class
+     * @param pos -initial position of the character
+     * @param vectorMouvement - displacement vector
+     * @param boundingBox - boundinf box of the character
+     * @param life - initial value of the character's life
+     * @param world - reference world used the character
+     * @param weapons - melee weapons belonging to the character
+     */
     public Character(P2d pos, Vector2d vectorMouvement, BoundingBox boundingBox,int life,World world, MeleeWeapon ... weapons) {
         super(pos, vectorMouvement, boundingBox,world);
         this.life=life;
@@ -30,24 +42,45 @@ public class Character extends GameObject{
         this.dir=Direction.LEFT;
     }
 
+    /**
+     * A getter for the weapons attribute
+     * @return list of melee weapons
+     */
     public List<MeleeWeapon> getWeapons(){
         return this.weapons;
     }
 
+    /**
+     * A setter for the direction attribute
+     */
     public void setDir(Direction dir){
         this.dir=dir;
     }
 
+    /**
+     * A getter for the direction attribute
+     * @return the player's current direction
+     */
     public Direction getDir(){
         return this.dir;
     }
 
+    /**
+     * A method that returns true if the life value is greater than zero
+     * @return true if the life value is greater than zero and false otherwise
+     */
     public boolean isAlive(){
         return life>0;
     }
 
+    /**
+     * A method decreases life by a defined value
+     * @param damage - value that will decrease life, must be greater than zero otherwise it will not decrease life
+     */
     public void decLife(int damage){
-        this.life= life-damage;
+        if(damage>0){
+            this.life= life-damage;
+        }
     }
 
     @Override
