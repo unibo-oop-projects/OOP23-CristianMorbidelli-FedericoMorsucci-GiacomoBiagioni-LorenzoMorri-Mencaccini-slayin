@@ -11,6 +11,7 @@ import slayin.model.GameStatus;
 import slayin.model.events.GameEventListener;
 import slayin.model.events.menus.QuitGameEvent;
 import slayin.model.movement.InputController;
+import slayin.model.utility.Constants;
 import slayin.model.utility.SceneType;
 import slayin.views.GameLevelScene;
 import slayin.views.MainMenuScene;
@@ -41,7 +42,7 @@ public class SceneController {
             }
         });
 
-        this.gameFrame.setPreferredSize(new Dimension(1280, 720));
+        this.gameFrame.setPreferredSize(new Dimension(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
         this.gameFrame.setResizable(false);
         this.gameFrame.pack();
         this.gameFrame.setLocationRelativeTo(null);

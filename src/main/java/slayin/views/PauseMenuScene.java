@@ -18,6 +18,7 @@ import slayin.model.GameStatus;
 import slayin.model.events.GameEventListener;
 import slayin.model.events.menus.QuitGameEvent;
 import slayin.model.events.menus.ShowPauseMenuEvent;
+import slayin.model.utility.Constants;
 import slayin.model.utility.SceneType;
 
 public class PauseMenuScene implements GameScene {
@@ -84,7 +85,7 @@ public class PauseMenuScene implements GameScene {
     }
     
     private void drawGameSnapshot(Graphics g) {
-        g.drawLine(0,365,1280,365);
+        g.drawLine(0,365,Constants.WINDOW_WIDTH,365);
         gameStatus.getObjects().forEach(e -> e.getDrawComponent().draw(g));
     }
 
@@ -93,7 +94,7 @@ public class PauseMenuScene implements GameScene {
         g2d.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING,java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setComposite(java.awt.AlphaComposite.SrcOver.derive(0.8f));
         g2d.setPaint(Color.GRAY);
-        g2d.fillRect(0, 0, 1280, 720);
+        g2d.fillRect(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
         g2d.dispose();
     }
 }

@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 
 import slayin.core.GameScene;
 import slayin.model.GameStatus;
+import slayin.model.utility.Constants;
 import slayin.model.utility.SceneType;
 
 public class GameLevelScene implements GameScene {
@@ -41,7 +42,7 @@ public class GameLevelScene implements GameScene {
     }
 
     private void drawGame(Graphics g) {
-        g.drawLine(0,365,1280,365);
+        g.drawLine(0,365,Constants.WINDOW_WIDTH,365);
         gameStatus.getObjects().forEach(e -> e.getDrawComponent().draw(g));
     }
 }

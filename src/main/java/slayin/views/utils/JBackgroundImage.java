@@ -10,6 +10,8 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
+import slayin.model.utility.Constants;
+
 public class JBackgroundImage extends JComponent {
     private Image backgroundImage;
 
@@ -30,6 +32,6 @@ public class JBackgroundImage extends JComponent {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        g.drawImage(backgroundImage, 0, 0, 1280, 720, this);
+        g.drawImage(backgroundImage, 0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, this);
     }
 }
