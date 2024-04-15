@@ -41,8 +41,13 @@ public class GameLevelScene implements GameScene {
         return SceneType.GAME_LEVEL;
     }
 
+    @Override
+    public boolean shouldRevalidate() {
+        return true;
+    }
+
     private void drawGame(Graphics g) {
-        g.drawLine(0,365,Constants.WINDOW_WIDTH,365);
+        g.drawLine(0, gameStatus.getWorld().getGround(), Constants.WINDOW_WIDTH, gameStatus.getWorld().getGround());
         gameStatus.getObjects().forEach(e -> e.getDrawComponent().draw(g));
     }
 }

@@ -2,20 +2,17 @@ package slayin.views;
 
 import java.awt.Container;
 
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-
 import slayin.core.GameScene;
 import slayin.model.events.GameEventListener;
 import slayin.model.events.menus.QuitGameEvent;
 import slayin.model.events.menus.StartGameEvent;
+import slayin.model.utility.AssetsManager;
 import slayin.model.utility.SceneType;
-import slayin.views.utils.JBackgroundImage;
+import slayin.views.components.SlayinButton;
+import slayin.views.components.SlayinPanel;
+import slayin.views.components.SlayinLabel;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Dimension;
+import java.awt.Image;
 
 public class MainMenuScene implements GameScene {
     private GameEventListener eventListener;
@@ -26,31 +23,15 @@ public class MainMenuScene implements GameScene {
 
     @Override
     public Container getContent() {
-        JComponent container = new JBackgroundImage("/assets/backgrounds/mainmenu_bg.jpg");
-        container.setLayout(new GridBagLayout());
+        Image backgroundImage = AssetsManager.loadImage("/assets/backgrounds/mainmenu_bg.jpg");
 
-        JLabel title = new JLabel("Slayin");
-        title.setFont(title.getFont().deriveFont(64.0f));
-        JButton playBtn = new JButton("Gioca");
-        playBtn.addActionListener(e -> eventListener.addEvent(new StartGameEvent()));
-        JButton button2 = new JButton("Button 2");
-        JButton quitBtn = new JButton("Esci");
-        quitBtn.addActionListener(e -> eventListener.addEvent(new QuitGameEvent()));
-
-        Dimension buttonSize = new Dimension(200, 50);
-        playBtn.setPreferredSize(buttonSize);
-        button2.setPreferredSize(buttonSize);
-        quitBtn.setPreferredSize(buttonSize);
-
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridwidth = GridBagConstraints.REMAINDER;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weighty = 1; // Distribute extra space between components centering vertically
-
-        container.add(title, gbc);
-        container.add(playBtn, gbc);
-        container.add(button2, gbc);
-        container.add(quitBtn, gbc);
+        SlayinLabel title = new SlayinLabel("Slayin", true);
+        SlayinButton playBtn = new SlayinButton("Gioca", () -> eventListener.addEvent(new StartGameEvent()));
+        SlayinButton optionsBtn = new SlayinButton("Opzioni", () -> System.out.println("Opzioni"));
+        SlayinButton quitBtn = new SlayinButton("Esci", () -> eventListener.addEvent(new QuitGameEvent()));
+        
+        SlayinPanel container = new SlayinPanel(backgroundImage);
+        container.addComponents(title, playBtn, optionsBtn, quitBtn);
 
         return container;
     }
@@ -61,5 +42,10 @@ public class MainMenuScene implements GameScene {
     @Override
     public SceneType getSceneType() {
         return SceneType.MAIN_MENU;
+    }
+
+    @Override
+    public boolean shouldRevalidate() {
+        return false;
     }
 }

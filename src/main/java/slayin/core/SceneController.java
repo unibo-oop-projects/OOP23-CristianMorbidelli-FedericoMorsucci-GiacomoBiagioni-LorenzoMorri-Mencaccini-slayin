@@ -74,10 +74,15 @@ public class SceneController {
                 break;
         }
 
+        this.gameFrame.getContentPane().removeAll();
         this.gameFrame.setContentPane(newScene.getContent());
-        activeScene = Optional.of(newScene);
         
-        this.gameFrame.revalidate();
+        if (newScene.shouldRevalidate()) {
+            this.gameFrame.revalidate();
+        }
+
+        activeScene = Optional.of(newScene);
+
         this.gameFrame.repaint();
     }
 
