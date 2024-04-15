@@ -13,6 +13,7 @@ import slayin.model.events.StartGameEvent;
 import slayin.model.movement.InputController;
 import slayin.model.utility.LevelFactory;
 import slayin.model.utility.SceneType;
+import slayin.model.events.collisions.CharacterCollisionEvent;
 import slayin.model.events.collisions.WeaponCollisionEvent;
 
 public class Engine {
@@ -84,15 +85,21 @@ public class Engine {
         }
 
         /* TODO: check for collisions */
+        checkCharacterCollisions();
+    }
+
+    private void checkCharacterCollisions(){
         Character character = status.getCharacter();
         List<MeleeWeapon> weapons = character.getWeapons();
-        // collisoni con le weapon del cavalliere
-        status.getEnemies().stream().forEach(t->{
+        // collisioni con le weapon del cavaliere
+        status.getEnemies().stream().forEach(enemy->{
             weapons.stream().forEach(weapon->{
-                if(weapon.getBoxWeapon().isCollidedWith(t.getBoundingBox())) eventListener.addEvent(new WeaponCollisionEvent(t));
+                if(weapon.getBoxWeapon().isCollidedWith(enemy.getBoundingBox())) eventListener.addEvent(new WeaponCollisionEvent(enemy));
             });
+            if(character.getBoundingBox().isCollidedWith(enemy.getBoundingBox())) eventListener.addEvent(new CharacterCollisionEvent(enemy));
         });
     }
+
 
     private void processInputs() {
         if(sceneController.isInMenu()) return;
@@ -112,6 +119,8 @@ public class Engine {
             } else if (e instanceof WeaponCollisionEvent) {
                 System.out.println("Weapon Collision Event");
                 //System.out.println("With: " + ((WeaponCollisionEvent) e).getCollidedObject());
+            }else if(e instanceof CharacterCollisionEvent){
+                System.out.println("Character Collision Event");
             }
         });
 
