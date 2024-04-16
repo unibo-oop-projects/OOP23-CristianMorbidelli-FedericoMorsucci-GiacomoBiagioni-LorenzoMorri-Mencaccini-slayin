@@ -12,6 +12,7 @@ import slayin.model.bounding.BoundingBox;
 import slayin.model.bounding.BoundingBoxImplCirc;
 import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.entities.character.Character;
+import slayin.model.entities.Dummy;
 import slayin.model.entities.GameObject.Direction;
 import slayin.model.score.GameScore;
 import slayin.model.utility.AssetsManager;
@@ -120,9 +121,21 @@ public class DrawComponentFactory {
     public static DrawComponent graphicsComponentWorld(World w) {
         Image background = AssetsManager.loadImage("/assets/backgrounds/game_bg.jpg");
         return (g) -> {
-
-            g.drawLine(0, w.getGround(), Constants.WINDOW_WIDTH, w.getGround());
             g.drawImage(background, 0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, null);
+        };
+    }
+
+    public static DrawComponent graphicsComponentDummy(Dummy dummy){
+        return (g) -> {
+            URL pathDummy = DrawComponentFactory.class.getResource("/assets/entities/dummy.png");
+            try {
+                BoundingBoxImplRet entity = (BoundingBoxImplRet) dummy.getBoundingBox();
+                Image img = ImageIO.read(new File(pathDummy.toURI())).getScaledInstance((int) entity.getWidth(), (int) entity.getHeight(), Image.SCALE_DEFAULT);
+                g.drawImage(img, (int) entity.getX(), (int) entity.getY(), null);
+            } catch (Exception e) {
+                System.out.println("Unable to locate Dummy image from resources");
+                e.printStackTrace();
+            }
         };
     }
 }
