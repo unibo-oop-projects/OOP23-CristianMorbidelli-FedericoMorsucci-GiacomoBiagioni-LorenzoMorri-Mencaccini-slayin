@@ -23,7 +23,7 @@ public class GameStatus {
     private GameScore scoreManager;
 
     public GameStatus(){
-        world = new World(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, 600);
+        world = new World(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, 365);
         MeleeWeapon weapon = new MeleeWeapon(10, new BoundingBoxImplRet(new P2d(0, 0), 20, 15), 0, 30);
         character = new Knight(new P2d(500, world.getGround() - 15), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), 30, 30),world,10,weapon);
         enemies = new ArrayList<>();
