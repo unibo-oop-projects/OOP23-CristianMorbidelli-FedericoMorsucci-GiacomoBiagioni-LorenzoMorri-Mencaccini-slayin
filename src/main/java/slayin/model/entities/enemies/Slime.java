@@ -29,17 +29,6 @@ public class Slime extends Enemy  {
 
     @Override
     public void updatePos(int dt) {
-        /*switch (direction) {
-            case LEFT:
-                this.setPos(this.getPos().sum(this.getVectorMovement().mul(0.001*dt)));
-                break;
-            case RIGHT:
-                this.setPos(this.getPos().sum(this.getVectorMovement().mul(0.001*dt)));
-                break;
-        
-            default:
-                break;
-        }*/
         this.updateDir();
         this.setPos(this.getPos().sum(this.getVectorMovement().mul(0.001*dt)));
     }

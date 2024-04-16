@@ -144,7 +144,6 @@ public class Engine {
                     // if the current level is not completed yet, nothing more happens
                 }
             } else if (e instanceof CharacterCollisionEvent) {
-                System.out.println("niggersnigeggege");
                 // TODO: change damage amount based on enemy
                 if (!status.getCharacter().isAlive()) {
                     System.out.println("Game Over");
