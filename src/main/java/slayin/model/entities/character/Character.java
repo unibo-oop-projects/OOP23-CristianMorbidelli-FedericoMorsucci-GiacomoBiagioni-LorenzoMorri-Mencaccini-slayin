@@ -77,7 +77,7 @@ public class Character extends GameObject{
         return DrawComponentFactory.graphicsComponentCharacter(this);
     }
 
-    @Override
+
     public void updateVel(MovementController input) {
         if(input.isMovingLeft()){
             this.getVectorMovement().setX(-150);

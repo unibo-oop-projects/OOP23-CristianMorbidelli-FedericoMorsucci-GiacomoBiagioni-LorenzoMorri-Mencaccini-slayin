@@ -4,7 +4,6 @@ import slayin.model.World;
 import slayin.model.bounding.BoundingBox;
 import slayin.model.entities.graphics.DrawComponent;
 import slayin.model.entities.graphics.DrawComponentFactory;
-import slayin.model.movement.MovementController;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
 
@@ -67,10 +66,7 @@ public abstract class GameObject {
 
     public DrawComponent getDrawComponent(){
         return DrawComponentFactory.graphicsComponentBoundigBox(boundingBox);
-    }
-
-
-    public abstract void updateVel(MovementController input);   
+    }  
     
     public abstract void updatePos(int dt);
 
