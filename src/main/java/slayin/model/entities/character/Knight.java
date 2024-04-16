@@ -29,7 +29,7 @@ public class Knight extends Character{
      * @param world - reference world used the character
      * @param weapons - melee weapons belonging to the character
      */
-    public Knight(P2d pos,Vector2d VectorMouvement,BoundingBox boundingBox,World world, int life,MeleeWeapon ... weapons) {
+    public Knight(P2d pos,Vector2d VectorMouvement,BoundingBox boundingBox,World world, Health life,MeleeWeapon ... weapons) {
         super(pos,VectorMouvement,boundingBox,life,world, weapons);
         velocity= new Vector2d(0, 0);
         gravity= new Vector2d(0, GRAVITY);

@@ -19,7 +19,7 @@ import slayin.model.utility.Vector2d;
  *  by default the character only moves left and right
  */
 public class Character extends GameObject{
-    private int life;
+    private Health life;
     private List<MeleeWeapon> weapons;
 
     /**
@@ -31,7 +31,7 @@ public class Character extends GameObject{
      * @param world - reference world used the character
      * @param weapons - melee weapons belonging to the character
      */
-    public Character(P2d pos, Vector2d vectorMouvement, BoundingBox boundingBox,int life,World world, MeleeWeapon ... weapons) {
+    public Character(P2d pos, Vector2d vectorMouvement, BoundingBox boundingBox,Health life,World world, MeleeWeapon ... weapons) {
         super(pos, vectorMouvement, boundingBox,world);
         this.life=life;
         this.weapons= new ArrayList<>(Arrays.asList(weapons));
@@ -50,7 +50,7 @@ public class Character extends GameObject{
      * @return true if the life value is greater than zero and false otherwise
      */
     public boolean isAlive(){
-        return life>0;
+        return life.getHealth()>0;
     }
 
     /**
@@ -58,7 +58,7 @@ public class Character extends GameObject{
      * 
      * @return the value of the life attribute
      */
-    public int getLife() {
+    public Health getLife() {
         return this.life;
     }
 
@@ -67,9 +67,7 @@ public class Character extends GameObject{
      * @param damage - value that will decrease life, must be greater than zero otherwise it will not decrease life
      */
     public void decLife(int damage){
-        if(damage>0){
-            this.life= life-damage;
-        }
+        this.life.decLife(damage);
     }
 
     @Override

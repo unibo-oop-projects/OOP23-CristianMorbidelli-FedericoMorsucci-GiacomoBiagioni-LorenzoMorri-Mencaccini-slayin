@@ -7,6 +7,7 @@ import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.entities.GameObject;
 import slayin.model.entities.character.Knight;
 import slayin.model.entities.character.Character;
+import slayin.model.entities.character.Health;
 import slayin.model.entities.character.MeleeWeapon;
 import slayin.model.score.GameScore;
 import slayin.model.utility.Constants;
@@ -24,7 +25,7 @@ public class GameStatus {
     public GameStatus(){
         world = new World(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, 600);
         MeleeWeapon weapon = new MeleeWeapon(10, new BoundingBoxImplRet(new P2d(0, 0), 50, 35), 0, 55,"Sword");
-        character = new Knight(new P2d(500, 350), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), 55, 70),world,10,weapon);
+        character = new Knight(new P2d(500, 350), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), 55, 70),world,new Health(10, 10),weapon);
         enemies = new ArrayList<>();
 
         scoreManager = new GameScore();
