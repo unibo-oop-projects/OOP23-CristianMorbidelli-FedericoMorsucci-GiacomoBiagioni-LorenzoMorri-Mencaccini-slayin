@@ -3,7 +3,8 @@ package slayin.model.utility;
 public enum SceneType {
     MAIN_MENU(true),
     PAUSE_MENU(true),
-    GAME_LEVEL(false);
+    GAME_LEVEL(false),
+    GAME_OVER(true);
 
     private boolean isMenu;
 

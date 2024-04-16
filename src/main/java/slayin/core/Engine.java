@@ -30,20 +30,18 @@ public class Engine {
     public Engine() {
         eventListener = new GameEventListener();
         inputController = new InputController(eventListener);
+        sceneController = new SceneController(eventListener, inputController);
     }
 
     private void initGame() {
         status = new GameStatus();
         levelFactory = new LevelFactory(status.getWorld());
-        sceneController = new SceneController(eventListener, inputController, status);
-
-        sceneController.createWindow();
     }
 
     public void startGameLoop() {
         long startTime, timePassed, previousTime;
 
-        this.initGame();
+        sceneController.createWindow();
         sceneController.showMainMenuScene();
 
         previousTime = System.currentTimeMillis();
@@ -104,6 +102,8 @@ public class Engine {
 
 
     private void processInputs() {
+        if(sceneController.isInMenu()) return;
+
         this.status.getCharacter().updateVel(inputController);
     }
 
@@ -111,9 +111,9 @@ public class Engine {
         eventListener.getEvents().forEach(e -> {
             if (e instanceof StartGameEvent) {
                 System.out.println("[EVENT] Starting game");
-                sceneController.showGameScene();
-                this.status.setLevel(levelFactory.buildLevel(0));   // setto il livello a 0; è un livello
-                                                                  // di prova che ha soltanto un'entità immobile
+                this.initGame();
+                sceneController.showGameScene(status);
+                this.status.setLevel(levelFactory.buildLevel(0));   // setto il livello a 0; è un livello di prova che ha soltanto un'entità immobile
             } else if (e instanceof QuitGameEvent) {
                 System.out.println("[EVENT] Closing game");
                 this.running = false;
@@ -130,8 +130,9 @@ public class Engine {
                     status.getScoreManager().resumeComboTimer();
             } else if (e instanceof CharacterCollisionEvent) {
                 // TODO: change damage amount based on enemy
-                if (status.getCharacter().getLife() - 1 <= 0) {
+                if (!status.getCharacter().isAlive()) {
                     System.out.println("Game Over");
+                    sceneController.showGameOverScene();
                     return;
                 }
 

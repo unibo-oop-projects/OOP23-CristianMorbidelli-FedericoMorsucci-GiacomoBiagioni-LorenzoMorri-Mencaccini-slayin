@@ -7,32 +7,30 @@ import java.awt.Graphics2D;
 
 import slayin.core.GameScene;
 import slayin.model.GameStatus;
-import slayin.model.entities.graphics.DrawComponentFactory;
 import slayin.model.events.GameEventListener;
-import slayin.model.events.menus.QuitGameEvent;
-import slayin.model.events.menus.ShowPauseMenuEvent;
+import slayin.model.events.menus.StartGameEvent;
 import slayin.model.utility.Constants;
 import slayin.model.utility.SceneType;
 import slayin.views.components.SlayinButton;
 import slayin.views.components.SlayinCenteredPanel;
 import slayin.views.components.SlayinLabel;
 
-public class PauseMenuScene implements GameScene {
+public class GameOverScene implements GameScene {
     private GameEventListener eventListener;
     private GameStatus gameStatus;
 
-    public PauseMenuScene(GameEventListener eventListener, GameStatus gameStatus) {
+    public GameOverScene(GameEventListener eventListener, GameStatus gameStatus) {
         this.eventListener = eventListener;
         this.gameStatus = gameStatus;
     }
 
     @Override
     public Container getContent() {
-        SlayinLabel title = new SlayinLabel("In Pausa", true);
-        SlayinButton resumeButton = new SlayinButton("Riprendi", () -> eventListener.addEvent(new ShowPauseMenuEvent(false)));
-        SlayinButton quitButton = new SlayinButton("Esci", () -> eventListener.addEvent(new QuitGameEvent()));
+        SlayinLabel gameOverLabel = new SlayinLabel("Game Over", 80f);
+        SlayinLabel scoreLabel = new SlayinLabel("Score: " + gameStatus.getScoreManager().getScore(), 50f);
+        SlayinButton restartButton = new SlayinButton("Restart", () -> eventListener.addEvent(new StartGameEvent()));
 
-        SlayinCenteredPanel menu = new SlayinCenteredPanel() {
+        SlayinCenteredPanel panel = new SlayinCenteredPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2d = (Graphics2D) g.create();
@@ -41,11 +39,11 @@ public class PauseMenuScene implements GameScene {
 
                 super.paintComponent(g);
             }
-
         };
-        menu.addComponents(title, resumeButton, quitButton);
+        
+        panel.addComponents(gameOverLabel, scoreLabel, restartButton);
 
-        return menu;
+        return panel;
     }
 
     @Override
@@ -53,14 +51,14 @@ public class PauseMenuScene implements GameScene {
 
     @Override
     public SceneType getSceneType() {
-        return SceneType.PAUSE_MENU;
+        return SceneType.GAME_OVER;
     }
 
     @Override
     public boolean shouldRevalidate() {
         return false;
     }
-
+    
     private void drawGameSnapshot(Graphics2D g2d) {
         // Preparing
         g2d.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
@@ -69,11 +67,6 @@ public class PauseMenuScene implements GameScene {
 
         // Drawing the terrain
         gameStatus.getWorld().getDrawComponent().draw(g2d);
-
-        // Drawing the score and the health
-        gameStatus.getScoreManager().getDrawComponent().draw(g2d);
-        // TODO: sostituire DrawComponentFactory con la funzione relativa della classe health
-        DrawComponentFactory.graphicsComponentHealth(gameStatus.getCharacter()).draw(g2d);
 
         // Drawing the entities
         gameStatus.getObjects().forEach(e -> e.getDrawComponent().draw(g2d));
