@@ -5,6 +5,8 @@ import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+import javax.swing.SwingConstants;
+
 import slayin.core.GameScene;
 import slayin.model.GameStatus;
 import slayin.model.events.GameEventListener;
@@ -28,6 +30,7 @@ public class GameOverScene implements GameScene {
     public Container getContent() {
         SlayinLabel gameOverLabel = new SlayinLabel("Game Over", 80f);
         SlayinLabel scoreLabel = new SlayinLabel("Score: " + gameStatus.getScoreManager().getScore(), 50f);
+        scoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
         SlayinButton restartButton = new SlayinButton("Restart", () -> eventListener.addEvent(new StartGameEvent()));
 
         SlayinCenteredPanel panel = new SlayinCenteredPanel() {
