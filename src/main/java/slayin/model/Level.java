@@ -31,12 +31,21 @@ public class Level {
      */
     public Optional<GameObject> dispatchEnemy(){
         // if the list has no more elements, an empty optional is returned
-        if(enemyToDispatch.isEmpty())   return Optional.empty();
+        if(!this.hasEnemiesLeft())   return Optional.empty();
 
         // the first element of the list is extracted and then returned inside an Optional
         GameObject tmp = enemyToDispatch.get(0);
         enemyToDispatch.remove(0);
 
         return Optional.of(tmp);
+    }
+
+    /**
+     * A method that tells if the current level has yet to dispatch enemies or has already given all of them.
+     * @return {@code true} if this level still have Entities in its list; {@code false} otherwise (so its dispatchEnemy() method would
+     * return an empty Optional)
+     */
+    public boolean hasEnemiesLeft(){
+        return !this.enemyToDispatch.isEmpty();
     }
 }

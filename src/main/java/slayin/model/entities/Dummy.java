@@ -2,6 +2,8 @@ package slayin.model.entities;
 
 import slayin.model.World;
 import slayin.model.bounding.BoundingBox;
+import slayin.model.entities.graphics.DrawComponent;
+import slayin.model.entities.graphics.DrawComponentFactory;
 import slayin.model.movement.MovementController;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
@@ -26,6 +28,17 @@ public class Dummy extends GameObject {
     public void updatePos(int dt) {
         // the dummy has no movement
         // TODO: add the possibility to make the dummy fall to the ground, if placed mid air?
+    }
+
+    @Override
+    public boolean onHit() {
+        // The dummy can't be hit: it stays forever in the scene unless manually removed.
+        return false;
+    }
+
+    @Override
+    public DrawComponent getDrawComponent() {
+        return DrawComponentFactory.graphicsComponentDummy(this);
     }
     
 }

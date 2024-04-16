@@ -46,7 +46,6 @@ public class BoundingBoxBorder implements BoundingBox{
 
     @Override
     public P2d getPoint() {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getPoint'");
     }
     

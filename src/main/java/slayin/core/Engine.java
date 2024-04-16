@@ -30,20 +30,18 @@ public class Engine {
     public Engine() {
         eventListener = new GameEventListener();
         inputController = new InputController(eventListener);
+        sceneController = new SceneController(eventListener, inputController);
     }
 
     private void initGame() {
         status = new GameStatus();
         levelFactory = new LevelFactory(status.getWorld());
-        sceneController = new SceneController(eventListener, inputController, status);
-        
-        sceneController.createWindow();
     }
 
     public void startGameLoop() {
         long startTime, timePassed, previousTime;
 
-        this.initGame();
+        sceneController.createWindow();
         sceneController.showMainMenuScene();
 
         previousTime = System.currentTimeMillis();
@@ -56,7 +54,7 @@ public class Engine {
             this.processEvents();
 
             sceneController.renderEntitiesInScene();
-            
+
             timePassed = System.currentTimeMillis() - startTime;
             waitForNextTick(timePassed);
             previousTime = startTime;
@@ -77,12 +75,14 @@ public class Engine {
 
     private void updateGameStatus(int deltaTime) {
         if(sceneController.isInMenu()) return;
-        
+
         // Update the logical position of the main character and the enemies on the
         // scene
         for (GameObject object : status.getObjects()) {
             object.updatePos(deltaTime);
         }
+
+        status.getScoreManager().updateComboTimer();
 
         /* TODO: check for collisions */
         checkCharacterCollisions();
@@ -102,6 +102,8 @@ public class Engine {
 
 
     private void processInputs() {
+        if(sceneController.isInMenu()) return;
+
         this.status.getCharacter().updateVel(inputController);
     }
 
@@ -109,24 +111,70 @@ public class Engine {
         eventListener.getEvents().forEach(e -> {
             if (e instanceof StartGameEvent) {
                 System.out.println("[EVENT] Starting game");
-                sceneController.showGameScene();
-                this.status.setLevel(levelFactory.buildLevel(0));   // setto il livello a 0; è un livello
-                                                                          // di prova che ha soltanto un'entità immobile
+                this.initGame();
+                sceneController.showGameScene(status);
+                this.status.setLevel(levelFactory.buildLevel(0));   // setto il livello a 0; è un livello di prova che ha soltanto un'entità immobile
             } else if (e instanceof QuitGameEvent) {
                 System.out.println("[EVENT] Closing game");
                 this.running = false;
             } else if (e instanceof WeaponCollisionEvent) {
                 System.out.println("Weapon Collision Event");
                 System.out.println("With: " + ((WeaponCollisionEvent) e).getCollidedObject());
+
+                status.getScoreManager().increaseScore(5);
             } else if (e instanceof ShowPauseMenuEvent) {
                 var event = (ShowPauseMenuEvent) e;
                 sceneController.setPauseMenuOpen(event.shouldShowPauseMenu());
-                //System.out.println("With: " + ((WeaponCollisionEvent) e).getCollidedObject());
-            }else if(e instanceof CharacterCollisionEvent){
-                System.out.println("Character Collision Event");
+
+                if (!event.shouldShowPauseMenu())
+                    status.getScoreManager().resumeComboTimer();
+            } else if (e instanceof QuitGameEvent) {
+                System.out.println("[EVENT] Closing game");
+                this.running = false;
+            } else if (e instanceof WeaponCollisionEvent) {
+                GameObject collided = ((WeaponCollisionEvent) e).getCollidedObject();
+                System.out.println("Weapon Collision Event");
+                System.out.println("With: " + collided);
+
+                if(collided.onHit()){
+                    // if the GameObject that has been collided returns true; then it must be removed from the scene
+                    status.removeEnemy(collided);
+                    // if the enemy has been defeated, the score gets increased
+                    // TODO: the fixed 5 must be changed with a value returned by the enemy
+                    status.getScoreManager().increaseScore(5);
+
+                    // since an enemy is dead, it needs to be checked if the level has been completed
+                    if(isLevelCompleted()){
+                        // current level has been completed
+                        // TODO: prepare next level
+                    }
+                    // if the current level is not completed yet, nothing more happens
+                }
+            } else if (e instanceof CharacterCollisionEvent) {
+                // TODO: change damage amount based on enemy
+                if (!status.getCharacter().isAlive()) {
+                    System.out.println("Game Over");
+                    sceneController.showGameOverScene();
+                    return;
+                }
+
+                status.getCharacter().decLife(1);
             }
         });
 
         eventListener.clearEvents();
+    }
+
+    /**
+     * a private method that checks whether the current level has been completed or not.
+     * A level is said "completed" only when the character has succesfully killed all the enemies that had to be dispatched.
+     * @return {@code true} if the enemyList is empty, and the Level object can't supply any more entities; {@code false} otherwise
+     */
+    private boolean isLevelCompleted(){
+        if(status.getObjects().size() > 1){
+            return false;
+        }
+
+        return !status.getLevel().hasEnemiesLeft();
     }
 }
