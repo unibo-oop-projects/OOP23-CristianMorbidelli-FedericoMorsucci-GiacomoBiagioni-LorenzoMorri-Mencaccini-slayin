@@ -1,12 +1,13 @@
 package slayin.model;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import slayin.model.bounding.BoundingBox;
 import slayin.model.bounding.BoundingBoxBorder;
 import slayin.model.bounding.BoundingBoxBorder.TypeAxis;
 import slayin.model.entities.GameObject;
+import slayin.model.entities.graphics.DrawComponent;
+import slayin.model.entities.graphics.DrawComponentFactory;
 
 public class World {
 
@@ -59,5 +60,7 @@ public class World {
         return out;
     }
 
-
+    public DrawComponent getDrawComponent() {
+        return DrawComponentFactory.graphicsComponentWorld(this);
+    }
 }

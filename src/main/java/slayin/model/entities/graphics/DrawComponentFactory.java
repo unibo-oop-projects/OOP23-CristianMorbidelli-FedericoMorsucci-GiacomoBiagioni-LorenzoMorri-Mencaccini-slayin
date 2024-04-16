@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.IntStream;
 
+import slayin.model.World;
 import slayin.model.bounding.BoundingBox;
 import slayin.model.bounding.BoundingBoxImplCirc;
 import slayin.model.bounding.BoundingBoxImplRet;
@@ -20,7 +21,11 @@ import slayin.model.score.GameScore;
 import slayin.model.utility.ImageUtility;
 import slayin.model.utility.Pair;
 
+import java.awt.Image;
 import java.awt.image.BufferedImage;
+import slayin.model.entities.Dummy;
+import slayin.model.utility.AssetsManager;
+import slayin.model.utility.Constants;
 
 /**
  * A class that generates the DrawComponent to draw objects.
@@ -110,6 +115,33 @@ public class DrawComponentFactory {
             else {
                 String remainingSeconds = String.format("%.1f", scoreManager.getRemainingTime() / 1000.0f);
                 g.drawString("Combo: +" + scoreManager.getComboFactor() + " (Time: " + remainingSeconds + "s)", 10, 40);
+            }
+        };
+    }
+
+    public static DrawComponent graphicsComponentHealth(Character knight) {
+        return (g) -> {
+            g.drawString("Health: " + knight.getLife(), 10, 60);
+        };
+    }
+
+    public static DrawComponent graphicsComponentWorld(World w) {
+        Image background = AssetsManager.loadImage("/assets/backgrounds/game_bg.jpg");
+        return (g) -> {
+            g.drawImage(background, 0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, null);
+        };
+    }
+
+    public static DrawComponent graphicsComponentDummy(Dummy dummy){
+        return (g) -> {
+            URL pathDummy = DrawComponentFactory.class.getResource("/assets/entities/dummy.png");
+            try {
+                BoundingBoxImplRet entity = (BoundingBoxImplRet) dummy.getBoundingBox();
+                Image img = ImageIO.read(new File(pathDummy.toURI())).getScaledInstance((int) entity.getWidth(), (int) entity.getHeight(), Image.SCALE_DEFAULT);
+                g.drawImage(img, (int) entity.getX(), (int) entity.getY(), null);
+            } catch (Exception e) {
+                System.out.println("Unable to locate Dummy image from resources");
+                e.printStackTrace();
             }
         };
     }

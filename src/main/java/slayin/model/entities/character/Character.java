@@ -54,6 +54,15 @@ public class Character extends GameObject{
     }
 
     /**
+     * A method that returns the value of the life attribute
+     * 
+     * @return the value of the life attribute
+     */
+    public int getLife() {
+        return this.life;
+    }
+
+    /**
      * A method decreases life by a defined value
      * @param damage - value that will decrease life, must be greater than zero otherwise it will not decrease life
      */
@@ -87,6 +96,4 @@ public class Character extends GameObject{
             this.getWeapons().stream().forEach(t->t.updateBoxWeapon(new P2d(this.getPos().getX()+t.getWidthFromPlayer(),this.getPos().getY()+t.getHeightFromPlayer())));
         }
     }
-
-    
 }
