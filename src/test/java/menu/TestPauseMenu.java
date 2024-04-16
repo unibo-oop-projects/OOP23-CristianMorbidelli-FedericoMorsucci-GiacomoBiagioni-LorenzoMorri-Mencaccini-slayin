@@ -10,16 +10,19 @@ import org.junit.jupiter.api.Test;
 
 import slayin.core.GameScene;
 import slayin.core.SceneController;
+import slayin.model.GameStatus;
 import slayin.model.movement.InputController;
 import slayin.model.utility.SceneType;
 
 public class TestPauseMenu {
     SceneController sceneController;
+    GameStatus status;
 
     @BeforeEach
     void setUp() {
+        status = new GameStatus();
         InputController inputController = new InputController(null);
-        sceneController = new SceneController(null, inputController, null);
+        sceneController = new SceneController(null, inputController);
     }
 
     @Test
@@ -33,7 +36,7 @@ public class TestPauseMenu {
         GameScene scene = curScene.get();
         assertEquals(scene.getSceneType(), SceneType.MAIN_MENU);
 
-        sceneController.showGameScene();
+        sceneController.showGameScene(status);
         curScene = sceneController.getActiveScene();
         assertTrue(curScene.isPresent());
         assertEquals(curScene.get().getSceneType(), SceneType.GAME_LEVEL);
