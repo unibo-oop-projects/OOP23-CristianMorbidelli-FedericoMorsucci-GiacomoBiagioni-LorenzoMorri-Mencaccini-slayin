@@ -115,14 +115,6 @@ public class Engine {
                 sceneController.showGameScene(status);
                 this.status.setLevel(levelFactory.buildLevel(0));   // setto il livello a 0; è un livello di prova che ha soltanto un'entità immobile
                 this.status.addEnemy(this.status.getLevel().dispatchEnemy().get());
-            } else if (e instanceof QuitGameEvent) {
-                System.out.println("[EVENT] Closing game");
-                this.running = false;
-            } else if (e instanceof WeaponCollisionEvent) {
-                System.out.println("Weapon Collision Event");
-                System.out.println("With: " + ((WeaponCollisionEvent) e).getCollidedObject());
-
-                status.getScoreManager().increaseScore(5);
             } else if (e instanceof ShowPauseMenuEvent) {
                 var event = (ShowPauseMenuEvent) e;
                 sceneController.setPauseMenuOpen(event.shouldShowPauseMenu());
@@ -152,6 +144,7 @@ public class Engine {
                     // if the current level is not completed yet, nothing more happens
                 }
             } else if (e instanceof CharacterCollisionEvent) {
+                System.out.println("niggersnigeggege");
                 // TODO: change damage amount based on enemy
                 if (!status.getCharacter().isAlive()) {
                     System.out.println("Game Over");
