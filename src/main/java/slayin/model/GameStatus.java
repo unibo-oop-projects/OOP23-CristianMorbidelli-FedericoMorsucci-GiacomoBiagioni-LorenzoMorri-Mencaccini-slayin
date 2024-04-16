@@ -16,7 +16,7 @@ import slayin.model.utility.Vector2d;
 
 public class GameStatus {
     World world;
-    Level level;
+    private Level level;
 
     Character character;
     List<GameObject> enemies;
@@ -67,7 +67,13 @@ public class GameStatus {
         this.level = level;
     }
 
+
     public GameScore getScoreManager() {
         return this.scoreManager;
+    }
+
+    public Level getLevel(){
+        return this.level;
+
     }
 }

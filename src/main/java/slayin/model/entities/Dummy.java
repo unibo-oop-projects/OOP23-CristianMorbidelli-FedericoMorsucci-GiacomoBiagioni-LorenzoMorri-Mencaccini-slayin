@@ -27,5 +27,11 @@ public class Dummy extends GameObject {
         // the dummy has no movement
         // TODO: add the possibility to make the dummy fall to the ground, if placed mid air?
     }
+
+    @Override
+    public boolean onHit() {
+        // The dummy can't be hit: it stays forever in the scene unless manually removed.
+        return false;
+    }
     
 }
