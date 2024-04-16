@@ -5,6 +5,7 @@ import java.util.List;
 import slayin.model.World;
 import slayin.model.World.Edge;
 import slayin.model.bounding.BoundingBox;
+import slayin.model.bounding.BoundingBoxImplCirc;
 import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.movement.MovementController;
 import slayin.model.utility.P2d;
@@ -99,9 +100,19 @@ public class Knight extends Character{
 
         //update BoundingBox weapon
         if(this.getDir()==Direction.LEFT){
-            this.getWeapons().stream().forEach(t->t.updateBoxWeapon(new P2d(this.getPos().getX()-t.getWidthFromPlayer(),this.getPos().getY()+t.getHeightFromPlayer())));
+            this.getWeapons().stream().forEach(t->{
+                if(t.getBoxWeapon() instanceof BoundingBoxImplRet){
+                    BoundingBoxImplRet bBox = (BoundingBoxImplRet) t.getBoxWeapon();
+                    t.updateBoxWeapon(new P2d(this.getPos().getX()-(t.getWidthFromPlayer()/2)-(bBox.getWidth()/2),this.getPos().getY()+t.getHeightFromPlayer()));
+                }//volendo se si hanno armi circolari si può aggiungere il controllo anche per quelle
+            });
         }else{
-            this.getWeapons().stream().forEach(t->t.updateBoxWeapon(new P2d(this.getPos().getX()+t.getWidthFromPlayer(),this.getPos().getY()+t.getHeightFromPlayer())));
+            this.getWeapons().stream().forEach(t->{
+                if(t.getBoxWeapon() instanceof BoundingBoxImplRet){
+                    BoundingBoxImplRet bBox = (BoundingBoxImplRet) t.getBoxWeapon();
+                    t.updateBoxWeapon(new P2d(this.getPos().getX()+(t.getWidthFromPlayer()/2)+(bBox.getWidth()/2),this.getPos().getY()+t.getHeightFromPlayer()));
+                }//volendo se si hanno armi circolari si può aggiungere il controllo anche per quelle
+            });
         }
     }
     

@@ -49,6 +49,8 @@ public class GameLevelScene implements GameScene {
     private void drawGame(Graphics g) {
         gameStatus.getScoreManager().getDrawComponent().draw(g);
         g.drawLine(0, gameStatus.getWorld().getGround(), Constants.WINDOW_WIDTH, gameStatus.getWorld().getGround());
-        gameStatus.getObjects().forEach(e -> e.getDrawComponent().draw(g));
+        gameStatus.getObjects().forEach(e ->{
+            e.getDrawComponent().draw(g);
+        });
     }
 }

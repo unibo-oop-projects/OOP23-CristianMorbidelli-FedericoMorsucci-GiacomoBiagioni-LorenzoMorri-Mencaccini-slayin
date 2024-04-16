@@ -8,6 +8,7 @@ import slayin.model.utility.P2d;
  */
 public class MeleeWeapon {
     private int damage;
+    private String name;
     private BoundingBox boxWeapon;
     private int heightFromPlayer,widthFromPlayer;
 
@@ -18,11 +19,12 @@ public class MeleeWeapon {
      * @param heightFromPlayer - vertical distance of the weapon from the player's center
      * @param widthFromPlayer - horizontal distance of the weapon from the player's center
      */
-    public MeleeWeapon(int damage, BoundingBox boxWeapon,int heightFromPlayer,int widthFromPlayer) {
+    public MeleeWeapon(int damage, BoundingBox boxWeapon,int heightFromPlayer,int widthFromPlayer,String name) {
         this.damage = damage;
         this.boxWeapon = boxWeapon;
         this.heightFromPlayer= heightFromPlayer;
         this.widthFromPlayer= widthFromPlayer;
+        this.name= name;
     }
 
     /**
@@ -40,7 +42,13 @@ public class MeleeWeapon {
     public int getDamage(){
         return this.damage;
     }
-
+    /**
+     * A getter for the name attribute
+     * @return 
+     */
+    public String getName() {
+        return name;
+    }
     /**
      * updates the center point of the weapon's bounding box
      * @param p - new point of the bounding box

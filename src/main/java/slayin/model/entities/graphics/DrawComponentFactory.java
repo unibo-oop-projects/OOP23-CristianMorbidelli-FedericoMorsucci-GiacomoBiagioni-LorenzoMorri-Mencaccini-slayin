@@ -2,17 +2,25 @@ package slayin.model.entities.graphics;
 
 import javax.imageio.ImageIO;
 import java.io.File;
-import java.awt.Image;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URISyntaxException;
+
+import java.util.List;
+import java.util.ArrayList;
+import java.util.stream.IntStream;
 
 import slayin.model.bounding.BoundingBox;
 import slayin.model.bounding.BoundingBoxImplCirc;
 import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.entities.character.Character;
+import slayin.model.entities.character.MeleeWeapon;
 import slayin.model.entities.GameObject.Direction;
 import slayin.model.score.GameScore;
+import slayin.model.utility.ImageUtility;
+import slayin.model.utility.Pair;
+
+import java.awt.image.BufferedImage;
 
 /**
  * A class that generates the DrawComponent to draw objects.
@@ -29,36 +37,34 @@ public class DrawComponentFactory {
      */
     public static DrawComponent graphicsComponentCharacter(Character character) {
         return (g) -> {
-            URL pathKnight;
-            Image img;
-            // cerco la x più piccola per disegnare correttaemente il personaggio
-            double minX;
-            if (character.getDir() == Direction.LEFT) {
-                pathKnight = DrawComponentFactory.class.getResource(
-                        "/assets/character/" + character.getClass().getSimpleName() + "Left" + FORMAT_SPRITE);
-            } else {
-                pathKnight = DrawComponentFactory.class.getResource(
-                        "/assets/character/" + character.getClass().getSimpleName() + "Right" + FORMAT_SPRITE);
-            }
             try {
-                img = ImageIO.read(new File(pathKnight.toURI()));
-                BoundingBoxImplRet boxCharacter = (BoundingBoxImplRet) character.getBoundingBox();
-                minX = boxCharacter.getX();
-                // confronto la x della boxCharacter con quella delle armi se quella delle armi
-                // e minore cambio valore di minX
-                for (var t : character.getWeapons()) {
-                    if (t.getBoxWeapon() instanceof BoundingBoxImplRet) {
-                        BoundingBoxImplRet bBox = (BoundingBoxImplRet) t.getBoxWeapon();
-                        if (bBox.getX() < minX)
-                            minX = bBox.getX();
-                    } else if (t.getBoxWeapon() instanceof BoundingBoxImplCirc) {
-                        BoundingBoxImplCirc bBox = (BoundingBoxImplCirc) t.getBoxWeapon();
-                        // TODO: cambiare getx() del BoundinBoxImplCirc
-                        if (bBox.getX() - bBox.getRadius() < minX)
-                            minX = bBox.getX();
-                    }
+                URL pathCharacter,pathWeapon;
+                BufferedImage imgCharacter;
+                List<BufferedImage> imgWeapons = new ArrayList<>();
+                List<MeleeWeapon> weapons = character.getWeapons();
+                pathCharacter = DrawComponentFactory.class.getResource("/assets/character/" + character.getClass().getSimpleName() + FORMAT_SPRITE);
+                for( var weapon : weapons){
+                    pathWeapon = DrawComponentFactory.class.getResource("/assets/character/" + weapon.getName() + character.getClass().getSimpleName() + FORMAT_SPRITE);
+                    imgWeapons.add((BufferedImage) ImageIO.read(new File(pathWeapon.toURI())));
                 }
-                g.drawImage(img, (int) minX, (int) boxCharacter.getY(), null);
+                imgCharacter = (BufferedImage) ImageIO.read(new File(pathCharacter.toURI()));
+                // se la direzione è a sinistra ruoto l'immagine
+                if (character.getDir() == Direction.LEFT){
+                    imgCharacter= ImageUtility.flipImage(imgCharacter);
+                    imgWeapons = imgWeapons.stream().map(w->ImageUtility.flipImage(w)).toList();
+                }
+                // disegno il personaggio
+                BoundingBoxImplRet bBoxCharacter =(BoundingBoxImplRet)character.getBoundingBox();
+                g.drawImage(imgCharacter, (int) bBoxCharacter.getX(), (int) bBoxCharacter.getY(),(int)bBoxCharacter.getWidth(),(int)bBoxCharacter.getHeight(), null);
+                // disegno le armi
+                var finlImgWeapons = imgWeapons;
+                IntStream.range(0, imgWeapons.size()).mapToObj(i -> new Pair<>(weapons.get(i), finlImgWeapons.get(i))).forEach(t->{
+                    if(t.get1().getBoxWeapon() instanceof BoundingBoxImplRet){
+                        BoundingBoxImplRet bBox= (BoundingBoxImplRet) t.get1().getBoxWeapon();
+                        g.drawImage(t.get2(), (int)bBox.getX(), (int) bBox.getY(),(int)bBox.getWidth(),(int)bBox.getHeight(), null);
+                    }
+                    //TODO: agigungi diesgni per bounding box circolari
+                });
             } catch (URISyntaxException | IOException e) {
                 System.out.println("impossibile caricare l'immagine del personaggio");
                 e.printStackTrace();
