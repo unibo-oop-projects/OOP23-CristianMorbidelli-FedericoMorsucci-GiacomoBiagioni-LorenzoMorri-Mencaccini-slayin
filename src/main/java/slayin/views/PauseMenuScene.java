@@ -40,10 +40,10 @@ public class PauseMenuScene implements GameScene {
 
                 super.paintComponent(g);
             }
-        
+
         };
         menu.addComponents(title, resumeButton, quitButton);
-        
+
         return menu;
     }
 
@@ -59,15 +59,18 @@ public class PauseMenuScene implements GameScene {
     public boolean shouldRevalidate() {
         return false;
     }
-    
+
     private void drawGameSnapshot(Graphics2D g2d) {
-        // Preparing 
-        g2d.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING,java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+        // Preparing
+        g2d.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setComposite(java.awt.AlphaComposite.SrcOver.derive(0.2f));
         g2d.setPaint(Color.GRAY);
-        
+
         // Drawing the terrain (TODO: Draw the real terrain)
         g2d.drawLine(0, gameStatus.getWorld().getGround(), Constants.WINDOW_WIDTH, gameStatus.getWorld().getGround());
+
+        // Drawing the score
+        gameStatus.getScoreManager().getDrawComponent().draw(g2d);
 
         // Drawing the entities
         gameStatus.getObjects().forEach(e -> e.getDrawComponent().draw(g2d));

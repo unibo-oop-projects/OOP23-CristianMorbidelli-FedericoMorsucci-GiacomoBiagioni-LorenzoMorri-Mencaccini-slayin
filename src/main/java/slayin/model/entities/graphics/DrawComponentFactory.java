@@ -12,6 +12,7 @@ import slayin.model.bounding.BoundingBoxImplCirc;
 import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.entities.character.Character;
 import slayin.model.entities.character.Character.Direction;
+import slayin.model.score.GameScore;
 
 /**
  * A class that generates the DrawComponent to draw objects.
@@ -88,4 +89,22 @@ public class DrawComponentFactory {
 
     }
 
+    /**
+     * Build a DrawComponent to draw the score and the combo factor
+     * 
+     * @param scoreManager - the score manager that holds the data to draw
+     * @return DrawComponent that draws the score and the combo factor
+     */
+    public static DrawComponent graphicsComponentScore(GameScore scoreManager) {
+        return (g) -> {
+            g.drawString("Score: " + scoreManager.getScore(), 10, 20);
+
+            if (scoreManager.getComboFactor() == 0 || scoreManager.getRemainingTime() <= 0)
+                g.drawString("No Combo", 10, 40);
+            else {
+                String remainingSeconds = String.format("%.1f", scoreManager.getRemainingTime() / 1000.0f);
+                g.drawString("Combo: +" + scoreManager.getComboFactor() + " (Time: " + remainingSeconds + "s)", 10, 40);
+            }
+        };
+    }
 }

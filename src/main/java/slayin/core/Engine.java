@@ -36,7 +36,7 @@ public class Engine {
         status = new GameStatus();
         levelFactory = new LevelFactory(status.getWorld());
         sceneController = new SceneController(eventListener, inputController, status);
-        
+
         sceneController.createWindow();
     }
 
@@ -56,7 +56,7 @@ public class Engine {
             this.processEvents();
 
             sceneController.renderEntitiesInScene();
-            
+
             timePassed = System.currentTimeMillis() - startTime;
             waitForNextTick(timePassed);
             previousTime = startTime;
@@ -77,12 +77,14 @@ public class Engine {
 
     private void updateGameStatus(int deltaTime) {
         if(sceneController.isInMenu()) return;
-        
+
         // Update the logical position of the main character and the enemies on the
         // scene
         for (GameObject object : status.getObjects()) {
             object.updatePos(deltaTime);
         }
+
+        status.getScoreManager().updateComboTimer();
 
         /* TODO: check for collisions */
         checkCharacterCollisions();
@@ -111,18 +113,22 @@ public class Engine {
                 System.out.println("[EVENT] Starting game");
                 sceneController.showGameScene();
                 this.status.setLevel(levelFactory.buildLevel(0));   // setto il livello a 0; è un livello
-                                                                          // di prova che ha soltanto un'entità immobile
+                                                                  // di prova che ha soltanto un'entità immobile
             } else if (e instanceof QuitGameEvent) {
                 System.out.println("[EVENT] Closing game");
                 this.running = false;
             } else if (e instanceof WeaponCollisionEvent) {
                 System.out.println("Weapon Collision Event");
                 System.out.println("With: " + ((WeaponCollisionEvent) e).getCollidedObject());
+
+                status.getScoreManager().increaseScore(5);
             } else if (e instanceof ShowPauseMenuEvent) {
                 var event = (ShowPauseMenuEvent) e;
                 sceneController.setPauseMenuOpen(event.shouldShowPauseMenu());
-                //System.out.println("With: " + ((WeaponCollisionEvent) e).getCollidedObject());
-            }else if(e instanceof CharacterCollisionEvent){
+
+                if (!event.shouldShowPauseMenu())
+                    status.getScoreManager().resumeComboTimer();
+            } else if (e instanceof CharacterCollisionEvent) {
                 System.out.println("Character Collision Event");
             }
         });
