@@ -5,7 +5,6 @@ import java.util.List;
 import slayin.model.World;
 import slayin.model.World.Edge;
 import slayin.model.bounding.BoundingBox;
-import slayin.model.bounding.BoundingBoxImplCirc;
 import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.movement.MovementController;
 import slayin.model.utility.P2d;
