@@ -23,13 +23,13 @@ public class GameStatus {
     private GameScore scoreManager;
 
     public GameStatus(){
-        world = new World(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, 365);
+        world = new World(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, 600);
         MeleeWeapon weapon = new MeleeWeapon(10, new BoundingBoxImplRet(new P2d(0, 0), 20, 15), 0, 30);
-        character = new Knight(new P2d(500, 350), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), 30, 30),world,10,weapon);
+        character = new Knight(new P2d(500, world.getGround() - 15), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), 30, 30),world,10,weapon);
         enemies = new ArrayList<>();
-        enemies.add(new Dummy(new P2d(100, 350), null, new BoundingBoxImplRet(new P2d(100, 350), 40, 30), world));
-        enemies.add(new Dummy(new P2d(500, 350), null, new BoundingBoxImplRet(new P2d(500, 350), 40, 30), world));
-        enemies.add(new Dummy(new P2d(1000, 350), null, new BoundingBoxImplRet(new P2d(1000, 350), 40, 30), world));
+        enemies.add(new Dummy(new P2d(100, world.getGround() - 15), null, new BoundingBoxImplRet(new P2d(100, world.getGround() - 15), 40, 30), world));
+        enemies.add(new Dummy(new P2d(500, world.getGround() - 15), null, new BoundingBoxImplRet(new P2d(500, world.getGround() - 15), 40, 30), world));
+        enemies.add(new Dummy(new P2d(1000, world.getGround() - 15), null, new BoundingBoxImplRet(new P2d(1000, world.getGround() - 15), 40, 30), world));
 
         scoreManager = new GameScore();
     }

@@ -129,7 +129,13 @@ public class Engine {
                 if (!event.shouldShowPauseMenu())
                     status.getScoreManager().resumeComboTimer();
             } else if (e instanceof CharacterCollisionEvent) {
-                System.out.println("Character Collision Event");
+                // TODO: change damage amount based on enemy
+                if (status.getCharacter().getLife() - 1 <= 0) {
+                    System.out.println("Game Over");
+                    return;
+                }
+
+                status.getCharacter().decLife(1);
             }
         });
 

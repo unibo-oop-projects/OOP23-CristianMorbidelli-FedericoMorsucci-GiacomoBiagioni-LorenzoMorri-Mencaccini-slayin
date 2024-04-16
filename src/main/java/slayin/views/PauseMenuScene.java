@@ -66,8 +66,8 @@ public class PauseMenuScene implements GameScene {
         g2d.setComposite(java.awt.AlphaComposite.SrcOver.derive(0.2f));
         g2d.setPaint(Color.GRAY);
 
-        // Drawing the terrain (TODO: Draw the real terrain)
-        g2d.drawLine(0, gameStatus.getWorld().getGround(), Constants.WINDOW_WIDTH, gameStatus.getWorld().getGround());
+        // Drawing the terrain
+        gameStatus.getWorld().getDrawComponent().draw(g2d);
 
         // Drawing the score
         gameStatus.getScoreManager().getDrawComponent().draw(g2d);

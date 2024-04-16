@@ -7,12 +7,15 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URISyntaxException;
 
+import slayin.model.World;
 import slayin.model.bounding.BoundingBox;
 import slayin.model.bounding.BoundingBoxImplCirc;
 import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.entities.character.Character;
 import slayin.model.entities.GameObject.Direction;
 import slayin.model.score.GameScore;
+import slayin.model.utility.AssetsManager;
+import slayin.model.utility.Constants;
 
 /**
  * A class that generates the DrawComponent to draw objects.
@@ -105,6 +108,21 @@ public class DrawComponentFactory {
                 String remainingSeconds = String.format("%.1f", scoreManager.getRemainingTime() / 1000.0f);
                 g.drawString("Combo: +" + scoreManager.getComboFactor() + " (Time: " + remainingSeconds + "s)", 10, 40);
             }
+        };
+    }
+
+    public static DrawComponent graphicsComponentHealth(Character knight) {
+        return (g) -> {
+            g.drawString("Health: " + knight.getLife(), 10, 60);
+        };
+    }
+
+    public static DrawComponent graphicsComponentWorld(World w) {
+        Image background = AssetsManager.loadImage("/assets/backgrounds/game_bg.jpg");
+        return (g) -> {
+
+            g.drawLine(0, w.getGround(), Constants.WINDOW_WIDTH, w.getGround());
+            g.drawImage(background, 0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, null);
         };
     }
 }
