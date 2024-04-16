@@ -5,7 +5,7 @@ import java.util.Random;
 import slayin.model.World;
 import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.entities.GameObject;
-import slayin.model.entities.enemies.SlimeFactory;
+import slayin.model.entities.enemies.Slime;
 import slayin.model.entities.Dummy;
 
 /**
@@ -42,9 +42,9 @@ public class EntityFactory {
         final int SLIME_LENGHT = SLIME_HEIGHT;
 
         final int DUMMY_STARTING_X = (int) rn.nextInt(world.getWidth());    // Starts at a completely random X
-        final int DUMMY_STARTING_Y = 0 - SLIME_HEIGHT/2;    // Starts at the ground level
+        final int DUMMY_STARTING_Y = world.getHeight() - SLIME_HEIGHT/2;    // Starts at the ground level
 
-        SlimeFactory entity = new SlimeFactory(new P2d(DUMMY_STARTING_X, DUMMY_STARTING_Y),  new BoundingBoxImplRet(new P2d(DUMMY_STARTING_X, DUMMY_STARTING_Y), SLIME_LENGHT, SLIME_HEIGHT), world);
+        Slime entity = new Slime(new P2d(DUMMY_STARTING_X, DUMMY_STARTING_Y),  new BoundingBoxImplRet(new P2d(DUMMY_STARTING_X, DUMMY_STARTING_Y), SLIME_LENGHT, SLIME_HEIGHT), world);
 
         return entity;
     }

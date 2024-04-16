@@ -114,6 +114,7 @@ public class Engine {
                 this.initGame();
                 sceneController.showGameScene(status);
                 this.status.setLevel(levelFactory.buildLevel(0));   // setto il livello a 0; è un livello di prova che ha soltanto un'entità immobile
+                this.status.addEnemy(this.status.getLevel().dispatchEnemy().get());
             } else if (e instanceof QuitGameEvent) {
                 System.out.println("[EVENT] Closing game");
                 this.running = false;

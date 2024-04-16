@@ -42,4 +42,8 @@ public class Vector2d {
     public String toString() {
         return "Vector2d [x=" + x + ", y=" + y + "]";
     }
+
+    public boolean equals(Vector2d vet){
+        return this.getX()==vet.getX() && this.getY()==vet.getY();
+    }
 }

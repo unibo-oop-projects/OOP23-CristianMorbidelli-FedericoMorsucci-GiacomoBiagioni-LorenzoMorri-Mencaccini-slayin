@@ -9,15 +9,14 @@ import slayin.model.utility.Vector2d;
 
 import java.util.Random;
 
-public class SlimeFactory extends Enemy  {
+public class Slime extends Enemy  {
 
     private Random random;
-    private Vector2d vectorMovement;
     private int scorePerKill;
-    private static final int VELOCITAY = 50;
-    private static final int VELOCITAX = 50;
+    private static final int VELOCITAY = -50;
+    private static final int VELOCITAX = 150;
 
-    public SlimeFactory(P2d pos, BoundingBox boundingBox, World world) {
+    public Slime(P2d pos, BoundingBox boundingBox, World world) {
         super(pos, new Vector2d(0, VELOCITAY), boundingBox, world);
         random = new Random();
         scorePerKill = 1;
@@ -32,44 +31,47 @@ public class SlimeFactory extends Enemy  {
     public void updatePos(int dt) {
         /*switch (direction) {
             case LEFT:
-                this.setPos(this.getPos().sum(this.vectorMovement.mul(0.001*dt)));
+                this.setPos(this.getPos().sum(this.getVectorMovement().mul(0.001*dt)));
                 break;
             case RIGHT:
-                this.setPos(this.getPos().sum(this.vectorMovement.mul(0.001*dt)));
+                this.setPos(this.getPos().sum(this.getVectorMovement().mul(0.001*dt)));
                 break;
         
             default:
                 break;
         }*/
-        this.setPos(this.getPos().sum(this.vectorMovement.mul(0.001*dt)));
+        this.updateDir();
+        this.setPos(this.getPos().sum(this.getVectorMovement().mul(0.001*dt)));
     }
 
     public void updateDir() {
-        if(this.getWorld().isTouchingGround(this)){
-            if(this.vectorMovement.equals(new Vector2d(0, VELOCITAY))){
+        if(!this.getWorld().isTouchingGround(this)){
+            if(this.getVectorMovement().equals(new Vector2d(0, VELOCITAY))){
                 //random direction when the slime clim to the same Y as the player
                 if(random.nextInt(2)==1){
-                    setDir(Direction.LEFT); 
+                    setDir(Direction.LEFT);
+                    this.setVectorMovement(new Vector2d(-VELOCITAX, 0)); 
                 }else{
                     setDir(Direction.RIGHT);
+                    this.setVectorMovement(new Vector2d(VELOCITAX, 0));
                 }
             }
             var collision = this.getWorld().collidingWith(this);
             for(var col : collision){
 
                 if(col == Edge.LEFT_BORDER && this.getDir()==Direction.LEFT){
-                    this.vectorMovement = new Vector2d(-VELOCITAX,0);
+                    this.setVectorMovement(new Vector2d(VELOCITAX,0));
                     setDir(Direction.RIGHT);
                 }
     
                 if(col == Edge.RIGHT_BORDER && this.getDir()==Direction.RIGHT){
-                    this.vectorMovement = new Vector2d(VELOCITAX,0);
+                    this.setVectorMovement(new Vector2d(-VELOCITAX,0));
                     setDir(Direction.LEFT);
                 }
             }
-            // aggiorno di nuovo la BoundinBox
-            this.getBoundingBox().updatePoint(this.getPos());
         }
+        // aggiorno di nuovo la BoundinBox
+        this.getBoundingBox().updatePoint(this.getPos());
     }
 
     @Override

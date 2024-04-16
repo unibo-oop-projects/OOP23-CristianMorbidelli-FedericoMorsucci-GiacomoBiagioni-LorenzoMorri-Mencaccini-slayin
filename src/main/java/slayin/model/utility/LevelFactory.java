@@ -114,6 +114,7 @@ public class LevelFactory {
                     break;
                 case 1:
                     enemies.add(entityFactory.buildSlime());
+                    break;
                 default:
                     return List.of();
             }
