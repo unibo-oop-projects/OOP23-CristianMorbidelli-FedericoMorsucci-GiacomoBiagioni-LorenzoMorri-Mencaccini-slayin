@@ -2,9 +2,8 @@ package slayin.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import slayin.model.bounding.BoundingBox;
-import slayin.model.bounding.BoundingBoxBorder;
-import slayin.model.bounding.BoundingBoxBorder.TypeAxis;
+import slayin.model.bounding.BoundingBoxImplCirc;
+import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.entities.GameObject;
 import slayin.model.entities.graphics.DrawComponent;
 import slayin.model.entities.graphics.DrawComponentFactory;
@@ -13,16 +12,11 @@ public class World {
 
     public static enum Edge { LEFT_BORDER, RIGHT_BORDER , TOP_BORDER , BOTTOM_BORDER  }
     private int width,height,ground;
-    private BoundingBox borderTop,borderLeft,borderRight,borderGround;
 
     public World(int width, int height, int ground) {
         this.width = width;
         this.height = height;
         this.ground=ground;
-        borderGround= new BoundingBoxBorder(ground, TypeAxis.AXIS_Y_DOWN);
-        borderLeft= new BoundingBoxBorder(0, TypeAxis.AXIS_X_LEFT);
-        borderRight= new BoundingBoxBorder(width, TypeAxis.AXIS_X_RIGHT);
-        borderTop= new BoundingBoxBorder(height, TypeAxis.AXIS_Y_TOP);
     }
 
     public int getGround(){
@@ -38,24 +32,24 @@ public class World {
     }
 
     public boolean isTouchingGround(GameObject obj){
-        return borderGround.isCollidedWith(obj.getBoundingBox());
+        return this.collidingWith(obj).stream().filter(e-> e==Edge.BOTTOM_BORDER).findFirst().isPresent();
     }
 
     // TODO: sostituire BoundingBox
     public List<Edge> collidingWith(GameObject obj){
-        BoundingBox bBox= obj.getBoundingBox();
         List<Edge> out= new ArrayList<>();
-        if(borderGround.isCollidedWith(bBox)){
-            out.add(Edge.BOTTOM_BORDER);
-        }
-        if(borderTop.isCollidedWith(bBox)){
-            out.add(Edge.TOP_BORDER);
-        }
-        if(borderRight.isCollidedWith(bBox)){
-            out.add(Edge.RIGHT_BORDER);
-        }
-        if(borderLeft.isCollidedWith(bBox)){
-            out.add(Edge.LEFT_BORDER);
+        if(obj.getBoundingBox() instanceof BoundingBoxImplRet){
+            BoundingBoxImplRet bBox= (BoundingBoxImplRet) obj.getBoundingBox();
+            if(bBox.getX()<=0) out.add(Edge.LEFT_BORDER);
+            if(bBox.getX()+bBox.getWidth()>=width) out.add(Edge.RIGHT_BORDER);
+            if(bBox.getY()<=0) out.add(Edge.TOP_BORDER);
+            if(bBox.getY()+bBox.getHeight()>=ground) out.add(Edge.BOTTOM_BORDER);
+        }else if(obj.getBoundingBox() instanceof BoundingBoxImplCirc){
+            BoundingBoxImplCirc bBox= (BoundingBoxImplCirc) obj.getBoundingBox();
+            if(bBox.getX()-bBox.getRadius()<=0) out.add(Edge.LEFT_BORDER);
+            if(bBox.getX()+bBox.getRadius()>=width) out.add(Edge.RIGHT_BORDER);
+            if(bBox.getY()-bBox.getRadius()<=0) out.add(Edge.TOP_BORDER);
+            if(bBox.getY()+bBox.getRadius()>=ground) out.add(Edge.BOTTOM_BORDER);
         }
         return out;
     }

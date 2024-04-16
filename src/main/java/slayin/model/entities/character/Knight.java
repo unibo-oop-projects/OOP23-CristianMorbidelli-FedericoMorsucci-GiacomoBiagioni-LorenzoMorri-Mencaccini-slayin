@@ -39,7 +39,6 @@ public class Knight extends Character{
 
     @Override
     public void updateVel(MovementController input) {
-
         if(input.isJumping() && this.getWorld().isTouchingGround(this)){
             this.setVectorMovement(new Vector2d(0, FJUMP));
             input.setJumping(false);
@@ -57,6 +56,7 @@ public class Knight extends Character{
     @Override
     public void updatePos(int dt) {
         List<Edge> collision;
+        BoundingBoxImplRet bBox = (BoundingBoxImplRet) this.getBoundingBox();
         //jump management
         if(jump){
             if(y_start_jump-this.getPos().getY()>DELTAJUMP){
@@ -72,7 +72,7 @@ public class Knight extends Character{
         this.setPos(this.getPos().sum(this.velocity.mul(0.001*dt)));
 
         //update BoundingBox
-        this.getBoundingBox().updatePoint(this.getPos());
+        bBox.updatePoint(this.getPos());
 
         //collision control
         collision= this.getWorld().collidingWith(this);
@@ -80,36 +80,35 @@ public class Knight extends Character{
 
             if(col == Edge.LEFT_BORDER && this.getDir()==Direction.LEFT){
                 this.velocity.setX(0);
-                this.getPos().setX(0);
+                this.getPos().setX(bBox.getWidth()/2);
             }
 
             if(col == Edge.RIGHT_BORDER && this.getDir()==Direction.RIGHT){
                 this.velocity.setX(0);
-                this.getPos().setX(this.getWorld().getWidth());
+                this.getPos().setX(this.getWorld().getWidth()-bBox.getWidth()/2);
             }
             if(col == Edge.BOTTOM_BORDER && !jump){
                 //reset the y of the velocity vector
                 this.velocity= new Vector2d(this.velocity.getX(), 0);
-                BoundingBoxImplRet bBox = (BoundingBoxImplRet) this.getBoundingBox();
                 this.setPos(new P2d(this.getPos().getX(),this.getWorld().getGround()-(bBox.getHeight()/2)));
             }
             // aggiorno di nuovo la BoundinBox
-            this.getBoundingBox().updatePoint(this.getPos());
+            bBox.updatePoint(this.getPos());
         }
 
         //update BoundingBox weapon
         if(this.getDir()==Direction.LEFT){
             this.getWeapons().stream().forEach(t->{
                 if(t.getBoxWeapon() instanceof BoundingBoxImplRet){
-                    BoundingBoxImplRet bBox = (BoundingBoxImplRet) t.getBoxWeapon();
-                    t.updateBoxWeapon(new P2d(this.getPos().getX()-(t.getWidthFromPlayer()/2)-(bBox.getWidth()/2),this.getPos().getY()+t.getHeightFromPlayer()));
+                    BoundingBoxImplRet bBoxWeapon = (BoundingBoxImplRet) t.getBoxWeapon();
+                    t.updateBoxWeapon(new P2d(this.getPos().getX()-(t.getWidthFromPlayer()/2)-(bBoxWeapon.getWidth()/2),this.getPos().getY()+t.getHeightFromPlayer()));
                 }//volendo se si hanno armi circolari si può aggiungere il controllo anche per quelle
             });
         }else{
             this.getWeapons().stream().forEach(t->{
                 if(t.getBoxWeapon() instanceof BoundingBoxImplRet){
-                    BoundingBoxImplRet bBox = (BoundingBoxImplRet) t.getBoxWeapon();
-                    t.updateBoxWeapon(new P2d(this.getPos().getX()+(t.getWidthFromPlayer()/2)+(bBox.getWidth()/2),this.getPos().getY()+t.getHeightFromPlayer()));
+                    BoundingBoxImplRet bBoxWeapon = (BoundingBoxImplRet) t.getBoxWeapon();
+                    t.updateBoxWeapon(new P2d(this.getPos().getX()+(t.getWidthFromPlayer()/2)+(bBoxWeapon.getWidth()/2),this.getPos().getY()+t.getHeightFromPlayer()));
                 }//volendo se si hanno armi circolari si può aggiungere il controllo anche per quelle
             });
         }
