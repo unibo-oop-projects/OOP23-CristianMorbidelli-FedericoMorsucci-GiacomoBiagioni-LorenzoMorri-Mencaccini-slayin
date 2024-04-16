@@ -14,6 +14,7 @@ import slayin.model.movement.InputController;
 import slayin.model.utility.Constants;
 import slayin.model.utility.SceneType;
 import slayin.views.GameLevelScene;
+import slayin.views.GameOverScene;
 import slayin.views.MainMenuScene;
 import slayin.views.PauseMenuScene;
 
@@ -24,11 +25,10 @@ public class SceneController {
     private InputController inputController;
     private GameStatus gameStatus;
 
-    public SceneController(GameEventListener eventListener, InputController inputController, GameStatus gameStatus) {
+    public SceneController(GameEventListener eventListener, InputController inputController) {
         this.activeScene = Optional.empty();
         this.eventListener = eventListener;
         this.inputController = inputController;
-        this.gameStatus = gameStatus;
     }
 
     public void createWindow() {
@@ -54,6 +54,11 @@ public class SceneController {
         this.gameFrame.dispose();
     }
 
+    private void switchScene(SceneType sceneType, GameStatus gameStatus) {
+        this.gameStatus = gameStatus;
+        this.switchScene(sceneType);
+    }
+
     private void switchScene(SceneType sceneType) {
         GameScene newScene = null;
         this.gameFrame.removeKeyListener(inputController);
@@ -69,6 +74,9 @@ public class SceneController {
                 break;
             case PAUSE_MENU:
                 newScene = new PauseMenuScene(eventListener, gameStatus);
+                break;
+            case GAME_OVER:
+                newScene = new GameOverScene(eventListener, gameStatus);
                 break;
             default:
                 break;
@@ -96,15 +104,19 @@ public class SceneController {
         this.switchScene(SceneType.MAIN_MENU);
     }
 
-    public void showGameScene() {
-        this.switchScene(SceneType.GAME_LEVEL);
+    public void showGameScene(GameStatus gameStatus) {
+        this.switchScene(SceneType.GAME_LEVEL, gameStatus);
+    }
+
+    public void showGameOverScene() {
+        this.switchScene(SceneType.GAME_OVER);
     }
 
     public void setPauseMenuOpen(boolean inMenu) {
         if (inMenu)
             this.switchScene(SceneType.PAUSE_MENU);
         else
-            this.showGameScene();
+            this.switchScene(SceneType.GAME_LEVEL);
     }
 
     public boolean isInMenu() {
@@ -117,4 +129,5 @@ public class SceneController {
     public Optional<GameScene> getActiveScene() {
         return this.activeScene;
     }
+
 }

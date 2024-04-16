@@ -20,13 +20,13 @@ public class TestScore {
         gameStatus = new GameStatus();
 
         InputController inputController = new InputController(null);
-        sceneController = new SceneController(null, inputController, null);
+        sceneController = new SceneController(null, inputController);
         sceneController.createWindow();
     }
 
     @Test
     void testPauseMenu() {
-        sceneController.showGameScene();        
+        sceneController.showGameScene(gameStatus);        
 
         var curScene = sceneController.getActiveScene();
         assertTrue(curScene.isPresent());
