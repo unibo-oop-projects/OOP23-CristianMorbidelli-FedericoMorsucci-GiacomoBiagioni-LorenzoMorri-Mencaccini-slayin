@@ -92,8 +92,8 @@ public class Engine {
         Character character = status.getCharacter();
         List<MeleeWeapon> weapons = character.getWeapons();
         // collisioni con le weapon del cavaliere
-        status.getEnemies().stream().forEach(enemy->{
-            weapons.stream().forEach(weapon->{
+        status.getEnemies().forEach(enemy->{
+            weapons.forEach(weapon->{
                 if(weapon.getBoxWeapon().isCollidedWith(enemy.getBoundingBox())) eventListener.addEvent(new WeaponCollisionEvent(enemy));
             });
             if(character.getBoundingBox().isCollidedWith(enemy.getBoundingBox())) eventListener.addEvent(new CharacterCollisionEvent(enemy));
