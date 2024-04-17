@@ -30,6 +30,8 @@ public class Slime extends Enemy  {
     public void updatePos(int dt) {
         this.updateDir();
         this.setPos(this.getPos().sum(this.getVectorMovement().mul(0.001*dt)));
+        // aggiorno di nuovo la BoundinBox
+        this.getBoundingBox().updatePoint(this.getPos());
     }
 
     public void updateDir() {
@@ -58,8 +60,6 @@ public class Slime extends Enemy  {
                 }
             }
         }
-        // aggiorno di nuovo la BoundinBox
-        this.getBoundingBox().updatePoint(this.getPos());
     }
 
     @Override
