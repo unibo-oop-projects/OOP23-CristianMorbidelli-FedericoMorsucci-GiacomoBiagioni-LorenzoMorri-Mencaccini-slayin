@@ -9,7 +9,6 @@ import slayin.core.GameScene;
 import slayin.model.GameStatus;
 import slayin.model.entities.graphics.DrawComponentFactory;
 import slayin.model.utility.SceneType;
-import slayin.model.entities.character.Character;
 
 public class GameLevelScene implements GameScene {
     private GameStatus gameStatus;
@@ -55,13 +54,6 @@ public class GameLevelScene implements GameScene {
         DrawComponentFactory.graphicsComponentHealth(gameStatus.getCharacter()).draw(g);
         gameStatus.getObjects().forEach(e ->{
             e.getDrawComponent().draw(g);
-            if( e instanceof Character){
-                Character c = (Character)e;
-                DrawComponentFactory.graphicsComponentBoundigBox(c.getBoundingBox()).draw(g);
-                c.getWeapons().stream().forEach(w->{
-                    DrawComponentFactory.graphicsComponentBoundigBox(w.getBoxWeapon()).draw(g);
-                });
-            }
         } );
     }
 }
