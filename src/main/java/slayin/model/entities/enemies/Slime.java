@@ -3,7 +3,6 @@ package slayin.model.entities.enemies;
 import slayin.model.World;
 import slayin.model.World.Edge;
 import slayin.model.bounding.BoundingBox;
-import slayin.model.movement.MovementController;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
 
@@ -19,11 +18,6 @@ public class Slime extends Enemy  {
     public Slime(P2d pos, BoundingBox boundingBox, World world) {
         super(pos, new Vector2d(0, SPEEDY), boundingBox, world);
         random = new Random();
-    }
-
-    @Override
-    public void updateVel(MovementController input) {
-        return;
     }
 
     @Override
