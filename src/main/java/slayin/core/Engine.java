@@ -92,8 +92,8 @@ public class Engine {
         Character character = status.getCharacter();
         List<MeleeWeapon> weapons = character.getWeapons();
         // collisioni con le weapon del cavaliere
-        status.getEnemies().stream().forEach(enemy->{
-            weapons.stream().forEach(weapon->{
+        status.getEnemies().forEach(enemy->{
+            weapons.forEach(weapon->{
                 if(weapon.getBoxWeapon().isCollidedWith(enemy.getBoundingBox())) eventListener.addEvent(new WeaponCollisionEvent(enemy));
             });
             if(character.getBoundingBox().isCollidedWith(enemy.getBoundingBox())) eventListener.addEvent(new CharacterCollisionEvent(enemy));
@@ -114,14 +114,7 @@ public class Engine {
                 this.initGame();
                 sceneController.showGameScene(status);
                 this.status.setLevel(levelFactory.buildLevel(0));   // setto il livello a 0; è un livello di prova che ha soltanto un'entità immobile
-            } else if (e instanceof QuitGameEvent) {
-                System.out.println("[EVENT] Closing game");
-                this.running = false;
-            } else if (e instanceof WeaponCollisionEvent) {
-                System.out.println("Weapon Collision Event");
-                System.out.println("With: " + ((WeaponCollisionEvent) e).getCollidedObject());
-
-                status.getScoreManager().increaseScore(5);
+                this.status.addEnemy(this.status.getLevel().dispatchEnemy().get());
             } else if (e instanceof ShowPauseMenuEvent) {
                 var event = (ShowPauseMenuEvent) e;
                 sceneController.setPauseMenuOpen(event.shouldShowPauseMenu());

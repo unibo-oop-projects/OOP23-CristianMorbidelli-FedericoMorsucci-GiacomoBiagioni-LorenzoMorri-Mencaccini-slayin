@@ -112,6 +112,9 @@ public class LevelFactory {
                 case 0: // Dummy entity; not an actual enemy in the final game
                     enemies.add(entityFactory.buildDummy());
                     break;
+                case 1:
+                    enemies.add(entityFactory.buildSlime());
+                    break;
                 default:
                     return List.of();
             }
