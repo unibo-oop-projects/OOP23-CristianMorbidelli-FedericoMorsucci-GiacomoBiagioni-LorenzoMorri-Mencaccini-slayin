@@ -126,8 +126,8 @@ public class Engine {
                 this.running = false;
             } else if (e instanceof WeaponCollisionEvent) {
                 GameObject collided = ((WeaponCollisionEvent) e).getCollidedObject();
-                System.out.println("Weapon Collision Event");
-                System.out.println("With: " + collided);
+                //System.out.println("Weapon Collision Event");
+                //System.out.println("With: " + collided);
 
                 if(collided.onHit()){
                     // if the GameObject that has been collided returns true; then it must be removed from the scene
@@ -150,7 +150,6 @@ public class Engine {
                     sceneController.showGameOverScene();
                     return;
                 }
-
                 status.getCharacter().decLife(1);
             }
         });

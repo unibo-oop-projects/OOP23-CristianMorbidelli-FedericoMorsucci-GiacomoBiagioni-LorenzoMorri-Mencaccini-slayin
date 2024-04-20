@@ -27,6 +27,7 @@ public class Character extends GameObject{
     private Health life;
     private List<MeleeWeapon> weapons;
     private Consumer<Character> jumpFunc;
+    private Long timeBlockedJump, timeBlockedMove ,timeBlockedDecLife;
 
     /**
      * The constructor of the Character class
@@ -43,6 +44,9 @@ public class Character extends GameObject{
         this.weapons= new ArrayList<>(Arrays.asList(weapons));
         gravity= new Vector2d(0, Constants.GRAVITY_CHARACTER);  
         this.jumpFunc=jumpFunc;
+        this.timeBlockedJump=0L;
+        this.timeBlockedMove=0L;
+        this.timeBlockedDecLife=0L;
     }
 
     /**
@@ -75,7 +79,10 @@ public class Character extends GameObject{
      * @param damage - value that will decrease life, must be greater than zero otherwise it will not decrease life
      */
     public void decLife(int damage){
-        this.life.decLife(damage);
+        if(!(decLifeIsBlocked())){
+            this.life.decLife(damage);
+            this.setTimeBlockedDecLife(1000);
+        }
     }
 
     @Override
@@ -83,16 +90,19 @@ public class Character extends GameObject{
         return DrawComponentFactory.graphicsComponentCharacter(this);
     }
 
+    public void addWeapon(MeleeWeapon weapon){
+        this.weapons.add(weapon);
+    }
 
     
     public void updateVel(MovementController input) {
-        if(input.isJumping() && this.getWorld().isTouchingGround(this)){
+        if(input.isJumping() && this.getWorld().isTouchingGround(this) && !(jumpIsBlocked())){
             this.jumpFunc.accept(this);
             input.setJumping(false);
-        }else if(input.isMovingLeft()){
+        }else if(input.isMovingLeft() && !(moveIsBlocked())){
             this.getVectorMovement().setX(Constants.FLEFT_CHARACTER);
             this.setDir(Direction.LEFT);
-        }else if(input.isMovingRight()){
+        }else if(input.isMovingRight() && !(moveIsBlocked())){
             this.getVectorMovement().setX(Constants.FRIGHT_CHARACTER);
             this.setDir(Direction.RIGHT);
         }
@@ -125,14 +135,24 @@ public class Character extends GameObject{
             this.getWeapons().stream().forEach(t->{
                 if(t.getBoxWeapon() instanceof BoundingBoxImplRet){
                     BoundingBoxImplRet bBoxWeapon = (BoundingBoxImplRet) t.getBoxWeapon();
-                    t.updateBoxWeapon(new P2d(this.getPos().getX()-(t.getWidthFromPlayer()/2)-(bBoxWeapon.getWidth()/2),this.getPos().getY()+t.getHeightFromPlayer()));
+                    // se la distanza è maggiore di zero somma la with altrimenti viceversa
+                    if(t.getWidthFromPlayer()>0){
+                        t.updateBoxWeapon(new P2d(this.getPos().getX()-(t.getWidthFromPlayer()/2)-(bBoxWeapon.getWidth()/2),this.getPos().getY()-t.getHeightFromPlayer()));
+                    }else{
+                        t.updateBoxWeapon(new P2d(this.getPos().getX()-(t.getWidthFromPlayer()/2)+(bBoxWeapon.getWidth()/2),this.getPos().getY()-t.getHeightFromPlayer()));
+                    }
                 }//volendo se si hanno armi circolari si può aggiungere il controllo anche per quelle
             });
         }else{
             this.getWeapons().stream().forEach(t->{
                 if(t.getBoxWeapon() instanceof BoundingBoxImplRet){
                     BoundingBoxImplRet bBoxWeapon = (BoundingBoxImplRet) t.getBoxWeapon();
-                    t.updateBoxWeapon(new P2d(this.getPos().getX()+(t.getWidthFromPlayer()/2)+(bBoxWeapon.getWidth()/2),this.getPos().getY()+t.getHeightFromPlayer()));
+                    // se la distanza è maggiore di zero somma la with altrimenti viceversa
+                    if(t.getWidthFromPlayer()>0){
+                        t.updateBoxWeapon(new P2d(this.getPos().getX()+(t.getWidthFromPlayer()/2)+(bBoxWeapon.getWidth()/2),this.getPos().getY()-t.getHeightFromPlayer()));
+                    }else{
+                        t.updateBoxWeapon(new P2d(this.getPos().getX()+(t.getWidthFromPlayer()/2)-(bBoxWeapon.getWidth()/2),this.getPos().getY()-t.getHeightFromPlayer()));
+                    }
                 }//volendo se si hanno armi circolari si può aggiungere il controllo anche per quelle
             });
         }
@@ -140,6 +160,8 @@ public class Character extends GameObject{
 
     @Override
     public void updatePos(int dt) {
+        //remove weapon expired
+        this.weapons.removeIf(w->w.isBroken());
         //add the gravity 
         this.setVectorMovement(this.getVectorMovement().sum(gravity.mul(0.001*dt)));
         //actual movement
@@ -150,5 +172,42 @@ public class Character extends GameObject{
         this.controlCollision();
         //update all bounding box
         this.updateBoundingBox();
+    }
+
+
+    private boolean decLifeIsBlocked(){
+        return System.currentTimeMillis()<timeBlockedDecLife;
+    }
+
+    /**
+     * setting the time for which the character does not lose his life
+     * @param time - time in milliseconds during which the character does not lose life
+     */
+    public void setTimeBlockedDecLife(int time){
+        this.timeBlockedDecLife= System.currentTimeMillis()+time;
+    }
+    
+    private boolean jumpIsBlocked(){
+        return System.currentTimeMillis()<timeBlockedJump;
+    }
+
+    /**
+     * setting time for which character jumping is blocked
+     * @param time - time in milliseconds for which the jump must be blocked
+     */
+    public void setTimeBlockedJump(int time){
+        this.timeBlockedJump= System.currentTimeMillis()+time;
+    }
+
+    private boolean moveIsBlocked(){
+        return System.currentTimeMillis()<timeBlockedMove;
+    }
+
+    /**
+     * setting time for which character move is blocked
+     * @param time - time in milliseconds for which the move must be blocked
+     */
+    public void setTimeBlockedMove(int time){
+        this.timeBlockedMove= System.currentTimeMillis()+time;
     }
 }
