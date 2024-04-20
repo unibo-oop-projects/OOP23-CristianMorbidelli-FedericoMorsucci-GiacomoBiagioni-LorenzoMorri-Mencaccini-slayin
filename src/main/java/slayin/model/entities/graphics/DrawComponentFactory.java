@@ -20,12 +20,12 @@ import slayin.model.entities.GameObject.Direction;
 import slayin.model.score.GameScore;
 import slayin.model.utility.ImageUtility;
 import slayin.model.utility.Pair;
-
-import java.awt.Image;
-import java.awt.image.BufferedImage;
 import slayin.model.entities.Dummy;
 import slayin.model.utility.AssetsManager;
 import slayin.model.utility.Constants;
+
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 
 /**
  * A class that generates the DrawComponent to draw objects.

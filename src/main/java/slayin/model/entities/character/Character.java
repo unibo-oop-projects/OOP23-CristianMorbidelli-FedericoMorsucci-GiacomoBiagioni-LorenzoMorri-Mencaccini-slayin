@@ -4,6 +4,7 @@ package slayin.model.entities.character;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 import slayin.model.World;
 import slayin.model.World.Edge;
@@ -25,6 +26,7 @@ public class Character extends GameObject{
     private Vector2d gravity;
     private Health life;
     private List<MeleeWeapon> weapons;
+    private Consumer<Character> jumpFunc;
 
     /**
      * The constructor of the Character class
@@ -35,11 +37,12 @@ public class Character extends GameObject{
      * @param world - reference world used the character
      * @param weapons - melee weapons belonging to the character
      */
-    public Character(P2d pos, Vector2d vectorMouvement, BoundingBox boundingBox,Health life,World world, MeleeWeapon ... weapons) {
+    public Character(P2d pos, Vector2d vectorMouvement, BoundingBox boundingBox,Health life,World world,Consumer<Character> jumpFunc, MeleeWeapon ... weapons) {
         super(pos, vectorMouvement, boundingBox,world);
         this.life=life;
         this.weapons= new ArrayList<>(Arrays.asList(weapons));
         gravity= new Vector2d(0, Constants.GRAVITY_CHARACTER);  
+        this.jumpFunc=jumpFunc;
     }
 
     /**
@@ -84,7 +87,7 @@ public class Character extends GameObject{
     
     public void updateVel(MovementController input) {
         if(input.isJumping() && this.getWorld().isTouchingGround(this)){
-            this.getVectorMovement().setY(Constants.FJUMP_CHARACTER);
+            this.jumpFunc.accept(this);
             input.setJumping(false);
         }else if(input.isMovingLeft()){
             this.getVectorMovement().setX(Constants.FLEFT_CHARACTER);
