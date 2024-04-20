@@ -1,12 +1,7 @@
 package slayin.model.entities.character;
 
-import java.util.List;
-
 import slayin.model.World;
-import slayin.model.World.Edge;
 import slayin.model.bounding.BoundingBox;
-import slayin.model.bounding.BoundingBoxImplRet;
-import slayin.model.movement.MovementController;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
 /**
@@ -14,11 +9,6 @@ import slayin.model.utility.Vector2d;
  * compared to a normal character he can jump
  */
 public class Knight extends Character{
-    //values ​​for a window 1000*1000
-    final static int GRAVITY=+5000,FJUMP=-2000,FLEFT=-430,FRIGHT=430;
-    private Vector2d gravity;
-    private boolean jump;
-
      /**
      * The constructor of the Knight class
      * @param pos -initial position of the character
@@ -29,78 +19,7 @@ public class Knight extends Character{
      * @param weapons - melee weapons belonging to the character
      */
     public Knight(P2d pos,Vector2d VectorMouvement,BoundingBox boundingBox,World world, Health life,MeleeWeapon ... weapons) {
-        super(pos,VectorMouvement,boundingBox,life,world, weapons);
-        gravity= new Vector2d(0, GRAVITY);
-        jump=false;
-        
-    }
-
-    @Override
-    public void updateVel(MovementController input) {
-        if(input.isJumping() && this.getWorld().isTouchingGround(this)){
-            this.getVectorMovement().setY(FJUMP);
-            input.setJumping(false);
-        }else if(input.isMovingLeft() && !jump){
-            this.getVectorMovement().setX(FLEFT);
-            this.setDir(Direction.LEFT);
-        }else if(input.isMovingRight() && !jump){
-            this.getVectorMovement().setX(FRIGHT);
-            this.setDir(Direction.RIGHT);
-        }
-    }
-
-    private void controlCollision(){
-        List<Edge> collision= this.getWorld().collidingWith(this);
-        BoundingBoxImplRet bBox = (BoundingBoxImplRet) this.getBoundingBox();
-        for(var col : collision){
-
-            if(col == Edge.LEFT_BORDER && this.getDir()==Direction.LEFT){
-                this.getVectorMovement().setX(0);
-                this.getPos().setX(bBox.getWidth()/2);
-            }
-
-            if(col == Edge.RIGHT_BORDER && this.getDir()==Direction.RIGHT){
-                this.getVectorMovement().setX(0);
-                this.getPos().setX(this.getWorld().getWidth()-bBox.getWidth()/2);
-            }
-            if(col == Edge.BOTTOM_BORDER && !jump){
-                this.getVectorMovement().setY(0);
-                this.setPos(new P2d(this.getPos().getX(),this.getWorld().getGround()-(bBox.getHeight()/2)));
-            }
-        }
-    }
-
-    private void updateBoundingBox(){
-        this.getBoundingBox().updatePoint(this.getPos());
-        if(this.getDir()==Direction.LEFT){
-            this.getWeapons().stream().forEach(t->{
-                if(t.getBoxWeapon() instanceof BoundingBoxImplRet){
-                    BoundingBoxImplRet bBoxWeapon = (BoundingBoxImplRet) t.getBoxWeapon();
-                    t.updateBoxWeapon(new P2d(this.getPos().getX()-(t.getWidthFromPlayer()/2)-(bBoxWeapon.getWidth()/2),this.getPos().getY()+t.getHeightFromPlayer()));
-                }//volendo se si hanno armi circolari si può aggiungere il controllo anche per quelle
-            });
-        }else{
-            this.getWeapons().stream().forEach(t->{
-                if(t.getBoxWeapon() instanceof BoundingBoxImplRet){
-                    BoundingBoxImplRet bBoxWeapon = (BoundingBoxImplRet) t.getBoxWeapon();
-                    t.updateBoxWeapon(new P2d(this.getPos().getX()+(t.getWidthFromPlayer()/2)+(bBoxWeapon.getWidth()/2),this.getPos().getY()+t.getHeightFromPlayer()));
-                }//volendo se si hanno armi circolari si può aggiungere il controllo anche per quelle
-            });
-        }
-    }
-
-    @Override
-    public void updatePos(int dt) {
-        //add the gravity 
-        this.setVectorMovement(this.getVectorMovement().sum(gravity.mul(0.001*dt)));
-        //actual movement
-        this.setPos(this.getPos().sum(this.getVectorMovement().mul(0.001*dt)));
-        //update bounding box player
-        this.getBoundingBox().updatePoint(this.getPos());
-        //controll collision
-        this.controlCollision();
-        //update all bounding box
-        this.updateBoundingBox();
+        super(pos,VectorMouvement,boundingBox,life,world, weapons);      
     }
     
 }
