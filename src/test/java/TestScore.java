@@ -20,7 +20,7 @@ public class TestScore {
         gameStatus = new GameStatus();
 
         InputController inputController = new InputController(null);
-        sceneController = new SceneController(null, inputController);
+        sceneController = new SceneController(null, inputController, null);
         sceneController.createWindow();
     }
 

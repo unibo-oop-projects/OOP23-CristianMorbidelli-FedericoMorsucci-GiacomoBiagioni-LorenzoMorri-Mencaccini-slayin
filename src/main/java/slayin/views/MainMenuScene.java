@@ -6,8 +6,9 @@ import slayin.core.GameScene;
 import slayin.model.events.GameEventListener;
 import slayin.model.events.menus.QuitGameEvent;
 import slayin.model.events.menus.StartGameEvent;
-import slayin.model.utility.AssetsManager;
 import slayin.model.utility.SceneType;
+import slayin.model.utility.assets.Asset;
+import slayin.model.utility.assets.AssetsManager;
 import slayin.views.components.SlayinButton;
 import slayin.views.components.SlayinPanel;
 import slayin.views.components.SlayinLabel;
@@ -16,14 +17,16 @@ import java.awt.Image;
 
 public class MainMenuScene implements GameScene {
     private GameEventListener eventListener;
+    private AssetsManager assetsManager;
 
-    public MainMenuScene(GameEventListener eventListener) {
+    public MainMenuScene(GameEventListener eventListener, AssetsManager assetsManager) {
         this.eventListener = eventListener;
+        this.assetsManager = assetsManager;
     }
 
     @Override
     public Container getContent() {
-        Image backgroundImage = AssetsManager.loadImage("/assets/backgrounds/mainmenu_bg.jpg");
+        Image backgroundImage = assetsManager.getImageAsset(Asset.MAIN_MENU_BG);
 
         SlayinLabel title = new SlayinLabel("Slayin", true);
         SlayinButton playBtn = new SlayinButton("Gioca", () -> eventListener.addEvent(new StartGameEvent()));

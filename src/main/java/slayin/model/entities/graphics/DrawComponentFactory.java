@@ -20,6 +20,8 @@ import slayin.model.entities.GameObject.Direction;
 import slayin.model.score.GameScore;
 import slayin.model.utility.ImageUtility;
 import slayin.model.utility.Pair;
+import slayin.model.utility.assets.Asset;
+import slayin.model.utility.assets.AssetsManager;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -28,7 +30,6 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import slayin.model.entities.Dummy;
-import slayin.model.utility.AssetsManager;
 import slayin.model.utility.Constants;
 
 /**
@@ -138,24 +139,22 @@ public class DrawComponentFactory {
         };
     }
 
-    public static DrawComponent graphicsComponentHealth(Character knight) {
-        Image heart = AssetsManager.loadImage("/assets/heart.png");
+    public static DrawComponent graphicsComponentHealth(AssetsManager assetsManager, Character knight) {
         return (g) -> {
             resetDrawSettings(g);
 
             var imageWidth = 25;
-            g.drawImage(heart, 5, 0, imageWidth, 25, null);
+            Image hp = assetsManager.getImageAsset(Asset.LIFE_HEART);
+            g.drawImage(hp, 5, 0, imageWidth, 25, null);
             g.setFont(g.getFont().deriveFont(Font.BOLD, 20));
             g.drawString(String.valueOf(knight.getLife().getHealth()), 10 + imageWidth, 20);
         };
     }
 
-    public static DrawComponent graphicsComponentWorld(World w) {
-        var pTime = System.currentTimeMillis();   
-        Image background = AssetsManager.loadImage("/assets/backgrounds/game_bg.jpg");
-        System.out.println("Loading heart (ms): " + (System.currentTimeMillis() - pTime));
+    public static DrawComponent graphicsComponentWorld(AssetsManager assetsManager, World w) {
         return (g) -> {
-            g.drawImage(background, 0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, null);
+            Image bImage = assetsManager.getImageAsset(Asset.GAME_BG);
+            g.drawImage(bImage, 0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, null);
         };
     }
 
