@@ -22,7 +22,7 @@ public class TestPauseMenu {
     void setUp() {
         status = new GameStatus();
         InputController inputController = new InputController(null);
-        sceneController = new SceneController(null, inputController);
+        sceneController = new SceneController(null, inputController, null);
     }
 
     @Test

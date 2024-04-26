@@ -10,6 +10,7 @@ import slayin.model.GameStatus;
 import slayin.model.events.GameEventListener;
 import slayin.model.movement.InputController;
 import slayin.model.utility.LevelFactory;
+import slayin.model.utility.assets.AssetsManager;
 import slayin.model.events.collisions.CharacterCollisionEvent;
 import slayin.model.events.collisions.WeaponCollisionEvent;
 import slayin.model.events.menus.QuitGameEvent;
@@ -24,13 +25,15 @@ public class Engine {
     private GameStatus status;
     private InputController inputController;
     private GameEventListener eventListener;
-
+    
+    private AssetsManager assetsManager;
     private LevelFactory levelFactory;
 
     public Engine() {
         eventListener = new GameEventListener();
         inputController = new InputController(eventListener);
-        sceneController = new SceneController(eventListener, inputController);
+        assetsManager = new AssetsManager();
+        sceneController = new SceneController(eventListener, inputController, assetsManager);
     }
 
     private void initGame() {
@@ -41,6 +44,7 @@ public class Engine {
     public void startGameLoop() {
         long startTime, timePassed, previousTime;
 
+        assetsManager.loadAssets();
         sceneController.createWindow();
         sceneController.showMainMenuScene();
 
@@ -126,8 +130,8 @@ public class Engine {
                 this.running = false;
             } else if (e instanceof WeaponCollisionEvent) {
                 GameObject collided = ((WeaponCollisionEvent) e).getCollidedObject();
-                System.out.println("Weapon Collision Event");
-                System.out.println("With: " + collided);
+                //System.out.println("Weapon Collision Event");
+                //System.out.println("With: " + collided);
 
                 if(collided.onHit()){
                     // if the GameObject that has been collided returns true; then it must be removed from the scene
@@ -150,7 +154,6 @@ public class Engine {
                     sceneController.showGameOverScene();
                     return;
                 }
-
                 status.getCharacter().decLife(1);
             }
         });

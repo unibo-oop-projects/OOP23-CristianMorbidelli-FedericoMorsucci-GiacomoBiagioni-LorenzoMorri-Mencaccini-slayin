@@ -13,6 +13,7 @@ import slayin.model.events.menus.QuitGameEvent;
 import slayin.model.movement.InputController;
 import slayin.model.utility.Constants;
 import slayin.model.utility.SceneType;
+import slayin.model.utility.assets.AssetsManager;
 import slayin.views.GameLevelScene;
 import slayin.views.GameOverScene;
 import slayin.views.MainMenuScene;
@@ -24,11 +25,13 @@ public class SceneController {
     private GameEventListener eventListener;
     private InputController inputController;
     private GameStatus gameStatus;
+    private AssetsManager assetsManager;
 
-    public SceneController(GameEventListener eventListener, InputController inputController) {
+    public SceneController(GameEventListener eventListener, InputController inputController, AssetsManager assetsManager) {
         this.activeScene = Optional.empty();
         this.eventListener = eventListener;
         this.inputController = inputController;
+        this.assetsManager = assetsManager;
     }
 
     public void createWindow() {
@@ -65,18 +68,18 @@ public class SceneController {
 
         switch (sceneType) {
             case MAIN_MENU:
-                newScene = new MainMenuScene(eventListener);
+                newScene = new MainMenuScene(eventListener, assetsManager);
                 break;
             case GAME_LEVEL:
-                newScene = new GameLevelScene(gameStatus);
+                newScene = new GameLevelScene(assetsManager, gameStatus);
                 this.gameFrame.addKeyListener(inputController);
                 this.gameFrame.requestFocusInWindow();
                 break;
             case PAUSE_MENU:
-                newScene = new PauseMenuScene(eventListener, gameStatus);
+                newScene = new PauseMenuScene(eventListener, assetsManager, gameStatus);
                 break;
             case GAME_OVER:
-                newScene = new GameOverScene(eventListener, gameStatus);
+                newScene = new GameOverScene(eventListener, assetsManager, gameStatus);
                 break;
             default:
                 break;
@@ -129,5 +132,4 @@ public class SceneController {
     public Optional<GameScene> getActiveScene() {
         return this.activeScene;
     }
-
 }
