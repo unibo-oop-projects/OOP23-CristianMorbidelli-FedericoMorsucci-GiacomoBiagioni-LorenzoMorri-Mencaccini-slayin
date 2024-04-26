@@ -38,8 +38,8 @@ public class EntityFactory {
 
     public GameObject buildSlime(){
 
-        final int SLIME_HEIGHT = world.getHeight() / 20;
-        final int SLIME_LENGHT = SLIME_HEIGHT;
+        final int SLIME_HEIGHT = world.getHeight() / 18;
+        final int SLIME_LENGHT = SLIME_HEIGHT*2;
 
         final int DUMMY_STARTING_X = (int) rn.nextInt(world.getWidth());    // Starts at a completely random X
         final int DUMMY_STARTING_Y = world.getHeight() - SLIME_HEIGHT/2;    // Starts at the ground level

@@ -1,6 +1,8 @@
 package slayin.model.entities.graphics;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -16,6 +18,7 @@ import slayin.model.bounding.BoundingBoxImplCirc;
 import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.entities.character.Character;
 import slayin.model.entities.character.MeleeWeapon;
+import slayin.model.entities.enemies.Slime;
 import slayin.model.entities.GameObject.Direction;
 import slayin.model.score.GameScore;
 import slayin.model.utility.ImageUtility;
@@ -98,6 +101,22 @@ public class DrawComponentFactory {
             }
         };
 
+    }
+
+    public static DrawComponent graphicsComponentSlime(Slime slime){
+        return (g) ->{
+            try{
+                URL pathSlime;
+                BufferedImage imgSlime;
+                pathSlime = DrawComponentFactory.class.getResource("/assets/entities/enemies/Slime" + FORMAT_SPRITE);
+                imgSlime = (BufferedImage) ImageIO.read(new File(pathSlime.toURI()));
+                BoundingBoxImplRet bBoxSlime =(BoundingBoxImplRet)slime.getBoundingBox();
+                g.drawImage(imgSlime, (int) bBoxSlime.getX(), (int) bBoxSlime.getY(),(int)bBoxSlime.getWidth(),(int)bBoxSlime.getHeight(), null);
+            } catch (URISyntaxException | IOException e) {
+                System.out.println("impossibile caricare l'immagine dello slime");
+                e.printStackTrace();
+            }
+        };
     }
 
     /**

@@ -3,6 +3,8 @@ package slayin.model.entities.enemies;
 import slayin.model.World;
 import slayin.model.World.Edge;
 import slayin.model.bounding.BoundingBox;
+import slayin.model.entities.graphics.DrawComponent;
+import slayin.model.entities.graphics.DrawComponentFactory;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
 
@@ -28,6 +30,7 @@ public class Slime extends Enemy  {
         this.getBoundingBox().updatePoint(this.getPos());
     }
 
+    @Override
     public void updateDir() {
         if(!this.getWorld().isTouchingGround(this)){
             if(this.getVectorMovement().equals(new Vector2d(0, SPEEDY))){
@@ -59,6 +62,11 @@ public class Slime extends Enemy  {
     @Override
     public Direction getDir(){
         return super.getDir();
+    }
+
+    @Override
+    public DrawComponent getDrawComponent(){
+        return DrawComponentFactory.graphicsComponentSlime(this);
     }
     
 }
