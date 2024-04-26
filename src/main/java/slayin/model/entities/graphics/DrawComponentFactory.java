@@ -1,7 +1,6 @@
 package slayin.model.entities.graphics;
 
 import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
 
 import java.io.File;
 import java.io.IOException;
