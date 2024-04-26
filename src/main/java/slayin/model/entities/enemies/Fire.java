@@ -10,7 +10,7 @@ import slayin.model.entities.graphics.DrawComponentFactory;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
 
-public class Fires extends Enemy{
+public class Fire extends Enemy{
 
     private Random random;
     private static final int scorePerKill = 2;
@@ -19,7 +19,7 @@ public class Fires extends Enemy{
     private int oldDt = 0;
     private Boolean down = false;
 
-    public Fires(P2d pos, BoundingBox boundingBox, World world) {
+    public Fire(P2d pos, BoundingBox boundingBox, World world) {
         super(pos, new Vector2d(0, 0), boundingBox, world);
         random = new Random();
     }
@@ -30,6 +30,7 @@ public class Fires extends Enemy{
         //using dt to check if the fire need to go down (every 4s) or if he should stop to go down and start to go left of right
         if(oldDt>4000 && !down || oldDt>400 && down){
             down = !down;
+            oldDt = 0;
         }
         this.updateDir(down);
         
@@ -39,6 +40,9 @@ public class Fires extends Enemy{
     }
 
     public void updateDir(Boolean down){
+        if(this.getWorld().isTouchingGround(this)){
+            down = false;
+        }
         if(down){
             this.setVectorMovement(new Vector2d(0, SPEEDY));
         }if(this.getVectorMovement().equals(new Vector2d(0, SPEEDY)) && !down || this.getVectorMovement().equals(new Vector2d(0, 0))){
@@ -50,18 +54,18 @@ public class Fires extends Enemy{
                 setDir(Direction.RIGHT);
                 this.setVectorMovement(new Vector2d(SPEEDX, 0));
             }
-            var collision = this.getWorld().collidingWith(this);
-            for(var col : collision){
+        }
+        var collision = this.getWorld().collidingWith(this);
+        for(var col : collision){
 
-                if(col == Edge.LEFT_BORDER && this.getDir()==Direction.LEFT){
-                    this.setVectorMovement(new Vector2d(SPEEDX,0));
-                    setDir(Direction.RIGHT);
-                }
-    
-                if(col == Edge.RIGHT_BORDER && this.getDir()==Direction.RIGHT){
-                    this.setVectorMovement(new Vector2d(-SPEEDX,0));
-                    setDir(Direction.LEFT);
-                }
+            if(col == Edge.LEFT_BORDER && this.getDir()==Direction.LEFT){
+                this.setVectorMovement(new Vector2d(SPEEDX,0));
+                setDir(Direction.RIGHT);
+            }
+
+            if(col == Edge.RIGHT_BORDER && this.getDir()==Direction.RIGHT){
+                this.setVectorMovement(new Vector2d(-SPEEDX,0));
+                setDir(Direction.LEFT);
             }
         }
     }
@@ -73,6 +77,6 @@ public class Fires extends Enemy{
 
     @Override
     public DrawComponent getDrawComponent(){
-        return DrawComponentFactory.graphicsComponentBoundigBox(this.getBoundingBox());
+        return DrawComponentFactory.graphicsComponentFire(this);
     }
 }

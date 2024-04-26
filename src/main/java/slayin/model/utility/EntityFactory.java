@@ -5,6 +5,7 @@ import java.util.Random;
 import slayin.model.World;
 import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.entities.GameObject;
+import slayin.model.entities.enemies.Fire;
 import slayin.model.entities.enemies.Slime;
 import slayin.model.entities.Dummy;
 
@@ -49,5 +50,15 @@ public class EntityFactory {
         return entity;
     }
 
-    
+    public GameObject buildFire(){
+        final int FIRE_HEIGHT = world.getHeight() / 14;
+        final int FIRE_LENGHT = FIRE_HEIGHT;
+
+        final int DUMMY_STARTING_X = (int) rn.nextInt(world.getWidth());    // Starts at a completely random X
+        final int DUMMY_STARTING_Y = world.getHeight()/2 - FIRE_HEIGHT/2;    // Starts at the ground level
+
+        Fire entity = new Fire(new P2d(DUMMY_STARTING_X, DUMMY_STARTING_Y),  new BoundingBoxImplRet(new P2d(DUMMY_STARTING_X, DUMMY_STARTING_Y), FIRE_LENGHT, FIRE_HEIGHT), world);
+
+        return entity;
+    }
 }

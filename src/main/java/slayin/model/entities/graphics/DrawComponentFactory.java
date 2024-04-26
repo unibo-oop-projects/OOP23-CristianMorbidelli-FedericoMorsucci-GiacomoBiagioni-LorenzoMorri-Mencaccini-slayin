@@ -18,6 +18,7 @@ import slayin.model.bounding.BoundingBoxImplCirc;
 import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.entities.character.Character;
 import slayin.model.entities.character.MeleeWeapon;
+import slayin.model.entities.enemies.Fire;
 import slayin.model.entities.enemies.Slime;
 import slayin.model.entities.GameObject.Direction;
 import slayin.model.score.GameScore;
@@ -112,6 +113,25 @@ public class DrawComponentFactory {
                 imgSlime = (BufferedImage) ImageIO.read(new File(pathSlime.toURI()));
                 BoundingBoxImplRet bBoxSlime =(BoundingBoxImplRet)slime.getBoundingBox();
                 g.drawImage(imgSlime, (int) bBoxSlime.getX(), (int) bBoxSlime.getY(),(int)bBoxSlime.getWidth(),(int)bBoxSlime.getHeight(), null);
+            } catch (URISyntaxException | IOException e) {
+                System.out.println("impossibile caricare l'immagine dello slime");
+                e.printStackTrace();
+            }
+        };
+    }
+
+    public static DrawComponent graphicsComponentFire(Fire fire){
+        return (g) ->{
+            try{
+                URL pathFire;
+                BufferedImage imgFire;
+                pathFire = DrawComponentFactory.class.getResource("/assets/entities/enemies/fire" + FORMAT_SPRITE);
+                imgFire = (BufferedImage) ImageIO.read(new File(pathFire.toURI()));
+                if (fire.getDir() == Direction.RIGHT){
+                    imgFire= ImageUtility.flipImage(imgFire);
+                }
+                BoundingBoxImplRet bBoxFire =(BoundingBoxImplRet)fire.getBoundingBox();
+                g.drawImage(imgFire, (int) bBoxFire.getX(), (int) bBoxFire.getY(),(int)bBoxFire.getWidth(),(int)bBoxFire.getHeight(), null);
             } catch (URISyntaxException | IOException e) {
                 System.out.println("impossibile caricare l'immagine dello slime");
                 e.printStackTrace();
