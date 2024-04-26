@@ -12,6 +12,8 @@ import slayin.model.utility.Vector2d;
 public class Minotaur extends Boss  {
     
     private List<String> sprites = new ArrayList<String>();
+    private int state;
+    final static int START=0, RUN=1, STUNNED=2, HITTED=3;
     
     /**
      * Minotaur constructor, set initial health, sprites
@@ -26,11 +28,38 @@ public class Minotaur extends Boss  {
         super(pos, vectorMovement, boundingBox, world);
         this.setHealth(5); //The Minotaur must receive 5 hits to be defeated
         this.setSprites();
+        this.state=START;
     }
 
     @Override
     public void updatePos(int dt) {
-        // TODO: impostare stati boss e movimenti in base a vita o colpi subiti
+        // TODO: impostare movimenti in base a vita o colpi subiti
+        switch(this.state) {
+            case START:
+                //TODO: impostare cambio immagine (muove gamba per caricare colpo)
+                if(this.secondDifference(5)){
+                    this.state=RUN;
+                }
+                break;
+            case RUN:
+                //TODO: impostare vettore spostamento e se tocca muro diventa STUNNED
+                break;
+            case STUNNED:
+                //TODO: alternare sprite
+                //TOOD: se viene colpito devi cambiare stato e aggiornare timeFlag con resetTimeFlag
+                if(this.secondDifference(5)){
+                    this.state=START;
+                }
+                break;
+            case HITTED:
+                //TODO: alternare sprite
+                if(this.secondDifference(2)){
+                    this.state=START;
+                }
+                break;
+            default:
+                System.out.println("ERROR: Minotuar.state = "+ this.state);
+        }
     }
 
     //TODO: sistemare path e renderlo generico, aggiungere gli altri sprite

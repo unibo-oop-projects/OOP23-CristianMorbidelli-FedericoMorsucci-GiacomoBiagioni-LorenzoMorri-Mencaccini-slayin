@@ -9,8 +9,9 @@ import slayin.model.utility.Vector2d;
 public class Boss extends GameObject {
 
     private int health;
-    
-    
+    private long previousTime;
+    private boolean timeFlag=false;
+
     /**
      * generic constructor
      * @param pos
@@ -29,6 +30,28 @@ public class Boss extends GameObject {
         // every boss has a specific one
     }
 
+    /**
+     * @return previous time memorized
+     */
+    public long getPreviousTime() {
+        return previousTime;
+    }
+
+
+    /**
+     * set CurrentTime;
+     */
+    public void setCurrentTimeToPrevious() {
+        this.previousTime = System.currentTimeMillis();
+    }
+
+    /**
+     * set previous time 
+     * @param previousTime
+     */
+    public void setPreviousTime(long previousTime) {
+        this.previousTime = previousTime;
+    }
     
     /**
      * @return boss life
@@ -64,5 +87,35 @@ public class Boss extends GameObject {
             outcome=true;
         }
         return outcome;
+    }
+
+    /**
+     * Check with this.previousTime
+     * @param seconds
+     * @return - true if the difference is greater than or equal to the seconds
+     */
+    public boolean secondDifference(int seconds){
+        boolean outcome=false;
+        
+        //set only at the first call
+        if(!this.timeFlag){
+            this.timeFlag=true;
+            this.setCurrentTimeToPrevious();
+        }
+        
+        int difference=(int)((System.currentTimeMillis()-this.previousTime)/1000);
+        if(difference>=seconds){
+            outcome=true;
+            this.resetTimeFlag(); //reset when outcome's true
+        }
+        return outcome;
+    }
+
+
+    /**
+     * set to false timeFlag
+     */
+    private void resetTimeFlag() {
+        this.timeFlag=false;
     }
 }
