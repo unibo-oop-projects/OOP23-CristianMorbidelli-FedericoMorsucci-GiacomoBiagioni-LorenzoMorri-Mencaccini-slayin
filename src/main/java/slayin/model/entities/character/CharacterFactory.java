@@ -46,4 +46,19 @@ public class CharacterFactory {
         };  
         return new Knight(new P2d(500, 350), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), 55, 70),new Health(10, 10),w,func,weapon);
     }
+
+
+    public static Character getWizard(World w){
+        Consumer<Character> func= new Consumer<Character>() {
+
+            @Override
+            public void accept(Character t) {
+                //t.getVectorMovement().setY(Constants.FJUMP_CHARACTER);
+                t.addWeapon(new MeleeWeapon(10, new BoundingBoxImplRet(new P2d(0, 0), 50, 200), 0, -70,"Vortex",1000));
+
+            }
+            
+        };  
+        return new Wizard(new P2d(500, 350), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), 55, 70),new Health(10, 10),w,func);
+    }
 }

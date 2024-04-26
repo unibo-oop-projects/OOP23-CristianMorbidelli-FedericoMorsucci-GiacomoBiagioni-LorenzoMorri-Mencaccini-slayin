@@ -38,7 +38,7 @@ public class BoundingBoxImplRet implements BoundingBox{
         return height;
     }
 
-    // TODO: inverti logica y 
+    
     @Override
     public boolean isCollidedWith(BoundingBox b) {
         double x= point.getX()-(this.width/2);
