@@ -126,7 +126,7 @@ public class Engine {
                 this.running = false;
             } else if (e instanceof WeaponCollisionEvent) {
                 GameObject collided = ((WeaponCollisionEvent) e).getCollidedObject();
-                //System.out.println("Weapon Collision Event");
+                System.out.println("Weapon Collision Event");
                 //System.out.println("With: " + collided);
 
                 if(collided.onHit()){

@@ -13,7 +13,8 @@ public class CharacterFactory {
     
 
     public static Character getKnight(World w){
-        MeleeWeapon weapon = new MeleeWeapon(10, new BoundingBoxImplRet(new P2d(0, 0), 50, 35), 0, 55,"Sword",-1);
+        // la widthFromPlayer la calcolo facendo widthPlayer/2 + BoundingBoxWeapon/2
+        MeleeWeapon weapon = new MeleeWeapon(10, new BoundingBoxImplRet(new P2d(0, 0), 50, 35), 0, 53,"SwordL",-1);
         Consumer<Character> func= new Consumer<Character>() {
 
             @Override
@@ -26,13 +27,13 @@ public class CharacterFactory {
     }
 
     public static Character getKnightModify(World w){
-        MeleeWeapon weapon = new MeleeWeapon(10, new BoundingBoxImplRet(new P2d(0, 0), 50, 35), 0, 55,"SwordL",-1);
+        MeleeWeapon weapon = new MeleeWeapon(10, new BoundingBoxImplRet(new P2d(0, 0), 50, 35), 0, 53,"SwordL",-1);
         Consumer<Character> func= new Consumer<Character>() {
 
             @Override
             public void accept(Character t) {
                 //t.getVectorMovement().setY(Constants.FJUMP_CHARACTER);
-                t.addWeapon(new MeleeWeapon(10, new BoundingBoxImplRet(new P2d(0, 0), 50, 35), 0, -55,"SwordR",2000));
+                t.addWeapon(new MeleeWeapon(10, new BoundingBoxImplRet(new P2d(0, 0), 50, 35), 0, -53,"SwordR",2000));
                 t.setTimeBlockedJump(1000);
                 t.setTimeBlockedMove(100);
                 if(t.getDir()==Direction.LEFT){
@@ -54,8 +55,7 @@ public class CharacterFactory {
             @Override
             public void accept(Character t) {
                 //t.getVectorMovement().setY(Constants.FJUMP_CHARACTER);
-                t.addWeapon(new MeleeWeapon(10, new BoundingBoxImplRet(new P2d(0, 0), 50, 200), 0, -70,"Vortex",1000));
-
+                t.addWeapon(new MeleeWeapon(10, new BoundingBoxImplRet(new P2d(0, 0), 50, 200), 65, 0,"Vortex",1000));
             }
             
         };  

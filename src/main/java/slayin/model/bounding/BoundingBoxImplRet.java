@@ -47,11 +47,11 @@ public class BoundingBoxImplRet implements BoundingBox{
         if(b instanceof BoundingBoxImplRet){
             BoundingBoxImplRet bBox = (BoundingBoxImplRet) b;
             outcome= !(x + this.width < bBox.getX() || bBox.getX() + bBox.getWidth() < x 
-            || y - this.height > bBox.getY() || bBox.getY() - bBox.getHeight() > y);
+            || y + this.height < bBox.getY() || bBox.getY() + bBox.getHeight() < y );
         }else if(b instanceof BoundingBoxImplCirc){
             BoundingBoxImplCirc bBox = (BoundingBoxImplCirc) b;
             outcome= !(x + this.width < bBox.getX()-bBox.getRadius() || bBox.getX() + bBox.getRadius() < x 
-            || y - this.height > bBox.getY()-bBox.getRadius() || bBox.getY() - bBox.getRadius() > y);
+            || y + this.height < bBox.getY()-bBox.getRadius() || bBox.getY() + bBox.getRadius() < y);
         }
         return outcome;
     }

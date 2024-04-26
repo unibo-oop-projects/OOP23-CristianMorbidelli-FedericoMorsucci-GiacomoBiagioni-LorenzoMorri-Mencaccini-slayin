@@ -19,8 +19,8 @@ public class GameStatus {
 
     public GameStatus(){
         world = new World(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, 600);
-        character = CharacterFactory.getKnightModify(world);
-        enemies = new ArrayList<>();
+        character = CharacterFactory.getWizard(world);
+        enemies = new ArrayList<>(); 
         scoreManager = new GameScore();
     }
 

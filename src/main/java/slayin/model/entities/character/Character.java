@@ -134,25 +134,13 @@ public class Character extends GameObject{
         if(this.getDir()==Direction.LEFT){
             this.getWeapons().stream().forEach(t->{
                 if(t.getBoxWeapon() instanceof BoundingBoxImplRet){
-                    BoundingBoxImplRet bBoxWeapon = (BoundingBoxImplRet) t.getBoxWeapon();
-                    // se la distanza è maggiore di zero somma la with altrimenti viceversa
-                    if(t.getWidthFromPlayer()>0){
-                        t.updateBoxWeapon(new P2d(this.getPos().getX()-(t.getWidthFromPlayer()/2)-(bBoxWeapon.getWidth()/2),this.getPos().getY()-t.getHeightFromPlayer()));
-                    }else{
-                        t.updateBoxWeapon(new P2d(this.getPos().getX()-(t.getWidthFromPlayer()/2)+(bBoxWeapon.getWidth()/2),this.getPos().getY()-t.getHeightFromPlayer()));
-                    }
+                    t.updateBoxWeapon(new P2d(this.getPos().getX()-(t.getWidthFromPlayer()),this.getPos().getY()-t.getHeightFromPlayer()));
                 }//volendo se si hanno armi circolari si può aggiungere il controllo anche per quelle
             });
         }else{
             this.getWeapons().stream().forEach(t->{
                 if(t.getBoxWeapon() instanceof BoundingBoxImplRet){
-                    BoundingBoxImplRet bBoxWeapon = (BoundingBoxImplRet) t.getBoxWeapon();
-                    // se la distanza è maggiore di zero somma la with altrimenti viceversa
-                    if(t.getWidthFromPlayer()>0){
-                        t.updateBoxWeapon(new P2d(this.getPos().getX()+(t.getWidthFromPlayer()/2)+(bBoxWeapon.getWidth()/2),this.getPos().getY()-t.getHeightFromPlayer()));
-                    }else{
-                        t.updateBoxWeapon(new P2d(this.getPos().getX()+(t.getWidthFromPlayer()/2)-(bBoxWeapon.getWidth()/2),this.getPos().getY()-t.getHeightFromPlayer()));
-                    }
+                    t.updateBoxWeapon(new P2d(this.getPos().getX()+(t.getWidthFromPlayer()),this.getPos().getY()-t.getHeightFromPlayer()));
                 }//volendo se si hanno armi circolari si può aggiungere il controllo anche per quelle
             });
         }
