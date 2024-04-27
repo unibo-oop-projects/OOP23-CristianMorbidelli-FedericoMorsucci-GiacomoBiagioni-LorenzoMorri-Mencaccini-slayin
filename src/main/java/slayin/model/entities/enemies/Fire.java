@@ -77,6 +77,6 @@ public class Fire extends Enemy{
 
     @Override
     public DrawComponent getDrawComponent(){
-        return DrawComponentFactory.graphicsComponentFire(this);
+        return DrawComponentFactory.graphicsComponentEnemy((Enemy)this);
     }
 }

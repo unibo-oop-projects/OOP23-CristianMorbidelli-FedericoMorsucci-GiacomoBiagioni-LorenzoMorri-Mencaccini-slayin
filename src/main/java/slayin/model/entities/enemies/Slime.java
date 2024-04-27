@@ -66,7 +66,7 @@ public class Slime extends Enemy  {
 
     @Override
     public DrawComponent getDrawComponent(){
-        return DrawComponentFactory.graphicsComponentSlime(this);
+        return DrawComponentFactory.graphicsComponentEnemy((Enemy)this);
     }
     
 }

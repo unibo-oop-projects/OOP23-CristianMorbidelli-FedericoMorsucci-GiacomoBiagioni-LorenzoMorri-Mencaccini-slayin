@@ -1,7 +1,6 @@
 package slayin.model.entities.graphics;
 
 import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +17,7 @@ import slayin.model.bounding.BoundingBoxImplCirc;
 import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.entities.character.Character;
 import slayin.model.entities.character.MeleeWeapon;
+import slayin.model.entities.enemies.Enemy;
 import slayin.model.entities.enemies.Fire;
 import slayin.model.entities.enemies.Slime;
 import slayin.model.entities.GameObject.Direction;
@@ -104,36 +104,20 @@ public class DrawComponentFactory {
 
     }
 
-    public static DrawComponent graphicsComponentSlime(Slime slime){
+    public static DrawComponent graphicsComponentEnemy(Enemy enemy){
         return (g) ->{
             try{
-                URL pathSlime;
-                BufferedImage imgSlime;
-                pathSlime = DrawComponentFactory.class.getResource("/assets/entities/enemies/Slime" + FORMAT_SPRITE);
-                imgSlime = (BufferedImage) ImageIO.read(new File(pathSlime.toURI()));
-                BoundingBoxImplRet bBoxSlime =(BoundingBoxImplRet)slime.getBoundingBox();
-                g.drawImage(imgSlime, (int) bBoxSlime.getX(), (int) bBoxSlime.getY(),(int)bBoxSlime.getWidth(),(int)bBoxSlime.getHeight(), null);
-            } catch (URISyntaxException | IOException e) {
-                System.out.println("impossibile caricare l'immagine dello slime");
-                e.printStackTrace();
-            }
-        };
-    }
-
-    public static DrawComponent graphicsComponentFire(Fire fire){
-        return (g) ->{
-            try{
-                URL pathFire;
-                BufferedImage imgFire;
-                pathFire = DrawComponentFactory.class.getResource("/assets/entities/enemies/fire" + FORMAT_SPRITE);
-                imgFire = (BufferedImage) ImageIO.read(new File(pathFire.toURI()));
-                if (fire.getDir() == Direction.RIGHT){
-                    imgFire= ImageUtility.flipImage(imgFire);
+                URL pathEnemy;
+                BufferedImage imgEnemy;
+                pathEnemy = DrawComponentFactory.class.getResource("/assets/entities/enemies/"+enemy.getClass().getSimpleName() + FORMAT_SPRITE);
+                imgEnemy = (BufferedImage) ImageIO.read(new File(pathEnemy.toURI()));
+                if (enemy.getDir() == Direction.RIGHT){
+                    imgEnemy= ImageUtility.flipImage(imgEnemy);
                 }
-                BoundingBoxImplRet bBoxFire =(BoundingBoxImplRet)fire.getBoundingBox();
-                g.drawImage(imgFire, (int) bBoxFire.getX(), (int) bBoxFire.getY(),(int)bBoxFire.getWidth(),(int)bBoxFire.getHeight(), null);
+                BoundingBoxImplRet bBoxEnemy =(BoundingBoxImplRet)enemy.getBoundingBox();
+                g.drawImage(imgEnemy, (int) bBoxEnemy.getX(), (int) bBoxEnemy.getY(),(int)bBoxEnemy.getWidth(),(int)bBoxEnemy.getHeight(), null);
             } catch (URISyntaxException | IOException e) {
-                System.out.println("impossibile caricare l'immagine dello slime");
+                System.out.println("impossibile caricare l'immagine del nemico");
                 e.printStackTrace();
             }
         };
