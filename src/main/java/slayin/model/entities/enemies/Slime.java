@@ -16,6 +16,8 @@ public class Slime extends Enemy  {
     private static final int scorePerKill = 1;
     private static final int SPEEDY = -50;
     private static final int SPEEDX = 150;
+    private int oldDt = 0;
+    private Boolean changeDir = false;
 
     public Slime(P2d pos, BoundingBox boundingBox, World world) {
         super(pos, new Vector2d(0, SPEEDY), boundingBox, world);
@@ -24,17 +26,22 @@ public class Slime extends Enemy  {
 
     @Override
     public void updatePos(int dt) {
-        this.updateDir();
+
+        oldDt += dt;
+        if(oldDt>3500){
+            changeDir = !changeDir;
+            oldDt = 0;
+        }
+        this.updateDir(changeDir);
         this.setPos(this.getPos().sum(this.getVectorMovement().mul(0.001*dt)));
         // aggiorno di nuovo la BoundinBox
         this.getBoundingBox().updatePoint(this.getPos());
     }
 
-    @Override
-    public void updateDir() {
+    public void updateDir(Boolean change) {
         if(!this.getWorld().isTouchingGround(this)){
             if(this.getVectorMovement().equals(new Vector2d(0, SPEEDY))){
-                //random direction when the slime clim to the same Y as the player
+                //random direction when the slime climb to the same Y as the player
                 if(random.nextInt(2)==1){
                     setDir(Direction.LEFT);
                     this.setVectorMovement(new Vector2d(-SPEEDX, 0)); 
@@ -43,6 +50,24 @@ public class Slime extends Enemy  {
                     this.setVectorMovement(new Vector2d(SPEEDX, 0));
                 }
             }
+            //the slime can change direction every 3.5s, its a 40% chance
+            if(change){
+                //se minore di 5 cambio direzione, 40% prob
+                System.out.println("ci provo");
+                if(random.nextInt(1,11)<5){
+                    if(this.getVectorMovement().equals(new Vector2d(-SPEEDX, 0))){
+                        setDir(Direction.RIGHT);
+                        this.setVectorMovement(new Vector2d(SPEEDX, 0));
+                    }else{
+                        setDir(Direction.LEFT);
+                        this.setVectorMovement(new Vector2d(-SPEEDX, 0));
+                    }
+                changeDir = false;
+                }
+            }
+            
+
+            //checking slime collision with borders
             var collision = this.getWorld().collidingWith(this);
             for(var col : collision){
 
