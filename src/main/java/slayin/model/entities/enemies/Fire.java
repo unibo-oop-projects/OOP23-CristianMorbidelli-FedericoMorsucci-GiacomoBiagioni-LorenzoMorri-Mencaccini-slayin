@@ -76,6 +76,11 @@ public class Fire extends Enemy{
     }
 
     @Override
+    public int getScorePerKill(){
+        return scorePerKill;
+    }
+
+    @Override
     public DrawComponent getDrawComponent(){
         return DrawComponentFactory.graphicsComponentEnemy((Enemy)this);
     }

@@ -18,8 +18,6 @@ import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.entities.character.Character;
 import slayin.model.entities.character.MeleeWeapon;
 import slayin.model.entities.enemies.Enemy;
-import slayin.model.entities.enemies.Fire;
-import slayin.model.entities.enemies.Slime;
 import slayin.model.entities.GameObject.Direction;
 import slayin.model.score.GameScore;
 import slayin.model.utility.ImageUtility;

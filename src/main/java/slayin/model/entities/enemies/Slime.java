@@ -53,7 +53,6 @@ public class Slime extends Enemy  {
             //the slime can change direction every 3.5s, its a 40% chance
             if(change){
                 //se minore di 5 cambio direzione, 40% prob
-                System.out.println("ci provo");
                 if(random.nextInt(1,11)<5){
                     if(this.getVectorMovement().equals(new Vector2d(-SPEEDX, 0))){
                         setDir(Direction.RIGHT);
@@ -87,6 +86,11 @@ public class Slime extends Enemy  {
     @Override
     public Direction getDir(){
         return super.getDir();
+    }
+
+    @Override
+    public int getScorePerKill(){
+        return scorePerKill;
     }
 
     @Override

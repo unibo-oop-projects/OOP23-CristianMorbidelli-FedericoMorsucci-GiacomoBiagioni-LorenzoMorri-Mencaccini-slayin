@@ -15,4 +15,7 @@ public abstract class Enemy extends GameObject {
     }
     public void updatePos(int dt){
     }
+    public int getScorePerKill(){
+        return 0;
+    }
 }
