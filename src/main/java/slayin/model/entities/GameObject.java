@@ -8,7 +8,7 @@ import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
 
 public abstract class GameObject {
-    public static enum Direction { LEFT, RIGHT }
+    public static enum Direction { LEFT, RIGHT, DOWN, UP}
     private P2d pos;
     private Direction dir;
     private Vector2d vectorMovement;

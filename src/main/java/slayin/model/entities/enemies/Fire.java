@@ -18,10 +18,12 @@ public class Fire extends Enemy{
     private static final int SPEEDX = 100;
     private int oldDt = 0;
     private Boolean down = false;
+    private double startingY;
 
     public Fire(P2d pos, BoundingBox boundingBox, World world) {
         super(pos, new Vector2d(0, 0), boundingBox, world);
         random = new Random();
+        startingY = this.getPos().getY();
     }
     
     @Override
@@ -44,9 +46,17 @@ public class Fire extends Enemy{
             down = false;
         }
         if(down){
-            this.setVectorMovement(new Vector2d(0, SPEEDY));
-        }if(this.getVectorMovement().equals(new Vector2d(0, SPEEDY)) && !down || this.getVectorMovement().equals(new Vector2d(0, 0))){
-            //if im here, i should stop to go down, but i need to go left or right (random)
+            //60% probability to go up if the fire is under his starting Y
+            if(this.getPos().getY()>startingY && random.nextInt(1,11) < 7 && !this.getDir().equals(Direction.DOWN)){
+                this.setDir(Direction.UP);
+                this.setVectorMovement(new Vector2d(0, -SPEEDY));
+                //se non va su, allora puo andare giu
+            }else if(!this.getDir().equals(Direction.UP)){
+                this.setDir(Direction.DOWN);
+                this.setVectorMovement(new Vector2d(0, SPEEDY));
+            }
+        }if((this.getDir().equals(Direction.DOWN) || this.getDir().equals(Direction.UP)) && !down || this.getVectorMovement().equals(new Vector2d(0, 0))){
+            //if im here, i should stop to go down or up, but i need to go left or right (random)
             if(random.nextInt(2)==1){
                 setDir(Direction.LEFT);
                 this.setVectorMovement(new Vector2d(-SPEEDX, 0)); 
