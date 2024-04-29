@@ -1,19 +1,16 @@
 package slayin.model.entities.boss;
 
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-
 import slayin.model.World;
+import slayin.model.World.Edge;
 import slayin.model.bounding.BoundingBox;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
 
 public class Minotaur extends Boss  {
     
-    private List<String> sprites = new ArrayList<String>();
     private int state;
-    final static int START=0, RUN=1, STUNNED=2, HITTED=3;
+    private final static int START=0, RUN=1, STUNNED=2, HITTED=3;
+    private int SPEEDX = 300;
     
     /**
      * Minotaur constructor, set initial health, sprites
@@ -27,34 +24,35 @@ public class Minotaur extends Boss  {
         //TODO: impostare set iniziale completo
         super(pos, vectorMovement, boundingBox, world);
         this.setHealth(5); //The Minotaur must receive 5 hits to be defeated
-        this.setSprites();
         this.state=START;
+        this.setDir(Direction.LEFT);
     }
 
     @Override
     public void updatePos(int dt) {
-        // TODO: impostare movimenti in base a vita o colpi subiti
         switch(this.state) {
             case START:
-                //TODO: impostare cambio immagine (muove gamba per caricare colpo)
                 if(this.secondDifference(5)){
                     this.state=RUN;
                 }
                 break;
             case RUN:
-                //TODO: impostare vettore spostamento e se tocca muro diventa STUNNED
+                this.updateDir();
+                this.setPos(this.getPos().sum(this.getVectorMovement().mul(0.001*dt)));
                 break;
             case STUNNED:
-                //TODO: alternare sprite
-                //TOOD: se viene colpito devi cambiare stato e aggiornare timeFlag con resetTimeFlag
                 if(this.secondDifference(5)){
                     this.state=START;
                 }
                 break;
             case HITTED:
-                //TODO: alternare sprite
                 if(this.secondDifference(2)){
                     this.state=START;
+
+                    //every two hits updates speedx
+                    if(this.getHealth() % 2==0){
+                        this.updateSPEEDX();
+                    }
                 }
                 break;
             default:
@@ -62,11 +60,38 @@ public class Minotaur extends Boss  {
         }
     }
 
-    //TODO: sistemare path e renderlo generico, aggiungere gli altri sprite
-    private void setSprites() {
-        String path = Paths.get("assets", "boss", "minotaur","Minotaur.jpg").toString();
-        
-        this.sprites.add(path);
+    public void isHitted() {
+        //TODO: metodo che chiama il biagion se mi colpisce l'arma (cambia stato e aggiorna health)
+    }
+
+    private void updateDir() {
+        var collision = this.getWorld().collidingWith(this);
+        for(var col : collision){
+
+            if(col == Edge.LEFT_BORDER && this.getDir()==Direction.LEFT){
+                this.setVectorMovement(new Vector2d(SPEEDX,0));
+                setDir(Direction.RIGHT);
+                this.state=STUNNED;
+            }
+
+            if(col == Edge.RIGHT_BORDER && this.getDir()==Direction.RIGHT){
+                this.setVectorMovement(new Vector2d(-SPEEDX,0));
+                setDir(Direction.LEFT);
+                this.state=STUNNED;
+            }
+        }
+    }
+
+    public int getSPEEDX() {
+        return SPEEDX;
+    }
+
+    public void setSPEEDX(int x) {
+        SPEEDX = x;
+    }
+
+    public void updateSPEEDX(){
+        this.SPEEDX= this.SPEEDX*2;
     }
     
 }
