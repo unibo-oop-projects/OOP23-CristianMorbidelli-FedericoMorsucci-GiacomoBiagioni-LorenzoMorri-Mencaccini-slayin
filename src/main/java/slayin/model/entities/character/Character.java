@@ -163,7 +163,7 @@ public class Character extends GameObject{
     }
 
 
-    private boolean decLifeIsBlocked(){
+    public boolean decLifeIsBlocked(){
         return System.currentTimeMillis()<timeBlockedDecLife;
     }
 

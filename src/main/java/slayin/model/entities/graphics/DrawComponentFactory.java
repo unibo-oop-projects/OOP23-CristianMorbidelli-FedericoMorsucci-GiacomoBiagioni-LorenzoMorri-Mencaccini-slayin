@@ -30,8 +30,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
+
 import slayin.model.entities.Dummy;
 import slayin.model.utility.Constants;
 
@@ -68,6 +71,8 @@ public class DrawComponentFactory {
                 }
                 // disegno il personaggio
                 BoundingBoxImplRet bBoxCharacter =(BoundingBoxImplRet)character.getBoundingBox();
+                //controllo se il personaggio ha preso danno da poco in tal caso coloro di rosso il personaggio
+                if(character.decLifeIsBlocked()) imgCharacter= tintImage(imgCharacter, Color.red);
                 g.drawImage(imgCharacter, (int) bBoxCharacter.getX(), (int) bBoxCharacter.getY(),(int)bBoxCharacter.getWidth(),(int)bBoxCharacter.getHeight(), null);
                 // disegno le armi
                 var finlImgWeapons = imgWeapons;
@@ -213,5 +218,35 @@ public class DrawComponentFactory {
     private static void resetDrawSettings(Graphics g) {
         g.setFont(g.getFont().deriveFont(15.0f));
         g.setColor(Color.white); // Reset color to white
+    }
+
+    /** Tints the given image with the given color.
+     * @param loadImg - the image to paint and tint
+     * @param color - the color to tint. Alpha value of input color isn't used.
+     * @return A tinted version of loadImg */
+    private static BufferedImage tintImage(BufferedImage loadImg, Color color) {
+        BufferedImage img = new BufferedImage(loadImg.getWidth(), loadImg.getHeight(),
+                BufferedImage.TRANSLUCENT);
+        final float tintOpacity = 0.45f;
+        Graphics2D g2d = img.createGraphics(); 
+
+        //Draw the base image
+        g2d.drawImage(loadImg, null, 0, 0);
+        //Set the color to a transparent version of the input color
+        g2d.setColor(new Color(color.getRed() / 255f, color.getGreen() / 255f, 
+            color.getBlue() / 255f, tintOpacity));
+
+        //Iterate over every pixel, if it isn't transparent paint over it
+        Raster data = loadImg.getData();
+        for(int x = data.getMinX(); x < data.getWidth(); x++){
+            for(int y = data.getMinY(); y < data.getHeight(); y++){
+                int[] pixel = data.getPixel(x, y, new int[4]);
+                if(pixel[3] > 0){ //If pixel isn't full alpha. Could also be pixel[3]==255
+                    g2d.fillRect(x, y, 1, 1);
+                }
+            }
+        }
+        g2d.dispose();
+        return img;
     }
 }
