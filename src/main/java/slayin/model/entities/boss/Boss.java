@@ -72,7 +72,7 @@ public class Boss extends GameObject {
      * set boss life - n if n and health is greater then 0
      * @param n - damage
      */
-    public void changeHealth(int n){
+    public void diminishHealth(int n){
         if(n>0 && this.health>0){
             this.health = (this.health-n);
         }
@@ -94,7 +94,7 @@ public class Boss extends GameObject {
      * @param seconds
      * @return - true if the difference is greater than or equal to the seconds
      */
-    public boolean secondDifference(int seconds){
+    public boolean secondDifference(double seconds){
         boolean outcome=false;
         
         //set only at the first call
@@ -103,7 +103,7 @@ public class Boss extends GameObject {
             this.setCurrentTimeToPrevious();
         }
         
-        int difference=(int)((System.currentTimeMillis()-this.previousTime)/1000);
+        double difference=(double)((System.currentTimeMillis()-this.previousTime)/1000);
         if(difference>=seconds){
             outcome=true;
             this.resetTimeFlag(); //reset when outcome's true
@@ -115,7 +115,7 @@ public class Boss extends GameObject {
     /**
      * set to false timeFlag
      */
-    private void resetTimeFlag() {
+    public void resetTimeFlag() {
         this.timeFlag=false;
     }
 }

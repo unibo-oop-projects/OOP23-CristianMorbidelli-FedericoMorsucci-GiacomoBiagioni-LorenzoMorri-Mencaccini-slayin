@@ -8,32 +8,32 @@ import slayin.model.utility.Vector2d;
 
 public class Minotaur extends Boss  {
     
-    private int state;
-    private final static int START=0, RUN=1, STUNNED=2, HITTED=3;
-    private int SPEEDX = 300;
+    public static enum State { START, RUN, STUNNED, HITTED }
+    private State state;
+    private int SPEEDX;
     
     /**
      * Minotaur constructor, set initial health, sprites
      * @param pos - intial position
-     * @param vectorMovement - displacement vector
      * @param boundingBox -
      * @param world - reference world used the character
-     * 
      */
-    public Minotaur(P2d pos, Vector2d vectorMovement, BoundingBox boundingBox, World world) {
-        //TODO: impostare set iniziale completo
-        super(pos, vectorMovement, boundingBox, world);
+    public Minotaur(P2d pos, BoundingBox boundingBox, World world) {
+        super(pos, new Vector2d(0, 0), boundingBox, world);
+        
         this.setHealth(5); //The Minotaur must receive 5 hits to be defeated
-        this.state=START;
+        this.state=State.START;
         this.setDir(Direction.LEFT);
+        this.setSPEEDX(300);
+        this.setVectorMovement(new Vector2d(SPEEDX, 0));
     }
 
     @Override
     public void updatePos(int dt) {
         switch(this.state) {
             case START:
-                if(this.secondDifference(5)){
-                    this.state=RUN;
+                if(this.secondDifference(5.0)){
+                    this.state=State.RUN;
                 }
                 break;
             case RUN:
@@ -41,13 +41,13 @@ public class Minotaur extends Boss  {
                 this.setPos(this.getPos().sum(this.getVectorMovement().mul(0.001*dt)));
                 break;
             case STUNNED:
-                if(this.secondDifference(5)){
-                    this.state=START;
+                if(this.secondDifference(5.0)){
+                    this.state=State.START;
                 }
                 break;
             case HITTED:
-                if(this.secondDifference(2)){
-                    this.state=START;
+                if(this.secondDifference(2.0)){
+                    this.state=State.START;
 
                     //every two hits updates speedx
                     if(this.getHealth() % 2==0){
@@ -61,7 +61,11 @@ public class Minotaur extends Boss  {
     }
 
     public void isHitted() {
-        //TODO: metodo che chiama il biagion se mi colpisce l'arma (cambia stato e aggiorna health)
+        if(this.state==State.STUNNED){
+            this.state=State.HITTED;
+            this.diminishHealth(1);
+            this.resetTimeFlag();
+        }
     }
 
     private void updateDir() {
@@ -71,13 +75,13 @@ public class Minotaur extends Boss  {
             if(col == Edge.LEFT_BORDER && this.getDir()==Direction.LEFT){
                 this.setVectorMovement(new Vector2d(SPEEDX,0));
                 setDir(Direction.RIGHT);
-                this.state=STUNNED;
+                this.state=State.STUNNED;
             }
 
             if(col == Edge.RIGHT_BORDER && this.getDir()==Direction.RIGHT){
                 this.setVectorMovement(new Vector2d(-SPEEDX,0));
                 setDir(Direction.LEFT);
-                this.state=STUNNED;
+                this.state=State.STUNNED;
             }
         }
     }
@@ -86,12 +90,16 @@ public class Minotaur extends Boss  {
         return SPEEDX;
     }
 
-    public void setSPEEDX(int x) {
+    private void setSPEEDX(int x) {
         SPEEDX = x;
     }
 
-    public void updateSPEEDX(){
+    private void updateSPEEDX(){
         this.SPEEDX= this.SPEEDX*2;
+    }
+
+    public State getState() {
+        return state;
     }
     
 }
