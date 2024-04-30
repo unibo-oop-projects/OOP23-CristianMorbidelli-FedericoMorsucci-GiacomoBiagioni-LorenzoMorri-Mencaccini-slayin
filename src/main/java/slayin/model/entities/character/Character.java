@@ -25,6 +25,7 @@ import slayin.model.utility.Constants;
 public class Character extends GameObject{
     private Vector2d gravity;
     private Health life;
+    private String name;
     private List<MeleeWeapon> weapons;
     private Consumer<Character> jumpFunc;
     private Long timeBlockedJump, timeBlockedMove ,timeBlockedDecLife;
@@ -38,15 +39,24 @@ public class Character extends GameObject{
      * @param world - reference world used the character
      * @param weapons - melee weapons belonging to the character
      */
-    public Character(P2d pos, Vector2d vectorMouvement, BoundingBox boundingBox,Health life,World world,Consumer<Character> jumpFunc, MeleeWeapon ... weapons) {
+    public Character(P2d pos, Vector2d vectorMouvement, BoundingBox boundingBox,Health life,World world,Consumer<Character> jumpFunc,String name, MeleeWeapon ... weapons) {
         super(pos, vectorMouvement, boundingBox,world);
         this.life=life;
         this.weapons= new ArrayList<>(Arrays.asList(weapons));
         gravity= new Vector2d(0, Constants.GRAVITY_CHARACTER);  
         this.jumpFunc=jumpFunc;
+        this.name= name;
         this.timeBlockedJump=0L;
         this.timeBlockedMove=0L;
         this.timeBlockedDecLife=0L;
+    }
+
+    /**
+     * A getter for the name attribute
+     * @return name character
+     */
+    public String getName(){
+        return this.name;
     }
 
     /**

@@ -23,7 +23,7 @@ public class CharacterFactory {
             }
             
         };  
-        return new Knight(new P2d(500, 350), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), 55, 70),new Health(10, 10),w,func,weapon);
+        return new Character(new P2d(500, 350), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), 55, 70),new Health(10, 10),w,func,"Knight",weapon);
     }
 
     public static Character getKnightModify(World w){
@@ -45,7 +45,7 @@ public class CharacterFactory {
             }
             
         };  
-        return new Knight(new P2d(500, 350), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), 55, 70),new Health(10, 10),w,func,weapon);
+        return new Character(new P2d(500, 350), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), 55, 70),new Health(10, 10),w,func,"Knight",weapon);
     }
 
 
@@ -59,6 +59,6 @@ public class CharacterFactory {
             }
             
         };  
-        return new Wizard(new P2d(500, 350), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), 55, 70),new Health(10, 10),w,func);
+        return new Character(new P2d(500, 350), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), 55, 70),new Health(10, 10),w,func,"Wizard");
     }
 }

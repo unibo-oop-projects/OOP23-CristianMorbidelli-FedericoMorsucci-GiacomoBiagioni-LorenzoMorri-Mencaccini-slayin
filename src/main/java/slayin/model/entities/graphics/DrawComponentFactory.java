@@ -58,9 +58,9 @@ public class DrawComponentFactory {
                 BufferedImage imgCharacter;
                 List<BufferedImage> imgWeapons = new ArrayList<>();
                 List<MeleeWeapon> weapons = character.getWeapons();
-                pathCharacter = DrawComponentFactory.class.getResource("/assets/character/" + character.getClass().getSimpleName() + FORMAT_SPRITE);
+                pathCharacter = DrawComponentFactory.class.getResource("/assets/character/" + character.getName() + FORMAT_SPRITE);
                 for( var weapon : weapons){
-                    pathWeapon = DrawComponentFactory.class.getResource("/assets/character/" + weapon.getName() + character.getClass().getSimpleName() + FORMAT_SPRITE);
+                    pathWeapon = DrawComponentFactory.class.getResource("/assets/character/" + weapon.getName() + character.getName() + FORMAT_SPRITE);
                     imgWeapons.add((BufferedImage) ImageIO.read(new File(pathWeapon.toURI())));
                 }
                 imgCharacter = (BufferedImage) ImageIO.read(new File(pathCharacter.toURI()));
