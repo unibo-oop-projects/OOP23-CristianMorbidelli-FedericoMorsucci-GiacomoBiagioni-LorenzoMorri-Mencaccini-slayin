@@ -16,13 +16,25 @@ public class Level {
      * this list keep track of the ones that has yet to be added to the game
      */
     private final List<GameObject> enemyToDispatch;
+    /** The capacity of a level is the maximum number of enemies that will be able to join the scene at the same time */
+    private final int capacity;
 
     /**
      * The constructor of the Level class that is used by the LevelFactory class to build the levels
      * @param enemies - the list of enemies
+     * @param capacity - the capacity of the level
      */
-    public Level(List<GameObject> enemies){
+    public Level(List<GameObject> enemies, int capacity){
         this.enemyToDispatch = new ArrayList<>(enemies);
+        this.capacity = capacity;
+    }
+
+    /**
+     * Getter method for the {@code capacity} attribute
+     * @return the integer value of the level's capacity
+     */
+    public int getCapacity(){
+        return this.capacity;
     }
 
     /**
