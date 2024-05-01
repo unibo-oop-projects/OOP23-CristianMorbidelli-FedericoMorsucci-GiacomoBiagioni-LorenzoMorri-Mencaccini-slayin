@@ -2,6 +2,7 @@ package slayin.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import slayin.model.entities.GameObject;
 import slayin.model.entities.character.Character;
@@ -53,8 +54,11 @@ public class GameStatus {
     }
 
 
-    public void setLevel(Level level){
-        this.level = level;
+    public void setLevel(Optional<Level> level){
+        if(level.isPresent())
+            this.level = level.get();
+        else    
+            this.level = new Level(List.of(), 0);
     }
 
 
