@@ -17,6 +17,7 @@ import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.entities.character.Character;
 import slayin.model.entities.character.MeleeWeapon;
 import slayin.model.entities.GameObject.Direction;
+import slayin.model.entities.boss.Minotaur;
 import slayin.model.score.GameScore;
 import slayin.model.utility.ImageUtility;
 import slayin.model.utility.Pair;
@@ -141,6 +142,25 @@ public class DrawComponentFactory {
                 g.drawImage(img, (int) entity.getX(), (int) entity.getY(), null);
             } catch (Exception e) {
                 System.out.println("Unable to locate Dummy image from resources");
+                e.printStackTrace();
+            }
+        };
+    }
+
+    public static DrawComponent graphicsComponentMinotaur(Minotaur minotaur) {
+        return (g) -> {
+            try{
+                //TODO: recuperare gli altri sprite, fare animazione e 
+                //gestione stati (al momento dovrebbe disegnare solo quello principale)
+                URL pathMinotaur =DrawComponentFactory.class.getResource("/assets/boss/minotaur/Minotaur" + FORMAT_SPRITE);
+                List<BufferedImage> imgsMinotaur = new ArrayList<>();
+                imgsMinotaur.add((BufferedImage) ImageIO.read(new File(pathMinotaur.toURI())));
+                BufferedImage imgMinotaur = imgsMinotaur.get(0);
+                if (minotaur.getDir() == Direction.LEFT){
+                    imgMinotaur = ImageUtility.flipImage(imgMinotaur);
+                }
+            } catch (URISyntaxException | IOException e) {
+                System.out.println("impossibile caricare l'immagine del personaggio");
                 e.printStackTrace();
             }
         };
