@@ -22,12 +22,19 @@ public class GameStatus {
 
     private GameEventListener eventListener;
 
+    /** Keeps track of how many ticks are passed since the last time an {@code enemy} has been added. This helps
+     * regulating the enemies' dispatching, in order to avoid to fill the scene to its maximum capacity too fast.
+     */
+    private long tickSinceLastEnemyAdded;
+
     public GameStatus(GameEventListener eventListener){
         world = new World(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, 600);
         character = CharacterFactory.getWizard(world);
         enemies = new ArrayList<>(); 
         scoreManager = new GameScore();
         this.eventListener = eventListener;
+
+        tickSinceLastEnemyAdded = 0;
     }
 
     public List<GameObject> getObjects(){   
@@ -83,8 +90,24 @@ public class GameStatus {
     }
 
     public void addEnemiesToScene() {
-        if(enemies.size() >= level.getCapacity())   return;     // Level capacity reached; no need to add more enemies
+        //System.out.println("The scene currently have " + enemies.size() + " enemies; can contain " + level.getCapacity());  
+        double capacityReached = ((double) enemies.size()/ (double) level.getCapacity()) * 100;
+        long currentTime = System.currentTimeMillis();
+
+        if(capacityReached >= 100){
+            System.out.println("NON AGGIUNGO");
+            return;     // 100% of level capacity reached; no need to add more enemies
+        }
+
+        if(capacityReached >= 80){              // 80% of level capacity reached; will add more enemies every 2 seconds
+            if(currentTime - tickSinceLastEnemyAdded < 2000)  return;
+        }else if(capacityReached >= 40){        // 40% of level capacity reached; will add more enemies every 1,5 seconds
+            if(currentTime - tickSinceLastEnemyAdded < 1500)  return;
+        }else if(capacityReached >= 20){        // 20% of level capacity reached; will add more enemies every 0,5 seconds
+            if(currentTime - tickSinceLastEnemyAdded < 500)  return;
+        }                                       // below 20% of level capacity, will add more enemies every tick
 
         addEnemy(level.dispatchEnemy());
+        tickSinceLastEnemyAdded = System.currentTimeMillis();
     }
 }

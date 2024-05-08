@@ -58,8 +58,7 @@ public class LevelFactory {
 
             lvl = new Level(level, enemies, capacity);
         } catch (JSONException e) {
-            System.out.println("Can't access the level configs file");
-            e.printStackTrace();
+            // Can't read the level (could be because of the end game reached)
         }
 
         return Optional.ofNullable(lvl);
