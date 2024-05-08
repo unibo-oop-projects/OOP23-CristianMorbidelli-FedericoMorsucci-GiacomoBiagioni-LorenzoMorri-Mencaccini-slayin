@@ -9,27 +9,29 @@ import slayin.model.entities.GameObject;
 import slayin.model.GameStatus;
 import slayin.model.entities.character.Knight;
 
+import java.util.Optional;
+
 public class TestGameStatus {
 
     GameStatus status;
     
     @BeforeEach
     void setUp(){
-        status = new GameStatus();
+        status = new GameStatus(null);
     }
 
     @Test
     void testAddRemoveEnemy(){
-        GameObject tmp = new Knight(null, null, null,null,null,null);
+        Optional<GameObject> tmp = Optional.of(new Knight(null, null, null,null,null,null));
 
         assertEquals(status.getObjects().size(), 1);    // the status contains the main character only
-        assertFalse(status.getObjects().contains(tmp));
+        assertFalse(status.getObjects().contains(tmp.get()));
         status.addEnemy(tmp);
-        assertTrue(status.getObjects().contains(tmp));
+        assertTrue(status.getObjects().contains(tmp.get()));
 
         assertEquals(status.getObjects().size(), 2);
-        status.removeEnemy(tmp);
-        assertFalse(status.getObjects().contains(tmp));
+        status.removeEnemy(tmp.get());
+        assertFalse(status.getObjects().contains(tmp.get()));
         assertEquals(status.getObjects().size(), 1);    // the status contains the main character only
     }
 }
