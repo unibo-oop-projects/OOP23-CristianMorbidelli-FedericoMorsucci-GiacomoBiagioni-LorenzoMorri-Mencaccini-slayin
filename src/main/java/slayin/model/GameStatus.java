@@ -58,7 +58,7 @@ public class GameStatus {
         if(level.isPresent())
             this.level = level.get();
         else    
-            this.level = new Level(List.of(), 0);
+            this.level = new Level(0, List.of(), 0);
     }
 
 

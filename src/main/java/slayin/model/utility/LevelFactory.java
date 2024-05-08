@@ -56,7 +56,7 @@ public class LevelFactory {
             // gets the list of enemies objects based on the current level
             List<GameObject> enemies = getEnemies(levelJSON);
 
-            lvl = new Level(enemies, capacity);
+            lvl = new Level(level, enemies, capacity);
         } catch (JSONException e) {
             System.out.println("Can't access the level configs file");
             e.printStackTrace();
