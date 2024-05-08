@@ -38,8 +38,9 @@ public class GameStatus {
         return all;
     }
 
-    public void addEnemy(GameObject entity){
-        enemies.add(entity);
+    public void addEnemy(Optional<GameObject> entity){
+        if(entity.isPresent())
+            enemies.add(entity.get());
     }
 
     public void removeEnemy(GameObject entity){
@@ -78,5 +79,11 @@ public class GameStatus {
     public Level getLevel(){
         return this.level;
 
+    }
+
+    public void addEnemiesToScene() {
+        if(enemies.size() >= level.getCapacity())   return;     // Level capacity reached; no need to add more enemies
+
+        addEnemy(level.dispatchEnemy());
     }
 }
