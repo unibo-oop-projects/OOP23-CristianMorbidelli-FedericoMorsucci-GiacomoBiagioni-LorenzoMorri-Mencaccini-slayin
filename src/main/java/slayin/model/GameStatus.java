@@ -61,9 +61,10 @@ public class GameStatus {
 
 
     public void setLevel(Optional<Level> level){
-        if(level.isPresent())
+        if(level.isPresent()){
+            System.out.println("Starting level " + level.get().getID());
             this.level = level.get();
-        else{    
+        }else{    
             // the Optional will be empty if no more levels can be read
             // TODO: to call the gameover scene, the character gets killed and then a collision event gets called
             character.decLife(character.getLife().getHealth());
