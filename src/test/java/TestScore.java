@@ -17,7 +17,7 @@ public class TestScore {
 
     @BeforeEach
     void setUp() {
-        gameStatus = new GameStatus();
+        gameStatus = new GameStatus(null);
 
         InputController inputController = new InputController(null);
         sceneController = new SceneController(null, inputController, null);

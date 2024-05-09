@@ -8,6 +8,7 @@ import java.util.List;
 
 import slayin.model.GameStatus;
 import slayin.model.events.GameEventListener;
+import slayin.model.events.GameOverEvent;
 import slayin.model.movement.InputController;
 import slayin.model.utility.LevelFactory;
 import slayin.model.utility.assets.AssetsManager;
@@ -37,7 +38,7 @@ public class Engine {
     }
 
     private void initGame() {
-        status = new GameStatus();
+        status = new GameStatus(eventListener);
         levelFactory = new LevelFactory(status.getWorld());
     }
 
@@ -80,6 +81,9 @@ public class Engine {
     private void updateGameStatus(int deltaTime) {
         if(sceneController.isInMenu()) return;
 
+        // if the scene's not full, regularly add new enemies (if the current level can provide more)
+        status.addEnemiesToScene();
+
         // Update the logical position of the main character and the enemies on the
         // scene
         for (GameObject object : status.getObjects()) {
@@ -117,8 +121,9 @@ public class Engine {
                 System.out.println("[EVENT] Starting game");
                 this.initGame();
                 sceneController.showGameScene(status);
-                this.status.setLevel(levelFactory.buildLevel(0));   // setto il livello a 0; è un livello di prova che ha soltanto un'entità immobile
-                this.status.addEnemy(this.status.getLevel().dispatchEnemy().get());
+
+                this.status.setLevel(levelFactory.buildLevel(1));   // setto il livello a 1; il livello 0 non è accessibile, è pensato soltanto per dei test
+                //this.status.addEnemy(this.status.getLevel().dispatchEnemy().get());
             } else if (e instanceof ShowPauseMenuEvent) {
                 var event = (ShowPauseMenuEvent) e;
                 sceneController.setPauseMenuOpen(event.shouldShowPauseMenu());
@@ -143,18 +148,23 @@ public class Engine {
                     // since an enemy is dead, it needs to be checked if the level has been completed
                     if(isLevelCompleted()){
                         // current level has been completed
-                        // TODO: prepare next level
+                        // read current level's id from the GameStatus, and tries to build the next one
+                       status.setLevel(levelFactory.buildLevel(status.getLevel().getID()+1));
+                       // if the factory won't be able to get the level, the Game Over event will be raised
                     }
+
                     // if the current level is not completed yet, nothing more happens
                 }
             } else if (e instanceof CharacterCollisionEvent) {
                 // TODO: change damage amount based on enemy
-                if (!status.getCharacter().isAlive()) {
-                    System.out.println("Game Over");
-                    sceneController.showGameOverScene();
-                    return;
-                }
                 status.getCharacter().decLife(1);
+
+                if (!status.getCharacter().isAlive()) {
+                    eventListener.addEvent(new GameOverEvent());
+                }                    
+            } else if (e instanceof GameOverEvent) {
+                System.out.println("Game Over");
+                sceneController.showGameOverScene();
             }
         });
 

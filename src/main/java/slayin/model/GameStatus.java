@@ -2,10 +2,13 @@ package slayin.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import slayin.model.entities.GameObject;
 import slayin.model.entities.character.Character;
 import slayin.model.entities.character.CharacterFactory;
+import slayin.model.events.GameEventListener;
+import slayin.model.events.GameOverEvent;
 import slayin.model.score.GameScore;
 import slayin.model.utility.Constants;
 
@@ -17,11 +20,21 @@ public class GameStatus {
     List<GameObject> enemies;
     private GameScore scoreManager;
 
-    public GameStatus(){
+    private GameEventListener eventListener;
+
+    /** Keeps track of how many ticks are passed since the last time an {@code enemy} has been added. This helps
+     * regulating the enemies' dispatching, in order to avoid to fill the scene to its maximum capacity too fast.
+     */
+    private long tickSinceLastEnemyAdded;
+
+    public GameStatus(GameEventListener eventListener){
         world = new World(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, 600);
         character = CharacterFactory.getWizard(world);
         enemies = new ArrayList<>(); 
         scoreManager = new GameScore();
+        this.eventListener = eventListener;
+
+        tickSinceLastEnemyAdded = 0;
     }
 
     public List<GameObject> getObjects(){   
@@ -32,8 +45,9 @@ public class GameStatus {
         return all;
     }
 
-    public void addEnemy(GameObject entity){
-        enemies.add(entity);
+    public void addEnemy(Optional<GameObject> entity){
+        if(entity.isPresent())
+            enemies.add(entity.get());
     }
 
     public void removeEnemy(GameObject entity){
@@ -53,8 +67,14 @@ public class GameStatus {
     }
 
 
-    public void setLevel(Level level){
-        this.level = level;
+    public void setLevel(Optional<Level> level){
+        if(level.isPresent()){
+            System.out.println("Starting level " + level.get().getID());
+            this.level = level.get();
+        }else{    
+            // the Optional will be empty if no more levels can be read
+            eventListener.addEvent(new GameOverEvent());
+        }
     }
 
 
@@ -65,5 +85,27 @@ public class GameStatus {
     public Level getLevel(){
         return this.level;
 
+    }
+
+    public void addEnemiesToScene() {
+        //System.out.println("The scene currently have " + enemies.size() + " enemies; can contain " + level.getCapacity());  
+        double capacityReached = ((double) enemies.size()/ (double) level.getCapacity()) * 100;
+        long currentTime = System.currentTimeMillis();
+
+        if(capacityReached >= 100){
+            System.out.println("NON AGGIUNGO");
+            return;     // 100% of level capacity reached; no need to add more enemies
+        }
+
+        if(capacityReached >= 80){              // 80% of level capacity reached; will add more enemies every 2 seconds
+            if(currentTime - tickSinceLastEnemyAdded < 2000)  return;
+        }else if(capacityReached >= 40){        // 40% of level capacity reached; will add more enemies every 1,5 seconds
+            if(currentTime - tickSinceLastEnemyAdded < 1500)  return;
+        }else if(capacityReached >= 20){        // 20% of level capacity reached; will add more enemies every 0,5 seconds
+            if(currentTime - tickSinceLastEnemyAdded < 500)  return;
+        }                                       // below 20% of level capacity, will add more enemies every tick
+
+        addEnemy(level.dispatchEnemy());
+        tickSinceLastEnemyAdded = System.currentTimeMillis();
     }
 }

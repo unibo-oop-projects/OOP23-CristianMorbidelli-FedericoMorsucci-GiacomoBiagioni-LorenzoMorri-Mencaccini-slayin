@@ -20,7 +20,7 @@ public class TestPauseMenu {
 
     @BeforeEach
     void setUp() {
-        status = new GameStatus();
+        status = new GameStatus(null);
         InputController inputController = new InputController(null);
         sceneController = new SceneController(null, inputController, null);
     }

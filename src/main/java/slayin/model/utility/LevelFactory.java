@@ -1,9 +1,12 @@
 package slayin.model.utility;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Optional;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -18,7 +21,9 @@ public class LevelFactory {
 
     /* the path to the file which contains infos about the enemies contained in each level */
     private static final String enemiesConfigFile = "/configs/levels/enemies.json";
+
     private final World world;
+    private JSONArray levels;
 
     /**
      * The constructor of a LevelFactory. It builds an object that can build as many levels as needed
@@ -26,37 +31,67 @@ public class LevelFactory {
      */
     public LevelFactory(World world){
         this.world = world;
+        try {
+            levels = new JSONObject(Files.readString(Path.of(this.getClass().getResource(enemiesConfigFile).toURI()))).getJSONArray("levels");
+        } catch (Exception e) {
+            // Error while reading the json file will result in an empty array 
+            levels = null;
+        }
     }
     
     /**
      * Returns a Level object with the infos about the wanted level
      * @param level - the number of the level
-     * @return the corrisponding Level object
+     * @return An {@code Optional} containing the corrisponding Level object, or an {@code empty} one if some error occurs while building it
      */
-    public Level buildLevel(int level){
-        // it gets the list of enemies objects based on the current level
-        List<GameObject> enemies = getEnemies(level);
+    public Optional<Level> buildLevel(int level){
+        // read from the array the JSON entry corresponding to the requested level
+        JSONObject levelJSON;
+        Level lvl = null;
+        try {
+            levelJSON = levels.getJSONObject(level);
 
-        Level lvl = new Level(enemies);
-        return lvl;
+            // gets the level capacity and the enemies list
+            int capacity = getCapacity(levelJSON);
+            // gets the list of enemies objects based on the current level
+            List<GameObject> enemies = getEnemies(levelJSON);
+
+            lvl = new Level(level, enemies, capacity);
+        } catch (JSONException e) {
+            // Can't read the level (could be because of the end game reached)
+        }
+
+        return Optional.ofNullable(lvl);
+    }
+
+    /**
+     * Returns the maximum number of enemies that will appear in the requested level at the same time
+     * @param level - the JSON object of the level
+     * @return the level capacity
+     */
+    private int getCapacity(JSONObject level){
+        int capacity;
+        try {
+            capacity = level.getInt("capacity");
+        } catch (JSONException e) {
+            // Can't read the capacity from the JSON
+            capacity = 0;
+        }
+
+        return capacity;
     }
 
     /**
      * Returns all the enemies that will appear in the requested level
-     * @param level - the number of the level
+     * @param level - the JSON object of the level
      * @return a list which contains all the GameObjects of the enemies of that level
      */
-    private List<GameObject> getEnemies(int level){
-        // access the resource and reads the path of the config file
-        URL path = this.getClass().getResource(enemiesConfigFile);
+    private List<GameObject> getEnemies(JSONObject level){
         try {
             // the levels in the json are ordered in a JSON array that contains 
             // infos about the i-th level at its i-th position
-            JSONArray levels = new JSONObject(Files.readString(Path.of(path.toURI()))).getJSONArray("levels");
-            JSONObject levelJSON = levels.getJSONObject(level);
-
             // from the JSON object corrisponding to the wanted level, it parse the infos about enemies
-            JSONArray enemiesJSON = levelJSON.getJSONArray("enemies");
+            JSONArray enemiesJSON = level.getJSONArray("enemies");
             // the enemies list gets parsed from JSON and put in a GameObject list
             List<GameObject> enemies = parseEnemies(enemiesJSON);
             
