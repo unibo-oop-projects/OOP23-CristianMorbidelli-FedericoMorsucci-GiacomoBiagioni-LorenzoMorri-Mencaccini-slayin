@@ -5,11 +5,10 @@ import slayin.model.entities.character.Character;
 import slayin.model.entities.character.MeleeWeapon;
 
 import java.util.List;
-import java.util.Optional;
 
 import slayin.model.GameStatus;
-import slayin.model.Level;
 import slayin.model.events.GameEventListener;
+import slayin.model.events.GameOverEvent;
 import slayin.model.movement.InputController;
 import slayin.model.utility.LevelFactory;
 import slayin.model.utility.assets.AssetsManager;
@@ -158,12 +157,14 @@ public class Engine {
                 }
             } else if (e instanceof CharacterCollisionEvent) {
                 // TODO: change damage amount based on enemy
-                if (!status.getCharacter().isAlive()) {
-                    System.out.println("Game Over");
-                    sceneController.showGameOverScene();
-                    return;
-                }
                 status.getCharacter().decLife(1);
+
+                if (!status.getCharacter().isAlive()) {
+                    eventListener.addEvent(new GameOverEvent());
+                }                    
+            } else if (e instanceof GameOverEvent) {
+                System.out.println("Game Over");
+                sceneController.showGameOverScene();
             }
         });
 

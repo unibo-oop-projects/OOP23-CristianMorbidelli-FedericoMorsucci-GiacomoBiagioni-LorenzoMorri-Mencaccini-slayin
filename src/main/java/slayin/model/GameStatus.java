@@ -8,7 +8,7 @@ import slayin.model.entities.GameObject;
 import slayin.model.entities.character.Character;
 import slayin.model.entities.character.CharacterFactory;
 import slayin.model.events.GameEventListener;
-import slayin.model.events.collisions.CharacterCollisionEvent;
+import slayin.model.events.GameOverEvent;
 import slayin.model.score.GameScore;
 import slayin.model.utility.Constants;
 
@@ -73,9 +73,7 @@ public class GameStatus {
             this.level = level.get();
         }else{    
             // the Optional will be empty if no more levels can be read
-            // TODO: to call the gameover scene, the character gets killed and then a collision event gets called
-            character.decLife(character.getLife().getHealth());
-            eventListener.addEvent(new CharacterCollisionEvent(character));
+            eventListener.addEvent(new GameOverEvent());
         }
     }
 
