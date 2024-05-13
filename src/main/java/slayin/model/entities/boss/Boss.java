@@ -9,7 +9,7 @@ import slayin.model.utility.Vector2d;
 public class Boss extends GameObject {
 
     private int health;
-    private long previousTime;
+    private double previousTime;
     private boolean timeFlag=false;
 
     /**
@@ -33,7 +33,7 @@ public class Boss extends GameObject {
     /**
      * @return previous time memorized
      */
-    public long getPreviousTime() {
+    public double getPreviousTime() {
         return previousTime;
     }
 
@@ -42,14 +42,14 @@ public class Boss extends GameObject {
      * set CurrentTime;
      */
     public void setCurrentTimeToPrevious() {
-        this.previousTime = System.currentTimeMillis();
+        this.previousTime =(double) System.currentTimeMillis();
     }
 
     /**
      * set previous time 
      * @param previousTime
      */
-    public void setPreviousTime(long previousTime) {
+    public void setPreviousTime(double previousTime) {
         this.previousTime = previousTime;
     }
     

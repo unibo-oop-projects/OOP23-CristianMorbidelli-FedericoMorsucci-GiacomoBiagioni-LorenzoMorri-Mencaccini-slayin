@@ -22,7 +22,7 @@ public class Minotaur extends Boss  {
      */
     public Minotaur(P2d pos, BoundingBoxImplRet boundingBox, World world) {
         super(new P2d(
-                world.getWidth()-(boundingBox.getWidth()/2), //spawn on left side
+                world.getWidth()-(boundingBox.getWidth()/2), //spawn on right side
                 world.getGround()-(boundingBox.getHeight()/2)//ground height
             ), 
             new Vector2d(0, 0), 
@@ -31,12 +31,14 @@ public class Minotaur extends Boss  {
 
         this.setHealth(5); //The Minotaur must receive 5 hits to be defeated
         
+        this.getBoundingBox().updatePoint(this.getPos());//set bounding box position
+        
         this.state=State.START; //initial Minotaur state
-        this.setDir(Direction.LEFT); //because spawn is on the left side
+        this.setDir(Direction.LEFT); //because spawn is on the right side
         
         //initial speed
         this.setSPEEDX(300); 
-        this.setVectorMovement(new Vector2d(SPEEDX, 0));
+        this.setVectorMovement(new Vector2d(-SPEEDX, 0));
     }
 
     @Override
@@ -104,7 +106,7 @@ public class Minotaur extends Boss  {
                 this.setVectorMovement(new Vector2d(SPEEDX,0));
                 setDir(Direction.RIGHT);
                 //in case he went over the edge
-                this.getPos().setX(boundingBox.getWidth()/2);
+                this.getPos().setX((boundingBox.getWidth()/2));
                 this.state=State.STUNNED;
             }
 
@@ -112,7 +114,7 @@ public class Minotaur extends Boss  {
                 this.setVectorMovement(new Vector2d(-SPEEDX,0));
                 setDir(Direction.LEFT);
                 //same as the previous one
-                this.getPos().setX(this.getWorld().getWidth()-(boundingBox.getWidth()/2));
+                this.getPos().setX((this.getWorld().getWidth()-(boundingBox.getWidth()/2)));
                 this.state=State.STUNNED;
             }
         }
