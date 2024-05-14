@@ -11,4 +11,8 @@ public abstract class Enemy extends GameObject {
     public Enemy(P2d pos, Vector2d vectorMovement, BoundingBox boundingBox, World world) {
         super(pos, vectorMovement, boundingBox, world);
     }
+    public void updateDir(){
+    }
+    public void updatePos(int dt){
+    }
 }

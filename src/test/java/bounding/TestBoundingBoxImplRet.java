@@ -13,7 +13,7 @@ import slayin.model.utility.P2d;
 import java.util.ArrayList;
 
 
-
+// TODO: riscrivi bene i test
 public class TestBoundingBoxImplRet {
 
     BoundingBox x;

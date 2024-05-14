@@ -5,6 +5,7 @@ import java.util.Random;
 import slayin.model.World;
 import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.entities.GameObject;
+import slayin.model.entities.enemies.Fire;
 import slayin.model.entities.enemies.Slime;
 import slayin.model.entities.Dummy;
 
@@ -38,13 +39,25 @@ public class EntityFactory {
 
     public GameObject buildSlime(){
 
-        final int SLIME_HEIGHT = world.getHeight() / 20;
-        final int SLIME_LENGHT = SLIME_HEIGHT;
+        final int SLIME_HEIGHT = world.getHeight() / 18;
+        final int SLIME_LENGHT = SLIME_HEIGHT*2;
 
         final int DUMMY_STARTING_X = (int) rn.nextInt(world.getWidth());    // Starts at a completely random X
         final int DUMMY_STARTING_Y = world.getHeight() - SLIME_HEIGHT/2;    // Starts at the ground level
 
         Slime entity = new Slime(new P2d(DUMMY_STARTING_X, DUMMY_STARTING_Y),  new BoundingBoxImplRet(new P2d(DUMMY_STARTING_X, DUMMY_STARTING_Y), SLIME_LENGHT, SLIME_HEIGHT), world);
+
+        return entity;
+    }
+
+    public GameObject buildFire(){
+        final int FIRE_HEIGHT = world.getHeight() / 14;
+        final int FIRE_LENGHT = FIRE_HEIGHT;
+
+        final int DUMMY_STARTING_X = (int) rn.nextInt(world.getWidth());    // Starts at a completely random X
+        final int DUMMY_STARTING_Y = world.getHeight()/2 - FIRE_HEIGHT/2;    // Starts at the ground level
+
+        Fire entity = new Fire(new P2d(DUMMY_STARTING_X, DUMMY_STARTING_Y),  new BoundingBoxImplRet(new P2d(DUMMY_STARTING_X, DUMMY_STARTING_Y), FIRE_LENGHT, FIRE_HEIGHT), world);
 
         return entity;
     }
