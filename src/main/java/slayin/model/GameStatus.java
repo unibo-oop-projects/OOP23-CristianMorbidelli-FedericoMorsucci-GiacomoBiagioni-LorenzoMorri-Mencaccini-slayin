@@ -8,7 +8,6 @@ import slayin.model.entities.character.Character;
 import slayin.model.entities.character.CharacterFactory;
 import slayin.model.score.GameScore;
 import slayin.model.utility.Constants;
-import slayin.model.utility.EntityFactory;
 
 public class GameStatus {
     World world;
