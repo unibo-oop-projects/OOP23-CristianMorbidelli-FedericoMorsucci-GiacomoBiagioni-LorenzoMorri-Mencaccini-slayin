@@ -58,21 +58,27 @@ public class DrawComponentFactory {
                 BufferedImage imgCharacter;
                 List<BufferedImage> imgWeapons = new ArrayList<>();
                 List<MeleeWeapon> weapons = character.getWeapons();
+
+                //recupero le immagini
                 pathCharacter = DrawComponentFactory.class.getResource("/assets/character/" + character.getName() + FORMAT_SPRITE);
                 for( var weapon : weapons){
                     pathWeapon = DrawComponentFactory.class.getResource("/assets/character/" + weapon.getName() + character.getName() + FORMAT_SPRITE);
                     imgWeapons.add((BufferedImage) ImageIO.read(new File(pathWeapon.toURI())));
                 }
                 imgCharacter = (BufferedImage) ImageIO.read(new File(pathCharacter.toURI()));
+
                 // se la direzione è a sinistra ruoto l'immagine
                 if (character.getDir() == Direction.LEFT){
                     imgCharacter= ImageUtility.flipImage(imgCharacter);
                     imgWeapons = imgWeapons.stream().map(w->ImageUtility.flipImage(w)).toList();
                 }
+
+                //controllo se il personaggio ha preso danno da poco in tal caso coloro di rosso il personaggio
+                // TODO: nono funziona per tutti i personaggi
+                if(character.decLifeIsBlocked()) imgCharacter= tintImage(imgCharacter, Color.red);
+
                 // disegno il personaggio
                 BoundingBoxImplRet bBoxCharacter =(BoundingBoxImplRet)character.getBoundingBox();
-                //controllo se il personaggio ha preso danno da poco in tal caso coloro di rosso il personaggio
-                if(character.decLifeIsBlocked()) imgCharacter= tintImage(imgCharacter, Color.red);
                 g.drawImage(imgCharacter, (int) bBoxCharacter.getX(), (int) bBoxCharacter.getY(),(int)bBoxCharacter.getWidth(),(int)bBoxCharacter.getHeight(), null);
                 // disegno le armi
                 var finlImgWeapons = imgWeapons;

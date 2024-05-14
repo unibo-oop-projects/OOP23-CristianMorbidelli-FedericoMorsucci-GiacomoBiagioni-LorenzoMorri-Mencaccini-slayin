@@ -11,4 +11,8 @@ public class Constants {
     public final static int FJUMP_CHARACTER=-2000;
     public final static int FLEFT_CHARACTER=-430;
     public final static int FRIGHT_CHARACTER=430;
+
+    //Shot
+    public final static int SPEEDX_BULLET_ROUND=900;
+    public final static int RADIUS_BULLET_ROUND=30;
 }

@@ -1,13 +1,17 @@
 package slayin.model.entities.character;
 
 import slayin.model.bounding.BoundingBoxImplRet;
+import slayin.model.entities.GameObject;
 import slayin.model.entities.GameObject.Direction;
+import slayin.model.entities.character.shots.RoundBullet;
 import slayin.model.utility.Constants;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
 import slayin.model.World;
 
+import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class CharacterFactory {
     
@@ -23,7 +27,8 @@ public class CharacterFactory {
             }
             
         };  
-        return new Character(new P2d(500, 350), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), 55, 70),new Health(10, 10),w,func,"Knight",weapon);
+        Function<Character,Optional<GameObject>> getShot= (c)->{return Optional.empty();};
+        return new Character(new P2d(500, 350), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), 55, 70),new Health(10, 10),w,func,getShot,"Knight",weapon);
     }
 
     public static Character getKnightModify(World w){
@@ -45,7 +50,8 @@ public class CharacterFactory {
             }
             
         };  
-        return new Character(new P2d(500, 350), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), 55, 70),new Health(10, 10),w,func,"Knight",weapon);
+        Function<Character,Optional<GameObject>> getShot= (c)->{return Optional.empty();};
+        return new Character(new P2d(500, 350), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), 55, 70),new Health(10, 10),w,func,getShot,"Knight",weapon);
     }
 
 
@@ -56,9 +62,13 @@ public class CharacterFactory {
             public void accept(Character t) {
                 //t.getVectorMovement().setY(Constants.FJUMP_CHARACTER);
                 t.addWeapon(new MeleeWeapon(10, new BoundingBoxImplRet(new P2d(0, 0), 50, 200), 65, 0,"Vortex",1000));
+                t.setTimeBlockedJump(2000);
             }
             
         };  
-        return new Character(new P2d(500, 350), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), 55, 70),new Health(10, 10),w,func,"Wizard");
+
+        Function<Character,Optional<GameObject>> getShot= (c)->{return Optional.of(new RoundBullet(c,w));};
+
+        return new Character(new P2d(500, 350), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), 55, 70),new Health(10, 10),w,func,getShot,"Wizard");
     }
 }

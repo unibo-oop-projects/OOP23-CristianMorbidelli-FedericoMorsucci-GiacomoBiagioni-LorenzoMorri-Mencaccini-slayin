@@ -8,6 +8,7 @@ import slayin.model.entities.character.Character;
 import slayin.model.entities.character.CharacterFactory;
 import slayin.model.score.GameScore;
 import slayin.model.utility.Constants;
+import slayin.model.utility.EntityFactory;
 
 public class GameStatus {
     World world;
@@ -15,12 +16,27 @@ public class GameStatus {
 
     Character character;
     List<GameObject> enemies;
+    List<GameObject> shots;
     private GameScore scoreManager;
 
     public GameStatus(){
         world = new World(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, 600);
         character = CharacterFactory.getWizard(world);
         enemies = new ArrayList<>(); 
+        shots= new ArrayList<>();
+        EntityFactory tmp = new EntityFactory(world);
+        enemies.add(tmp.buildFire());
+        enemies.add(tmp.buildSlime());
+        enemies.add(tmp.buildFire());
+        enemies.add(tmp.buildSlime());
+        enemies.add(tmp.buildFire());
+        enemies.add(tmp.buildSlime());
+        enemies.add(tmp.buildFire());
+        enemies.add(tmp.buildSlime());
+        enemies.add(tmp.buildFire());
+        enemies.add(tmp.buildSlime());
+        enemies.add(tmp.buildFire());
+        enemies.add(tmp.buildSlime());
         scoreManager = new GameScore();
     }
 
@@ -28,8 +44,16 @@ public class GameStatus {
         List<GameObject> all = new ArrayList<>();
         all.add(character);
         all.addAll(enemies);
-
+        all.addAll(shots);
         return all;
+    }
+
+    public void addShot(GameObject shot){
+        shots.add(shot);
+    }
+
+    public void removeShot(GameObject shot){
+        shots.remove(shot);
     }
 
     public void addEnemy(GameObject entity){
@@ -50,6 +74,10 @@ public class GameStatus {
 
     public List<GameObject> getEnemies(){
         return this.enemies;
+    }
+
+    public List<GameObject> getShots(){
+        return this.shots;
     }
 
 
