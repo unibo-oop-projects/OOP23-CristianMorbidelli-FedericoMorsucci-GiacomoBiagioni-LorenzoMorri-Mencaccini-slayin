@@ -5,6 +5,7 @@ import java.util.List;
 
 import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.entities.GameObject;
+import slayin.model.entities.boss.Minotaur;
 import slayin.model.entities.character.Knight;
 import slayin.model.entities.character.Character;
 import slayin.model.entities.character.Health;
@@ -27,7 +28,7 @@ public class GameStatus {
         MeleeWeapon weapon = new MeleeWeapon(10, new BoundingBoxImplRet(new P2d(0, 0), 50, 35), 0, 55,"Sword");
         character = new Knight(new P2d(500, 350), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), 55, 70),world,new Health(10, 10),weapon);
         enemies = new ArrayList<>();
-        //enemies.add(new Minotaur(null, new BoundingBoxImplRet(null, 100, 150)),world);
+        //enemies.add(new Minotaur(null, new BoundingBoxImplRet(null, 100, 150),world));
         scoreManager = new GameScore();
     }
 

@@ -37,7 +37,7 @@ public class Minotaur extends Boss  {
         this.setDir(Direction.LEFT); //because spawn is on the right side
         
         //initial speed
-        this.setSPEEDX(300); 
+        this.setSPEEDX(425); 
         this.setVectorMovement(new Vector2d(-SPEEDX, 0));
     }
 
