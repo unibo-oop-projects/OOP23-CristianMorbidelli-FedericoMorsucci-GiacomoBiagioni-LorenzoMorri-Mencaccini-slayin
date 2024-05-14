@@ -150,15 +150,15 @@ public class DrawComponentFactory {
     public static DrawComponent graphicsComponentMinotaur(Minotaur minotaur) {
         return (g) -> {
             try{
-                //TODO: recuperare gli altri sprite, fare animazione e 
-                //gestione stati (al momento dovrebbe disegnare solo quello principale)
-                URL pathMinotaur =DrawComponentFactory.class.getResource("/assets/boss/minotaur/Minotaur" + FORMAT_SPRITE);
+                URL pathMinotaur =DrawComponentFactory.class.getResource("/assets/boss/"+minotaur.getClass().getSimpleName().toLowerCase()+"/"+ minotaur.getState() + FORMAT_SPRITE);
                 BufferedImage imgMinotaur = ImageIO.read(new File(pathMinotaur.toURI()));
-                if (minotaur.getDir() == Direction.LEFT){
+                if (minotaur.getDir() == Direction.RIGHT){
                     imgMinotaur = ImageUtility.flipImage(imgMinotaur);
                 }
                 BoundingBoxImplRet bBoxMinotaur =(BoundingBoxImplRet)minotaur.getBoundingBox();
                 g.drawImage(imgMinotaur, (int) bBoxMinotaur.getX(), (int) bBoxMinotaur.getY(),(int)bBoxMinotaur.getWidth(),(int)bBoxMinotaur.getHeight(), null);
+                //uncomment to draw bbox
+                //g.drawRect((int) bBoxMinotaur.getX(), (int) bBoxMinotaur.getY(), (int) bBoxMinotaur.getWidth(),(int) bBoxMinotaur.getHeight());
             } catch (URISyntaxException | IOException e) {
                 System.out.println("impossibile caricare l'immagine del personaggio");
                 e.printStackTrace();

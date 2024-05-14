@@ -25,7 +25,6 @@ public class TestMinotaur {
 
     @Test
     void testPosLeft(){
-        System.out.println(minotaur.getPos());
         assertTrue(minotaur.getPos().getX()==95.0);
         assertTrue(minotaur.getPos().getY()==70.0);
         minotaur.updatePos(1000); //parte timer prima di state run
@@ -33,11 +32,9 @@ public class TestMinotaur {
         minotaur.setPreviousTime(this.getCurrentMinusFiveSeconds());
         
         minotaur.updatePos(1000); //va a sbattere -> collisione
-        System.out.println(minotaur.getPos());
         minotaur.updatePos(1000);
         minotaur.updatePos(1000);
 
-        System.out.println(minotaur.getPos());
         assertFalse(minotaur.getPos().getX()==95.0);
         assertTrue(minotaur.getPos().getX()==5.0);
         assertTrue(minotaur.getPos().getY()==70.0);
@@ -58,7 +55,7 @@ public class TestMinotaur {
         minotaur.updatePos(1000);
 
         assertTrue(minotaur.getState()==State.STUNNED); //ha dato la testata
-        minotaur.isHitted(); //colpito
+        minotaur.onHit(); //colpito
         assertTrue(minotaur.getHealth()==4);
         assertTrue(minotaur.getState()==State.HITTED);
 
@@ -67,7 +64,7 @@ public class TestMinotaur {
         minotaur.updatePos(1000);
 
         assertTrue(minotaur.getState()==State.START); //riparte
-        minotaur.isHitted(); //colpito quando non e' stunned
+        minotaur.onHit(); //colpito quando non e' stunned
         assertFalse(minotaur.getHealth()==3);
         assertFalse(minotaur.getState()==State.HITTED);
     }

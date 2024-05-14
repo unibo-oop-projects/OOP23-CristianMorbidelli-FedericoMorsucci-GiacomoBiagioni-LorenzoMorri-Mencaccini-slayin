@@ -84,12 +84,18 @@ public class Minotaur extends Boss  {
     /**
      * if is hitted in STUNNED state, change state and decrease health 
      */
-    public void isHitted() {
+    @Override
+    public boolean onHit() {
+        boolean outcome= false;
         if(this.state==State.STUNNED){
             this.state=State.HITTED;
             this.diminishHealth(1);
             this.resetTimeFlag();
+            if(this.getHealth()==0){
+                outcome = true;
+            }
         }
+        return outcome;
     }
 
     /**
