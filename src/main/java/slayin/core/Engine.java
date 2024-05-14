@@ -12,6 +12,7 @@ import slayin.model.movement.InputController;
 import slayin.model.utility.LevelFactory;
 import slayin.model.utility.assets.AssetsManager;
 import slayin.model.events.collisions.CharacterCollisionEvent;
+import slayin.model.events.collisions.ShotCollisionWithWorldEvent;
 import slayin.model.events.collisions.WeaponCollisionEvent;
 import slayin.model.events.menus.QuitGameEvent;
 import slayin.model.events.menus.ShowPauseMenuEvent;
@@ -95,10 +96,18 @@ public class Engine {
     private void checkCharacterCollisions(){
         Character character = status.getCharacter();
         List<MeleeWeapon> weapons = character.getWeapons();
-        // collisioni con le weapon del cavaliere
+        // collisioni con le weapon del personaggio
         status.getEnemies().forEach(enemy->{
+            //controlo weapon da mischia
             weapons.forEach(weapon->{
-                if(weapon.getBoxWeapon().isCollidedWith(enemy.getBoundingBox())) eventListener.addEvent(new WeaponCollisionEvent(enemy));
+                if(weapon.getBoxWeapon().isCollidedWith(enemy.getBoundingBox())) eventListener.addEvent(new WeaponCollisionEvent(enemy,weapon));
+            });
+            //controllo weapon in movimento
+            this.status.getShots().forEach(shot->{
+                if(shot.getBoundingBox().isCollidedWith(enemy.getBoundingBox())){ 
+                    eventListener.addEvent(new WeaponCollisionEvent(enemy,shot));
+                }
+                if(!(this.status.getWorld().collidingWith(shot).isEmpty())) eventListener.addEvent(new ShotCollisionWithWorldEvent(shot));
             });
             if(character.getBoundingBox().isCollidedWith(enemy.getBoundingBox())) eventListener.addEvent(new CharacterCollisionEvent(enemy));
         });
@@ -107,7 +116,9 @@ public class Engine {
 
     private void processInputs() {
         if(sceneController.isInMenu()) return;
-
+        if(inputController.isJumping()){
+            if(this.status.getCharacter().getShots().isPresent()) this.status.addShot(this.status.getCharacter().getShots().get());
+        } 
         this.status.getCharacter().updateVel(inputController);
     }
 
@@ -129,7 +140,10 @@ public class Engine {
                 System.out.println("[EVENT] Closing game");
                 this.running = false;
             } else if (e instanceof WeaponCollisionEvent) {
-                GameObject collided = ((WeaponCollisionEvent) e).getCollidedObject();
+                WeaponCollisionEvent event = (WeaponCollisionEvent) e;
+                GameObject collided = event.getCollidedObject();
+                //rimuovo in caso ci siano proiettili in movimento
+                if(event.getShot().isPresent()) status.removeShot(event.getShot().get());
                 //System.out.println("Weapon Collision Event");
                 //System.out.println("With: " + collided);
 
@@ -155,6 +169,10 @@ public class Engine {
                     return;
                 }
                 status.getCharacter().decLife(1);
+            } else if(e instanceof ShotCollisionWithWorldEvent){
+                var event = (ShotCollisionWithWorldEvent) e;
+                System.out.println("tolgo colpo");
+                this.status.removeShot(event.getShot());
             }
         });
 
