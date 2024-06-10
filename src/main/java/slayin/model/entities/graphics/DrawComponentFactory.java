@@ -27,6 +27,7 @@ import slayin.model.utility.Pair;
 import slayin.model.utility.assets.Asset;
 import slayin.model.utility.assets.AssetsManager;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -34,7 +35,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.awt.image.Raster;
 
 import slayin.model.entities.Dummy;
 import slayin.model.utility.Constants;
@@ -75,7 +75,6 @@ public class DrawComponentFactory {
                 }
 
                 //controllo se il personaggio ha preso danno da poco in tal caso coloro di rosso il personaggio
-                // TODO: nono funziona per tutti i personaggi
                 if(character.decLifeIsBlocked()) imgCharacter= tintImage(imgCharacter, Color.red);
 
                 // disegno il personaggio
@@ -97,6 +96,7 @@ public class DrawComponentFactory {
         };
 
     }
+
 
     /**
      * constructs a drawcomponent to draw a bounding box
@@ -256,22 +256,18 @@ public class DrawComponentFactory {
         final float tintOpacity = 0.45f;
         Graphics2D g2d = img.createGraphics(); 
 
-        //Draw the base image
-        g2d.drawImage(loadImg, null, 0, 0);
-        //Set the color to a transparent version of the input color
-        g2d.setColor(new Color(color.getRed() / 255f, color.getGreen() / 255f, 
-            color.getBlue() / 255f, tintOpacity));
+        // Disegna l'immagine di base
+        g2d.drawImage(loadImg, 0, 0, null);
+        
+        // Imposta la modalità di composizione Alpha per fondere i colori
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, tintOpacity));
 
-        //Iterate over every pixel, if it isn't transparent paint over it
-        Raster data = loadImg.getData();
-        for(int x = data.getMinX(); x < data.getWidth(); x++){
-            for(int y = data.getMinY(); y < data.getHeight(); y++){
-                int[] pixel = data.getPixel(x, y, new int[4]);
-                if(pixel[3] > 0){ //If pixel isn't full alpha. Could also be pixel[3]==255
-                    g2d.fillRect(x, y, 1, 1);
-                }
-            }
-        }
+        // Imposta il colore con l'opacità desiderata
+        g2d.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), (int) (255 * tintOpacity)));
+
+        // Disegna il colore trasparente sopra l'immagine
+        g2d.fillRect(0, 0, loadImg.getWidth(), loadImg.getHeight());
+        
         g2d.dispose();
         return img;
     }

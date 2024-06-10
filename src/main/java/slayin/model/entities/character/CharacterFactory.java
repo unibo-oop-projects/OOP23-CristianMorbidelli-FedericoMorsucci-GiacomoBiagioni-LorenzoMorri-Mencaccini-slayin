@@ -63,6 +63,7 @@ public class CharacterFactory {
                 //t.getVectorMovement().setY(Constants.FJUMP_CHARACTER);
                 t.addWeapon(new MeleeWeapon(10, new BoundingBoxImplRet(new P2d(0, 0), 50, 200), 65, 0,"Vortex",1000));
                 t.setTimeBlockedJump(2000);
+                t.setTimeBlockedDecLife(1000);
             }
             
         };  
