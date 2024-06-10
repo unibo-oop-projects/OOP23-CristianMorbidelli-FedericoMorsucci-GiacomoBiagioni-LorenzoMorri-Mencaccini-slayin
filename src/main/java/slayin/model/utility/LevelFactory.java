@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,7 +16,9 @@ import org.json.JSONObject;
 
 import slayin.model.Level;
 import slayin.model.World;
+import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.entities.GameObject;
+import slayin.model.entities.boss.Minotaur;
 
 public class LevelFactory {
 
@@ -55,6 +58,7 @@ public class LevelFactory {
             int capacity = getCapacity(levelJSON);
             // gets the list of enemies objects based on the current level
             List<GameObject> enemies = getEnemies(levelJSON);
+            Collections.shuffle(enemies);
 
             lvl = new Level(level, enemies, capacity);
         } catch (JSONException e) {
@@ -149,6 +153,12 @@ public class LevelFactory {
                     break;
                 case 1:
                     enemies.add(entityFactory.buildSlime());
+                    break;
+                case 2:
+                    enemies.add(entityFactory.buildFire());
+                    break;
+                case 3:
+                    enemies.add(new Minotaur(null, new BoundingBoxImplRet(null, 100, 150),world));
                     break;
                 default:
                     return List.of();
