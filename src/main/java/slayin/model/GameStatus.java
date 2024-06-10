@@ -18,6 +18,7 @@ public class GameStatus {
 
     Character character;
     List<GameObject> enemies;
+    List<GameObject> shots;
     private GameScore scoreManager;
 
     private GameEventListener eventListener;
@@ -29,8 +30,10 @@ public class GameStatus {
 
     public GameStatus(GameEventListener eventListener){
         world = new World(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, 600);
-        character = CharacterFactory.getWizard(world);
-        enemies = new ArrayList<>(); 
+        character = CharacterFactory.getKnight(world);
+        enemies = new ArrayList<>();
+        shots=new ArrayList<>();
+        //enemies.add(new Minotaur(null, new BoundingBoxImplRet(null, 100, 150),world));
         scoreManager = new GameScore();
         this.eventListener = eventListener;
 
@@ -41,7 +44,7 @@ public class GameStatus {
         List<GameObject> all = new ArrayList<>();
         all.add(character);
         all.addAll(enemies);
-
+        all.addAll(shots);
         return all;
     }
 
@@ -54,6 +57,14 @@ public class GameStatus {
         enemies.remove(entity);
     }
 
+    public void addShot(GameObject shot){
+        shots.add(shot);
+    }
+
+    public void removeShot(GameObject shot){
+        shots.remove(shot);
+    }
+
     public World getWorld(){
         return this.world;
     }
@@ -64,6 +75,10 @@ public class GameStatus {
 
     public List<GameObject> getEnemies(){
         return this.enemies;
+    }
+
+    public List<GameObject> getShots(){
+        return this.shots;
     }
 
 

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import slayin.model.entities.GameObject;
 import slayin.model.GameStatus;
-import slayin.model.entities.character.Knight;
+import slayin.model.entities.character.Character;
 
 import java.util.Optional;
 
@@ -22,7 +22,7 @@ public class TestGameStatus {
 
     @Test
     void testAddRemoveEnemy(){
-        Optional<GameObject> tmp = Optional.of(new Knight(null, null, null,null,null,null));
+        Optional<GameObject> tmp = Optional.of(new Character(null, null, null,null,null,null,null, null));
 
         assertEquals(status.getObjects().size(), 1);    // the status contains the main character only
         assertFalse(status.getObjects().contains(tmp.get()));
