@@ -15,11 +15,11 @@
             "enemies": [
                 {
                     "id": 1,
-                    "qnt": 30
+                    "qnt": 20
                 },
                 {
                     "id": 2,
-                    "qnt": 20
+                    "qnt": 5
                 }
             ],
             "capacity": 10
@@ -29,14 +29,24 @@
             "enemies": [
                 {
                     "id": 1,
-                    "qnt": 15
+                    "qnt": 25
                 },
                 {
                     "id": 2,
-                    "qnt": 10
+                    "qnt": 7
                 }
             ],
             "capacity": 15
+        },
+        {
+            "id": 3,
+            "enemies": [
+                {
+                    "id": 3,
+                    "qnt": 1
+                }
+            ],
+            "capacity": 1
         }
     ]
 }
