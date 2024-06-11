@@ -57,7 +57,7 @@ public class AssetsManager {
      */
     private Image loadAssetImage(Asset asset) {
         try {
-            URL imageUrl = AssetsManager.class.getResource(asset.getPath());
+            URL imageUrl = AssetsManager.class.getClassLoader().getResource(asset.getPath());
             Image image = ImageIO.read(new File(imageUrl.toURI()));
             imageAssets.put(asset, image);
 

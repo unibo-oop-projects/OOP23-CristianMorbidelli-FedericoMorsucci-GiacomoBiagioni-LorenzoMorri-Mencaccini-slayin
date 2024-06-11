@@ -10,6 +10,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.IntStream;
+import java.nio.file.Paths;
 
 import slayin.model.World;
 import slayin.model.bounding.BoundingBox;
@@ -61,9 +62,11 @@ public class DrawComponentFactory {
                 List<MeleeWeapon> weapons = character.getWeapons();
 
                 //recupero le immagini
-                pathCharacter = DrawComponentFactory.class.getResource("/assets/character/" + character.getName() + FORMAT_SPRITE);
+                String path = Paths.get("assets","character",character.getName() + FORMAT_SPRITE).toString();
+                pathCharacter = DrawComponentFactory.class.getClassLoader().getResource(path);
                 for( var weapon : weapons){
-                    pathWeapon = DrawComponentFactory.class.getResource("/assets/character/" + weapon.getName() + character.getName() + FORMAT_SPRITE);
+                    path = Paths.get("assets","character",weapon.getName() + character.getName() + FORMAT_SPRITE).toString();
+                    pathWeapon = DrawComponentFactory.class.getClassLoader().getResource(path);
                     imgWeapons.add((BufferedImage) ImageIO.read(new File(pathWeapon.toURI())));
                 }
                 imgCharacter = (BufferedImage) ImageIO.read(new File(pathCharacter.toURI()));
@@ -125,7 +128,8 @@ public class DrawComponentFactory {
             try{
                 URL pathSlime;
                 BufferedImage imgSlime;
-                pathSlime = DrawComponentFactory.class.getResource("/assets/entities/enemies/Slime" + FORMAT_SPRITE);
+                String path = Paths.get("assets","entities","enemies","slime" + FORMAT_SPRITE).toString();
+                pathSlime = DrawComponentFactory.class.getClassLoader().getResource(path);
                 imgSlime = (BufferedImage) ImageIO.read(new File(pathSlime.toURI()));
                 BoundingBoxImplRet bBoxSlime =(BoundingBoxImplRet)slime.getBoundingBox();
                 g.drawImage(imgSlime, (int) bBoxSlime.getX(), (int) bBoxSlime.getY(),(int)bBoxSlime.getWidth(),(int)bBoxSlime.getHeight(), null);
@@ -141,7 +145,8 @@ public class DrawComponentFactory {
             try{
                 URL pathFire;
                 BufferedImage imgFire;
-                pathFire = DrawComponentFactory.class.getResource("/assets/entities/enemies/fire" + FORMAT_SPRITE);
+                String path = Paths.get("assets","entities","enemies","fire" + FORMAT_SPRITE).toString();
+                pathFire = DrawComponentFactory.class.getClassLoader().getResource(path);
                 imgFire = (BufferedImage) ImageIO.read(new File(pathFire.toURI()));
                 if (fire.getDir() == Direction.RIGHT){
                     imgFire= ImageUtility.flipImage(imgFire);
@@ -210,7 +215,8 @@ public class DrawComponentFactory {
 
     public static DrawComponent graphicsComponentDummy(Dummy dummy){
         return (g) -> {
-            URL pathDummy = DrawComponentFactory.class.getResource("/assets/entities/dummy.png");
+            String path = Paths.get("assets","entities","dummy"+FORMAT_SPRITE).toString();
+            URL pathDummy = DrawComponentFactory.class.getClassLoader().getResource(path);
             try {
                 BoundingBoxImplRet entity = (BoundingBoxImplRet) dummy.getBoundingBox();
                 Image img = ImageIO.read(new File(pathDummy.toURI())).getScaledInstance((int) entity.getWidth(), (int) entity.getHeight(), Image.SCALE_DEFAULT);
@@ -225,7 +231,10 @@ public class DrawComponentFactory {
     public static DrawComponent graphicsComponentMinotaur(Minotaur minotaur) {
         return (g) -> {
             try{
-                URL pathMinotaur =DrawComponentFactory.class.getResource("/assets/boss/"+minotaur.getClass().getSimpleName().toLowerCase()+"/"+ minotaur.getState() + FORMAT_SPRITE);
+                //URL pathMinotaur =DrawComponentFactory.class.getResource(File.separator+"assets"+File.separator+"boss"+File.separator+minotaur.getClass().getSimpleName().toLowerCase()+File.separator+ minotaur.getState() + FORMAT_SPRITE);
+                String path = Paths.get("assets","boss",minotaur.getClass().getSimpleName().toLowerCase(),minotaur.getState() + FORMAT_SPRITE).toString();
+                
+                URL pathMinotaur =DrawComponentFactory.class.getClassLoader().getResource(path);
                 BufferedImage imgMinotaur = ImageIO.read(new File(pathMinotaur.toURI()));
                 if (minotaur.getDir() == Direction.RIGHT){
                     imgMinotaur = ImageUtility.flipImage(imgMinotaur);
