@@ -7,7 +7,6 @@ import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.entities.GameObject;
 import slayin.model.entities.graphics.DrawComponent;
 import slayin.model.entities.graphics.DrawComponentFactory;
-import slayin.model.utility.assets.AssetsManager;
 
 public class World {
 
@@ -55,7 +54,7 @@ public class World {
         return out;
     }
 
-    public DrawComponent getDrawComponent(AssetsManager assetsManager) {
-        return DrawComponentFactory.graphicsComponentWorld(assetsManager, this);
+    public DrawComponent getDrawComponent() {
+        return DrawComponentFactory.graphicsComponentWorld(this);
     }
 }

@@ -19,16 +19,14 @@ import slayin.views.components.SlayinSliderMenu;
 
 public class OptionMenuScene implements GameScene {
     private final GameEventListener eventListener;
-    private final AssetsManager assetsManager;
 
-    public OptionMenuScene(GameEventListener eventListener, AssetsManager assetsManager) {
+    public OptionMenuScene(GameEventListener eventListener) {
         this.eventListener = eventListener;
-        this.assetsManager = assetsManager;
     }
 
     @Override
     public Container getContent() {
-        Image backgroundImage = assetsManager.getImageAsset(Asset.MAIN_MENU_BG);
+        Image backgroundImage = AssetsManager.getImageAsset(Asset.MAIN_MENU_BG);
 
         SlayinLabel title = new SlayinLabel("Impostazioni", true);
         SlayinSliderMenu<GameResolution> sliderMenu = new SlayinSliderMenu<GameResolution>(GameResolution.DEFAULT,

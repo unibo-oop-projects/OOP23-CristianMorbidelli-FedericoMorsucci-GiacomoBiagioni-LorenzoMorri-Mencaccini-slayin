@@ -13,29 +13,26 @@ import javax.imageio.ImageIO;
  * Utility class to load and manage the assets of the game.
  */
 public class AssetsManager {
-    private HashMap<Asset, Image> imageAssets;
-
-    public AssetsManager() {
-        imageAssets = new HashMap<>();
-    }
+    private static HashMap<Asset, Image> imageAssets = new HashMap<>();
 
     /**
      * Loads all the assets of the game that are defined inside the enum Asset.
      * {@link slayin.model.utility.assets.Asset}.
      */
-    public void loadAssets() {
+    public static void loadAssets() {
         long assetsTimeStart = System.currentTimeMillis();
         System.out.println("[AssetsManager] Loading assets...");
         for (Asset asset : Asset.values()) {
             switch (asset.getAssetType()) {
                 case IMAGE:
-                    this.loadAssetImage(asset);
-                    System.out.println("[AssetsManager] Loaded asset: " + asset.name() + " (" + asset.getPath() + ")");       
+                    loadAssetImage(asset);
+                    System.out.println("[AssetsManager] Loaded asset: " + asset.name() + " (" + asset.getPath() + ")");
                     break;
                 default:
                     break;
             }
         }
+        
         System.out.println("[AssetsManager] Assets loaded successfully! (" + (System.currentTimeMillis() - assetsTimeStart) + "ms)");
     }
 
@@ -45,7 +42,7 @@ public class AssetsManager {
      * @param asset The asset to get the image from.
      * @return The image asset or null if the asset doesn't exists.
      */
-    public Image getImageAsset(Asset asset) {
+    public static Image getImageAsset(Asset asset) {
         return imageAssets.get(asset);
     }
 
@@ -55,7 +52,7 @@ public class AssetsManager {
      * @param path The path of the image to load.
      * @return The loaded image or null if an error occurred.
      */
-    private Image loadAssetImage(Asset asset) {
+    private static Image loadAssetImage(Asset asset) {
         try {
             URL imageUrl = AssetsManager.class.getResource(asset.getPath());
             Image image = ImageIO.read(new File(imageUrl.toURI()));

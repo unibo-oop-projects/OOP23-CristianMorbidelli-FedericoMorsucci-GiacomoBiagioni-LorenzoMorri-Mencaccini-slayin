@@ -189,21 +189,21 @@ public class DrawComponentFactory {
         };
     }
 
-    public static DrawComponent graphicsComponentHealth(AssetsManager assetsManager, Character knight) {
+    public static DrawComponent graphicsComponentHealth(Character knight) {
         return (g) -> {
             resetDrawSettings(g);
 
             var imageWidth = 25;
-            Image hp = assetsManager.getImageAsset(Asset.LIFE_HEART);
+            Image hp = AssetsManager.getImageAsset(Asset.LIFE_HEART);
             g.drawImage(hp, 5, 0, imageWidth, 25, null);
             g.setFont(g.getFont().deriveFont(Font.BOLD, 20));
             g.drawString(String.valueOf(knight.getLife().getHealth()), 10 + imageWidth, 20);
         };
     }
 
-    public static DrawComponent graphicsComponentWorld(AssetsManager assetsManager, World w) {
+    public static DrawComponent graphicsComponentWorld(World w) {
         return (g) -> {
-            Image bImage = assetsManager.getImageAsset(Asset.GAME_BG);
+            Image bImage = AssetsManager.getImageAsset(Asset.GAME_BG);
             g.drawImage(bImage, 0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, null);
         };
     }

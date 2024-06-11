@@ -31,14 +31,12 @@ public class Engine {
     private InputController inputController;
     private GameEventListener eventListener;
     
-    private AssetsManager assetsManager;
     private LevelFactory levelFactory;
 
     public Engine() {
         eventListener = new GameEventListener();
         inputController = new InputController(eventListener);
-        assetsManager = new AssetsManager();
-        sceneController = new SceneController(eventListener, inputController, assetsManager);
+        sceneController = new SceneController(eventListener, inputController);
     }
 
     private void initGame() {
@@ -49,7 +47,7 @@ public class Engine {
     public void startGameLoop() {
         long startTime, timePassed, previousTime;
 
-        assetsManager.loadAssets();
+        AssetsManager.loadAssets();
         sceneController.createWindow();
         sceneController.showMainMenuScene();
 

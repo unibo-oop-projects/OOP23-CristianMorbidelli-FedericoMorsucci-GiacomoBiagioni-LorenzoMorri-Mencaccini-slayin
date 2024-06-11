@@ -13,7 +13,6 @@ import slayin.model.events.menus.QuitGameEvent;
 import slayin.model.movement.InputController;
 import slayin.model.utility.GameResolution;
 import slayin.model.utility.SceneType;
-import slayin.model.utility.assets.AssetsManager;
 import slayin.views.GameLevelScene;
 import slayin.views.GameOverScene;
 import slayin.views.MainMenuScene;
@@ -26,15 +25,12 @@ public class SceneController {
     private GameEventListener eventListener;
     private InputController inputController;
     private GameStatus gameStatus;
-    private AssetsManager assetsManager;
     private GameResolution currentResolution;
 
-    public SceneController(GameEventListener eventListener, InputController inputController,
-            AssetsManager assetsManager) {
+    public SceneController(GameEventListener eventListener, InputController inputController) {
         this.activeScene = Optional.empty();
         this.eventListener = eventListener;
         this.inputController = inputController;
-        this.assetsManager = assetsManager;
     }
 
     public void createWindow() {
@@ -73,21 +69,21 @@ public class SceneController {
 
         switch (sceneType) {
             case MAIN_MENU:
-                newScene = new MainMenuScene(eventListener, assetsManager);
+                newScene = new MainMenuScene(eventListener);
                 break;
             case GAME_LEVEL:
-                newScene = new GameLevelScene(assetsManager, gameStatus);
+                newScene = new GameLevelScene(gameStatus);
                 this.gameFrame.addKeyListener(inputController);
                 this.gameFrame.requestFocusInWindow();
                 break;
             case PAUSE_MENU:
-                newScene = new PauseMenuScene(eventListener, assetsManager, gameStatus);
+                newScene = new PauseMenuScene(eventListener, gameStatus);
                 break;
             case GAME_OVER:
-                newScene = new GameOverScene(eventListener, assetsManager, gameStatus);
+                newScene = new GameOverScene(eventListener, gameStatus);
                 break;
             case OPTION_MENU:
-                newScene = new OptionMenuScene(eventListener, assetsManager);
+                newScene = new OptionMenuScene(eventListener);
                 break;
             default:
                 break;

@@ -13,19 +13,16 @@ import slayin.model.events.menus.QuitGameEvent;
 import slayin.model.events.menus.ShowPauseMenuEvent;
 import slayin.model.utility.Constants;
 import slayin.model.utility.SceneType;
-import slayin.model.utility.assets.AssetsManager;
 import slayin.views.components.SlayinButton;
 import slayin.views.components.SlayinCenteredPanel;
 import slayin.views.components.SlayinLabel;
 
 public class PauseMenuScene implements GameScene {
     private GameEventListener eventListener;
-    private AssetsManager assetsManager;
     private GameStatus gameStatus;
 
-    public PauseMenuScene(GameEventListener eventListener, AssetsManager assetsManager, GameStatus gameStatus) {
+    public PauseMenuScene(GameEventListener eventListener, GameStatus gameStatus) {
         this.eventListener = eventListener;
-        this.assetsManager = assetsManager;
         this.gameStatus = gameStatus;
     }
 
@@ -71,12 +68,12 @@ public class PauseMenuScene implements GameScene {
         g2d.setPaint(Color.GRAY);
 
         // Drawing the terrain
-        gameStatus.getWorld().getDrawComponent(this.assetsManager).draw(g2d);
+        gameStatus.getWorld().getDrawComponent().draw(g2d);
 
         // Drawing the score and the health
         gameStatus.getScoreManager().getDrawComponent().draw(g2d);
         // TODO: sostituire DrawComponentFactory con la funzione relativa della classe health
-        DrawComponentFactory.graphicsComponentHealth(this.assetsManager, gameStatus.getCharacter()).draw(g2d);
+        DrawComponentFactory.graphicsComponentHealth(gameStatus.getCharacter()).draw(g2d);
 
         // Drawing the entities
         gameStatus.getObjects().forEach(e -> e.getDrawComponent().draw(g2d));
