@@ -28,7 +28,7 @@ public interface GameScene {
     public SceneType getSceneType();
 
     /**
-     * This method declare if after the scene is changed a revalidation is needed.
+     * This method declare if after the scene change a revalidation is needed.
      * 
      * @return Whether the scene should be revalidated or not.
      */

@@ -5,6 +5,7 @@ import java.awt.Container;
 import slayin.core.GameScene;
 import slayin.model.events.GameEventListener;
 import slayin.model.events.menus.QuitGameEvent;
+import slayin.model.events.menus.ShowOptionsMenuEvent;
 import slayin.model.events.menus.StartGameEvent;
 import slayin.model.utility.SceneType;
 import slayin.model.utility.assets.Asset;
@@ -30,7 +31,7 @@ public class MainMenuScene implements GameScene {
 
         SlayinLabel title = new SlayinLabel("Slayin", true);
         SlayinButton playBtn = new SlayinButton("Gioca", () -> eventListener.addEvent(new StartGameEvent()));
-        SlayinButton optionsBtn = new SlayinButton("Opzioni", () -> System.out.println("Opzioni"));
+        SlayinButton optionsBtn = new SlayinButton("Opzioni", () -> eventListener.addEvent(new ShowOptionsMenuEvent()));
         SlayinButton quitBtn = new SlayinButton("Esci", () -> eventListener.addEvent(new QuitGameEvent()));
         
         SlayinPanel container = new SlayinPanel(backgroundImage);

@@ -16,6 +16,7 @@ import slayin.model.events.collisions.CharacterCollisionEvent;
 import slayin.model.events.collisions.ShotCollisionWithWorldEvent;
 import slayin.model.events.collisions.WeaponCollisionEvent;
 import slayin.model.events.menus.QuitGameEvent;
+import slayin.model.events.menus.ShowOptionsMenuEvent;
 import slayin.model.events.menus.ShowPauseMenuEvent;
 import slayin.model.events.menus.StartGameEvent;
 
@@ -183,6 +184,8 @@ public class Engine {
                 var event = (ShotCollisionWithWorldEvent) e;
                 System.out.println("tolgo colpo");
                 this.status.removeShot(event.getShot());
+            } else if (e instanceof ShowOptionsMenuEvent) {
+                sceneController.showOptionsMenuScene();
             }
         });
 

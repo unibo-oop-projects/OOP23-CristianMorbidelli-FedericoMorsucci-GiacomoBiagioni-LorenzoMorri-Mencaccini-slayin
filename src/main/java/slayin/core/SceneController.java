@@ -17,6 +17,7 @@ import slayin.model.utility.assets.AssetsManager;
 import slayin.views.GameLevelScene;
 import slayin.views.GameOverScene;
 import slayin.views.MainMenuScene;
+import slayin.views.OptionMenuScene;
 import slayin.views.PauseMenuScene;
 
 public class SceneController {
@@ -27,7 +28,8 @@ public class SceneController {
     private GameStatus gameStatus;
     private AssetsManager assetsManager;
 
-    public SceneController(GameEventListener eventListener, InputController inputController, AssetsManager assetsManager) {
+    public SceneController(GameEventListener eventListener, InputController inputController,
+            AssetsManager assetsManager) {
         this.activeScene = Optional.empty();
         this.eventListener = eventListener;
         this.inputController = inputController;
@@ -39,8 +41,7 @@ public class SceneController {
         this.gameFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.gameFrame.addWindowListener(new WindowAdapter() {
             @Override
-            public void windowClosing(WindowEvent e)
-            {
+            public void windowClosing(WindowEvent e) {
                 eventListener.addEvent(new QuitGameEvent());
             }
         });
@@ -81,13 +82,16 @@ public class SceneController {
             case GAME_OVER:
                 newScene = new GameOverScene(eventListener, assetsManager, gameStatus);
                 break;
+            case OPTION_MENU:
+
+                break;
             default:
                 break;
         }
 
         this.gameFrame.getContentPane().removeAll();
         this.gameFrame.setContentPane(newScene.getContent());
-        
+
         if (newScene.shouldRevalidate()) {
             this.gameFrame.revalidate();
         }
@@ -98,7 +102,8 @@ public class SceneController {
     }
 
     public void renderEntitiesInScene() {
-        if (activeScene.isEmpty()) return;
+        if (activeScene.isEmpty())
+            return;
 
         activeScene.get().drawGraphics();
     }
@@ -113,6 +118,10 @@ public class SceneController {
 
     public void showGameOverScene() {
         this.switchScene(SceneType.GAME_OVER);
+    }
+
+    public void showOptionsMenuScene() {
+        this.switchScene(SceneType.OPTION_MENU);
     }
 
     public void setPauseMenuOpen(boolean inMenu) {
