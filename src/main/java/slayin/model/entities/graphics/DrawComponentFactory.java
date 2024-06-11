@@ -111,9 +111,8 @@ public class DrawComponentFactory {
                 g.drawRect((int) newBBox.getX(), (int) newBBox.getY(), (int) newBBox.getWidth(),
                         (int) newBBox.getHeight());
             } else if (bBox instanceof BoundingBoxImplCirc) {
-                // TODO: da testare che sia giusto
                 BoundingBoxImplCirc newBBox = (BoundingBoxImplCirc) bBox;
-                g.drawOval((int) newBBox.getPoint().getX(), (int) newBBox.getPoint().getY(), (int) newBBox.getRadius(),
+                g.fillOval((int) newBBox.getPoint().getX(), (int) newBBox.getPoint().getY(), (int) newBBox.getRadius(),
                         (int) newBBox.getRadius());
             }
         };

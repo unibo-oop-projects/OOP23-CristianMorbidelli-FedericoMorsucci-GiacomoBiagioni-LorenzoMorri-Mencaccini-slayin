@@ -93,7 +93,7 @@ public class Engine {
 
         status.getScoreManager().updateComboTimer();
 
-        /* TODO: check for collisions */
+        //controllo le collisioni
         checkCharacterCollisions();
     }
 
@@ -181,7 +181,6 @@ public class Engine {
                 sceneController.showGameOverScene();
             } else if(e instanceof ShotCollisionWithWorldEvent){
                 var event = (ShotCollisionWithWorldEvent) e;
-                System.out.println("tolgo colpo");
                 this.status.removeShot(event.getShot());
             }
         });
