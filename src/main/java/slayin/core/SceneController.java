@@ -11,7 +11,7 @@ import slayin.model.GameStatus;
 import slayin.model.events.GameEventListener;
 import slayin.model.events.menus.QuitGameEvent;
 import slayin.model.movement.InputController;
-import slayin.model.utility.Constants;
+import slayin.model.utility.GameResolution;
 import slayin.model.utility.SceneType;
 import slayin.model.utility.assets.AssetsManager;
 import slayin.views.GameLevelScene;
@@ -27,6 +27,7 @@ public class SceneController {
     private InputController inputController;
     private GameStatus gameStatus;
     private AssetsManager assetsManager;
+    private GameResolution currentResolution;
 
     public SceneController(GameEventListener eventListener, InputController inputController,
             AssetsManager assetsManager) {
@@ -46,7 +47,10 @@ public class SceneController {
             }
         });
 
-        this.gameFrame.setPreferredSize(new Dimension(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
+        if (currentResolution == null)
+            currentResolution = GameResolution.DEFAULT;
+
+        this.gameFrame.setPreferredSize(new Dimension(currentResolution.getWidth(), currentResolution.getHeight()));
         this.gameFrame.setResizable(false);
         this.gameFrame.pack();
         this.gameFrame.setLocationRelativeTo(null);
@@ -83,7 +87,7 @@ public class SceneController {
                 newScene = new GameOverScene(eventListener, assetsManager, gameStatus);
                 break;
             case OPTION_MENU:
-
+                newScene = new OptionMenuScene(eventListener, assetsManager);
                 break;
             default:
                 break;
@@ -140,5 +144,9 @@ public class SceneController {
 
     public Optional<GameScene> getActiveScene() {
         return this.activeScene;
+    }
+
+    public void changeResolution(GameResolution resolution) {
+        this.gameFrame.setSize(resolution.getWidth(), resolution.getHeight());
     }
 }
