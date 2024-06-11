@@ -13,9 +13,18 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class CharacterFactory {
-    
 
+/**
+ * Factory class to create different types of characters.
+ */
+public class CharacterFactory { 
+
+    /**
+     * Creates a Knight character.
+     * 
+     * @param w the game world
+     * @return the created Knight character
+     */
     public static Character getKnight(World w){
         // la widthFromPlayer la calcolo facendo widthPlayer/2 + BoundingBoxWeapon/2
         MeleeWeapon weapon = new MeleeWeapon(10, new BoundingBoxImplRet(new P2d(0, 0), 50, 35), 0, 53,"SwordL",-1);
@@ -31,6 +40,13 @@ public class CharacterFactory {
         return new Character(new P2d(500, 350), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), 55, 70),new Health(10, 10),w,func,getShot,"Knight",weapon);
     }
 
+
+    /**
+     * Creates a modified Knight character.
+     * 
+     * @param w the game world
+     * @return the created modified Knight character
+     */
     public static Character getKnightModify(World w){
         MeleeWeapon weapon = new MeleeWeapon(10, new BoundingBoxImplRet(new P2d(0, 0), 50, 35), 0, 53,"SwordL",-1);
         Consumer<Character> func= new Consumer<Character>() {
@@ -55,6 +71,12 @@ public class CharacterFactory {
     }
 
 
+    /**
+     * Creates a Wizard character.
+     * 
+     * @param w the game world
+     * @return the created Wizard character
+     */
     public static Character getWizard(World w){
         Consumer<Character> func= new Consumer<Character>() {
 

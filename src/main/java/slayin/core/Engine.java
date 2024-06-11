@@ -123,7 +123,7 @@ public class Engine {
         if(inputController.isJumping()){
             if(this.status.getCharacter().getShots().isPresent()) this.status.addShot(this.status.getCharacter().getShots().get());
         } 
-        this.status.getCharacter().updateVel(inputController);
+        this.status.getCharacter().updateVectorMovement(inputController);
     }
 
     private void processEvents() {
