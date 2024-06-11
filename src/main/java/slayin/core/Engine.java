@@ -93,7 +93,7 @@ public class Engine {
 
         status.getScoreManager().updateComboTimer();
 
-        /* TODO: check for collisions */
+        //controllo le collisioni
         checkCharacterCollisions();
     }
 
@@ -123,7 +123,7 @@ public class Engine {
         if(inputController.isJumping()){
             if(this.status.getCharacter().getShots().isPresent()) this.status.addShot(this.status.getCharacter().getShots().get());
         } 
-        this.status.getCharacter().updateVel(inputController);
+        this.status.getCharacter().updateVectorMovement(inputController);
     }
 
     private void processEvents() {
@@ -181,7 +181,6 @@ public class Engine {
                 sceneController.showGameOverScene();
             } else if(e instanceof ShotCollisionWithWorldEvent){
                 var event = (ShotCollisionWithWorldEvent) e;
-                System.out.println("tolgo colpo");
                 this.status.removeShot(event.getShot());
             }
         });
