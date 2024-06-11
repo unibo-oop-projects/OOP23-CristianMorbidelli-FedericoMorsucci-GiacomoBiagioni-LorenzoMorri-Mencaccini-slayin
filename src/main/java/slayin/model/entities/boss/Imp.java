@@ -12,13 +12,25 @@ public class Imp extends Boss {
     public static enum State { START, ATTACK, WAITING, PUFF, HITTED }
     private State state;
     private int numShots;
+    private boolean posFlag;
 
     public Imp(P2d pos, Vector2d vectorMovement, BoundingBox boundingBox, World world) {
-        super(pos, vectorMovement, boundingBox, world);
-        //TODO pos spawn, dimensioni, bbox
+        super(new P2d(
+                world.getWidth()/2,
+                world.getHeight()/2 //first position in the centre of the screen
+            ), 
+            new Vector2d(0,0), //Imp teleport in 4 different position
+            boundingBox, 
+            world);
+        //TODO dimensioni bbox
 
         this.setHealth(10); //The Imp must receive 10 hits to be defeated
         this.setNumShots(0);//Imp attacks after first hit
+
+        this.getBoundingBox().updatePoint(this.getPos());//set bounding box position
+
+        this.changeState(State.START); //initial Minotaur state
+        this.posFlag=false;
     }
 
     @Override
@@ -30,6 +42,10 @@ public class Imp extends Boss {
     public void updatePos(int dt){
         switch(this.state) {
             case START:
+                if(posFlag){
+                    //reset flag
+                    this.posFlag=false;
+                }
                 //spawn in a casual position, wait 5 seconds then attacks
                 if(this.secondDifference(5.0)){
                     changeState(State.ATTACK);
@@ -42,17 +58,21 @@ public class Imp extends Boss {
                 if(this.secondDifference(5.0)){
                     changeState(State.PUFF);
                 }
-            case PUFF:
-                //TODO: invisibile, aggiorni nuova pos
                 break;
             case HITTED:
                 if(this.secondDifference(1.0)){
                     this.changeState(State.PUFF);
 
-                    //every two hits updates num of shots
+                    //every three hits updates num of shots
                     if(this.getHealth() % 3==0){
                         this.setNumShots(this.getNumShots()+1);
                     }
+                }
+                break;
+            case PUFF:
+                if(secondDifference(1.0)){
+                    this.update(); //update position
+                    this.changeState(State.START);
                 }
                 break;
             default:
@@ -60,12 +80,21 @@ public class Imp extends Boss {
         }
     }
 
-    public void setNumShots(int numShots) {
-        this.numShots=numShots;
-    }
+    private void update() {
 
-    public int getNumShots() {
-        return this.numShots;
+        //if is in puff state 
+        if(this.state==State.PUFF){
+            if(!this.posFlag){
+                //he changed position, set flag to true
+                this.posFlag=true;
+                
+                //TODO: set pos
+                this.setPos(new P2d(getPos()));
+                
+                //update bounding box position
+                this.getBoundingBox().updatePoint(this.getPos());
+            }
+        }
     }
 
     /**
@@ -96,5 +125,20 @@ public class Imp extends Boss {
      */
     public State getState() {
         return state;
+    }
+
+    /**
+     * set how many shots imp shoots
+     * @param numShots
+     */
+    public void setNumShots(int numShots) {
+        this.numShots=numShots;
+    }
+
+    /**
+     * @return how many shots imp shoots
+     */
+    public int getNumShots() {
+        return this.numShots;
     }
 }
