@@ -7,6 +7,7 @@ import slayin.model.entities.character.MeleeWeapon;
 import java.util.List;
 
 import slayin.model.GameStatus;
+import slayin.model.events.ChangeResolutionEvent;
 import slayin.model.events.GameEventListener;
 import slayin.model.events.GameOverEvent;
 import slayin.model.movement.InputController;
@@ -16,6 +17,7 @@ import slayin.model.events.collisions.CharacterCollisionEvent;
 import slayin.model.events.collisions.ShotCollisionWithWorldEvent;
 import slayin.model.events.collisions.WeaponCollisionEvent;
 import slayin.model.events.menus.QuitGameEvent;
+import slayin.model.events.menus.ShowMainMenuEvent;
 import slayin.model.events.menus.ShowOptionsMenuEvent;
 import slayin.model.events.menus.ShowPauseMenuEvent;
 import slayin.model.events.menus.StartGameEvent;
@@ -186,6 +188,11 @@ public class Engine {
                 this.status.removeShot(event.getShot());
             } else if (e instanceof ShowOptionsMenuEvent) {
                 sceneController.showOptionsMenuScene();
+            } else if (e instanceof ShowMainMenuEvent) {
+                sceneController.showMainMenuScene();
+            } else if (e instanceof ChangeResolutionEvent) {
+                ChangeResolutionEvent event = (ChangeResolutionEvent) e;
+                sceneController.changeResolution(event.getResolution());
             }
         });
 

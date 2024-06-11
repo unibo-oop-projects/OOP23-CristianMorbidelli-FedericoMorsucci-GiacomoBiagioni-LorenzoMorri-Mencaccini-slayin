@@ -31,7 +31,7 @@ public class OptionMenuScene implements GameScene {
         Image backgroundImage = assetsManager.getImageAsset(Asset.MAIN_MENU_BG);
 
         SlayinLabel title = new SlayinLabel("Impostazioni", true);
-        SlayinSliderMenu sliderMenu = new SlayinSliderMenu(GameResolution.DEFAULT,
+        SlayinSliderMenu<GameResolution> sliderMenu = new SlayinSliderMenu<GameResolution>(GameResolution.DEFAULT,
                 Arrays.asList(GameResolution.values()));
         sliderMenu.addChangeListener(e -> eventListener.addEvent(new ChangeResolutionEvent(e)));
         SlayinButton backBtn = new SlayinButton("Indietro", () -> eventListener.addEvent(new ShowMainMenuEvent()));
