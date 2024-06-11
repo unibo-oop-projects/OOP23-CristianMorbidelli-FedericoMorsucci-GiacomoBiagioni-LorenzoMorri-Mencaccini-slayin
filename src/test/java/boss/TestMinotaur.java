@@ -52,7 +52,6 @@ public class TestMinotaur {
         assertTrue(minotaur.getState()==State.RUN);//si muove
         
         minotaur.updatePos(1000);
-        minotaur.updatePos(1000);
 
         assertTrue(minotaur.getState()==State.STUNNED); //ha dato la testata
         minotaur.onHit(); //colpito

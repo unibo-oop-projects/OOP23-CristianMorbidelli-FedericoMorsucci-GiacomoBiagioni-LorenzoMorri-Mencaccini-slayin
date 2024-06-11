@@ -21,6 +21,7 @@ import slayin.model.entities.enemies.Fire;
 import slayin.model.entities.enemies.Slime;
 import slayin.model.entities.GameObject.Direction;
 import slayin.model.entities.boss.Minotaur;
+import slayin.model.entities.boss.Minotaur.State;
 import slayin.model.score.GameScore;
 import slayin.model.utility.ImageUtility;
 import slayin.model.utility.Pair;
@@ -229,6 +230,9 @@ public class DrawComponentFactory {
                 BufferedImage imgMinotaur = ImageIO.read(new File(pathMinotaur.toURI()));
                 if (minotaur.getDir() == Direction.RIGHT){
                     imgMinotaur = ImageUtility.flipImage(imgMinotaur);
+                }
+                if(minotaur.getState()==State.HITTED){
+                    imgMinotaur = tintImage(imgMinotaur, Color.red);
                 }
                 BoundingBoxImplRet bBoxMinotaur =(BoundingBoxImplRet)minotaur.getBoundingBox();
                 g.drawImage(imgMinotaur, (int) bBoxMinotaur.getX(), (int) bBoxMinotaur.getY(),(int)bBoxMinotaur.getWidth(),(int)bBoxMinotaur.getHeight(), null);

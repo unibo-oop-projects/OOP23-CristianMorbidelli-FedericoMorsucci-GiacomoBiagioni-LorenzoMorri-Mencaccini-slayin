@@ -33,7 +33,7 @@ public class Minotaur extends Boss  {
         
         this.getBoundingBox().updatePoint(this.getPos());//set bounding box position
         
-        this.state=State.START; //initial Minotaur state
+        this.changeState(State.START); //initial Minotaur state
         this.setDir(Direction.LEFT); //because spawn is on the right side
         
         //initial speed
@@ -47,7 +47,7 @@ public class Minotaur extends Boss  {
             case START:
                 //it can't be hitted, wait 5 seconds and runs on the other side
                 if(this.secondDifference(5.0)){
-                    this.state=State.RUN;
+                    changeState(State.RUN);
                 }
                 break;
             case RUN:
@@ -57,12 +57,12 @@ public class Minotaur extends Boss  {
             case STUNNED:
                 //if it isn't hitted, return to START state
                 if(this.secondDifference(5.0)){
-                    this.state=State.START;
+                    this.changeState(State.START);
                 }
                 break;
             case HITTED:
                 if(this.secondDifference(2.0)){
-                    this.state=State.START;
+                    this.changeState(State.START);
 
                     //every two hits updates speedx (first with 4 health)
                     if(this.getHealth() % 2==0){
@@ -88,9 +88,8 @@ public class Minotaur extends Boss  {
     public boolean onHit() {
         boolean outcome= false;
         if(this.state==State.STUNNED){
-            this.state=State.HITTED;
+            this.changeState(State.HITTED);
             this.diminishHealth(1);
-            this.resetTimeFlag();
             if(this.getHealth()==0){
                 outcome = true;
             }
@@ -160,6 +159,15 @@ public class Minotaur extends Boss  {
      */
     public State getState() {
         return state;
+    }
+
+    /**
+     * Change Boss State and reset previousTime
+     * @param state 
+     */
+    private void changeState(State state){
+        this.state=state;
+        this.setCurrentTimeToPrevious();
     }
     
 }

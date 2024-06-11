@@ -10,7 +10,6 @@ public class Boss extends GameObject {
 
     private int health;
     private double previousTime;
-    private boolean timeFlag=false;
 
     /**
      * generic constructor
@@ -97,25 +96,10 @@ public class Boss extends GameObject {
     public boolean secondDifference(double seconds){
         boolean outcome=false;
         
-        //set only at the first call
-        if(!this.timeFlag){
-            this.timeFlag=true;
-            this.setCurrentTimeToPrevious();
-        }
-        
         double difference=(double)((System.currentTimeMillis()-this.previousTime)/1000);
         if(difference>=seconds){
             outcome=true;
-            this.resetTimeFlag(); //reset when outcome's true
         }
         return outcome;
-    }
-
-
-    /**
-     * set to false timeFlag
-     */
-    public void resetTimeFlag() {
-        this.timeFlag=false;
     }
 }
