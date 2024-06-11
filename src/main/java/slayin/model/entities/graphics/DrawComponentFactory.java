@@ -20,6 +20,7 @@ import slayin.model.entities.character.MeleeWeapon;
 import slayin.model.entities.enemies.Fire;
 import slayin.model.entities.enemies.Slime;
 import slayin.model.entities.GameObject.Direction;
+import slayin.model.entities.boss.Imp;
 import slayin.model.entities.boss.Minotaur;
 import slayin.model.entities.boss.Minotaur.State;
 import slayin.model.score.GameScore;
@@ -278,5 +279,10 @@ public class DrawComponentFactory {
         }
         g2d.dispose();
         return img;
+    }
+
+    public static DrawComponent graphicsComponentImp(Imp imp) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'graphicsComponentImp'");
     }
 }
