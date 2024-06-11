@@ -63,7 +63,7 @@ public class SceneController {
         this.switchScene(sceneType);
     }
 
-    private void switchScene(SceneType sceneType) {
+    public void switchScene(SceneType sceneType) {
         GameScene newScene = null;
         this.gameFrame.removeKeyListener(inputController);
 
@@ -108,20 +108,8 @@ public class SceneController {
         activeScene.get().drawGraphics();
     }
 
-    public void showMainMenuScene() {
-        this.switchScene(SceneType.MAIN_MENU);
-    }
-
     public void showGameScene(GameStatus gameStatus) {
         this.switchScene(SceneType.GAME_LEVEL, gameStatus);
-    }
-
-    public void showGameOverScene() {
-        this.switchScene(SceneType.GAME_OVER);
-    }
-
-    public void showOptionsMenuScene() {
-        this.switchScene(SceneType.OPTION_MENU);
     }
 
     public void setPauseMenuOpen(boolean inMenu) {

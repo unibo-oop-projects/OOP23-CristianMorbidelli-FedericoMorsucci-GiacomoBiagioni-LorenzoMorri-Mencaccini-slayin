@@ -7,7 +7,7 @@ import java.util.Arrays;
 import slayin.core.GameScene;
 import slayin.model.events.ChangeResolutionEvent;
 import slayin.model.events.GameEventListener;
-import slayin.model.events.menus.ShowMainMenuEvent;
+import slayin.model.events.menus.SimpleChangeSceneEvent;
 import slayin.model.utility.GameResolution;
 import slayin.model.utility.SceneType;
 import slayin.model.utility.assets.Asset;
@@ -32,7 +32,7 @@ public class OptionMenuScene implements GameScene {
         SlayinSliderMenu<GameResolution> sliderMenu = new SlayinSliderMenu<GameResolution>(GameResolution.DEFAULT,
                 Arrays.asList(GameResolution.values()));
         sliderMenu.addChangeListener(e -> eventListener.addEvent(new ChangeResolutionEvent(e)));
-        SlayinButton backBtn = new SlayinButton("Indietro", () -> eventListener.addEvent(new ShowMainMenuEvent()));
+        SlayinButton backBtn = new SlayinButton("Indietro", () -> eventListener.addEvent(new SimpleChangeSceneEvent(SceneType.MAIN_MENU)));
 
         SlayinPanel container = new SlayinPanel(backgroundImage);
         container.addComponents(title, sliderMenu, backBtn);

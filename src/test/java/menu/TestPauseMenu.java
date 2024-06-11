@@ -29,7 +29,7 @@ public class TestPauseMenu {
     void testPauseMenu() {
         sceneController.createWindow();
 
-        sceneController.showMainMenuScene();
+        sceneController.switchScene(SceneType.MAIN_MENU);
         Optional<GameScene> curScene = sceneController.getActiveScene();
 
         assertTrue(curScene.isPresent());

@@ -12,14 +12,14 @@ import slayin.model.events.GameEventListener;
 import slayin.model.events.GameOverEvent;
 import slayin.model.movement.InputController;
 import slayin.model.utility.LevelFactory;
+import slayin.model.utility.SceneType;
 import slayin.model.utility.assets.AssetsManager;
 import slayin.model.events.collisions.CharacterCollisionEvent;
 import slayin.model.events.collisions.ShotCollisionWithWorldEvent;
 import slayin.model.events.collisions.WeaponCollisionEvent;
 import slayin.model.events.menus.QuitGameEvent;
-import slayin.model.events.menus.ShowMainMenuEvent;
-import slayin.model.events.menus.ShowOptionsMenuEvent;
 import slayin.model.events.menus.ShowPauseMenuEvent;
+import slayin.model.events.menus.SimpleChangeSceneEvent;
 import slayin.model.events.menus.StartGameEvent;
 
 public class Engine {
@@ -49,7 +49,7 @@ public class Engine {
 
         AssetsManager.loadAssets();
         sceneController.createWindow();
-        sceneController.showMainMenuScene();
+        sceneController.switchScene(SceneType.MAIN_MENU);
 
         previousTime = System.currentTimeMillis();
         while (this.running) { /* Game loop */
@@ -178,16 +178,14 @@ public class Engine {
                     eventListener.addEvent(new GameOverEvent());
                 }                    
             } else if (e instanceof GameOverEvent) {
-                System.out.println("Game Over");
-                sceneController.showGameOverScene();
+                sceneController.switchScene(SceneType.GAME_OVER);
             } else if(e instanceof ShotCollisionWithWorldEvent){
                 var event = (ShotCollisionWithWorldEvent) e;
                 System.out.println("tolgo colpo");
                 this.status.removeShot(event.getShot());
-            } else if (e instanceof ShowOptionsMenuEvent) {
-                sceneController.showOptionsMenuScene();
-            } else if (e instanceof ShowMainMenuEvent) {
-                sceneController.showMainMenuScene();
+            } else if (e instanceof SimpleChangeSceneEvent) {
+                SimpleChangeSceneEvent event = (SimpleChangeSceneEvent) e;
+                sceneController.switchScene(event.getSceneType());
             } else if (e instanceof ChangeResolutionEvent) {
                 ChangeResolutionEvent event = (ChangeResolutionEvent) e;
                 sceneController.changeResolution(event.getResolution());
