@@ -7,7 +7,6 @@ import java.awt.Graphics2D;
 
 import slayin.core.GameScene;
 import slayin.model.GameStatus;
-import slayin.model.entities.graphics.DrawComponentFactory;
 import slayin.model.events.GameEventListener;
 import slayin.model.events.menus.QuitGameEvent;
 import slayin.model.events.menus.ShowPauseMenuEvent;
@@ -72,8 +71,7 @@ public class PauseMenuScene implements GameScene {
 
         // Drawing the score and the health
         gameStatus.getScoreManager().getDrawComponent().draw(g2d);
-        // TODO: sostituire DrawComponentFactory con la funzione relativa della classe health
-        DrawComponentFactory.graphicsComponentHealth(gameStatus.getCharacter()).draw(g2d);
+        gameStatus.getCharacter().getLife().getDrawComponent().draw(g2d);
 
         // Drawing the entities
         gameStatus.getObjects().forEach(e -> e.getDrawComponent().draw(g2d));

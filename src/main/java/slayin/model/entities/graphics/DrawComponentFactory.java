@@ -17,6 +17,7 @@ import slayin.model.bounding.BoundingBox;
 import slayin.model.bounding.BoundingBoxImplCirc;
 import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.entities.character.Character;
+import slayin.model.entities.character.Health;
 import slayin.model.entities.character.MeleeWeapon;
 import slayin.model.entities.enemies.Fire;
 import slayin.model.entities.enemies.Slime;
@@ -193,7 +194,7 @@ public class DrawComponentFactory {
         };
     }
 
-    public static DrawComponent graphicsComponentHealth(Character knight) {
+    public static DrawComponent graphicsComponentHealth(Health knightHealth) {
         return (g) -> {
             resetDrawSettings(g);
 
@@ -201,7 +202,7 @@ public class DrawComponentFactory {
             Image hp = AssetsManager.getImageAsset(Asset.LIFE_HEART);
             g.drawImage(hp, 5, 0, imageWidth, 25, null);
             g.setFont(g.getFont().deriveFont(Font.BOLD, 20));
-            g.drawString(String.valueOf(knight.getLife().getHealth()), 10 + imageWidth, 20);
+            g.drawString(String.valueOf(knightHealth.getHealth()), 10 + imageWidth, 20);
         };
     }
 

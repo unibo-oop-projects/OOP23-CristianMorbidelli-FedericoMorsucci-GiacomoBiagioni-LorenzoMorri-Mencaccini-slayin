@@ -1,6 +1,7 @@
 package slayin.model.entities.character;
 
 import slayin.model.entities.graphics.DrawComponent;
+import slayin.model.entities.graphics.DrawComponentFactory;
 
 
 /**
@@ -22,8 +23,7 @@ public class Health {
     }
 
     public DrawComponent getDrawComponent(){
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updatePos'");
+        return DrawComponentFactory.graphicsComponentHealth(this);
     }
 
 
