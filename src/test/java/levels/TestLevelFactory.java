@@ -30,7 +30,7 @@ public class TestLevelFactory {
 
     @Test
     void testGetEnemies(){
-        Level test = levelFactory.buildLevel(0);
+        Level test = levelFactory.buildLevel(0).get();
 
         List<GameObject> levelEnemies = new ArrayList<>();
         Optional<GameObject> obj;

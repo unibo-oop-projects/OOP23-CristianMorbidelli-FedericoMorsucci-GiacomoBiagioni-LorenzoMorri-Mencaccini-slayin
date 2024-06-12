@@ -10,22 +10,20 @@ import javax.swing.SwingConstants;
 import slayin.core.GameScene;
 import slayin.model.GameStatus;
 import slayin.model.events.GameEventListener;
+import slayin.model.events.menus.QuitGameEvent;
 import slayin.model.events.menus.StartGameEvent;
 import slayin.model.utility.Constants;
 import slayin.model.utility.SceneType;
-import slayin.model.utility.assets.AssetsManager;
 import slayin.views.components.SlayinButton;
 import slayin.views.components.SlayinCenteredPanel;
 import slayin.views.components.SlayinLabel;
 
 public class GameOverScene implements GameScene {
     private GameEventListener eventListener;
-    private AssetsManager assetsManager;
     private GameStatus gameStatus;
 
-    public GameOverScene(GameEventListener eventListener, AssetsManager assetsManager, GameStatus gameStatus) {
+    public GameOverScene(GameEventListener eventListener, GameStatus gameStatus) {
         this.eventListener = eventListener;
-        this.assetsManager = assetsManager;
         this.gameStatus = gameStatus;
     }
 
@@ -35,6 +33,7 @@ public class GameOverScene implements GameScene {
         SlayinLabel scoreLabel = new SlayinLabel("Score: " + gameStatus.getScoreManager().getScore(), 50f);
         scoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
         SlayinButton restartButton = new SlayinButton("Restart", () -> eventListener.addEvent(new StartGameEvent()));
+        SlayinButton quitButton = new SlayinButton("Quit", () -> eventListener.addEvent(new QuitGameEvent()));
 
         SlayinCenteredPanel panel = new SlayinCenteredPanel() {
             @Override
@@ -46,14 +45,15 @@ public class GameOverScene implements GameScene {
                 super.paintComponent(g);
             }
         };
-        
-        panel.addComponents(gameOverLabel, scoreLabel, restartButton);
+
+        panel.addComponents(gameOverLabel, scoreLabel, restartButton, quitButton);
 
         return panel;
     }
 
     @Override
-    public void drawGraphics() {}
+    public void drawGraphics() {
+    }
 
     @Override
     public SceneType getSceneType() {
@@ -64,7 +64,7 @@ public class GameOverScene implements GameScene {
     public boolean shouldRevalidate() {
         return false;
     }
-    
+
     private void drawGameSnapshot(Graphics2D g2d) {
         // Preparing
         g2d.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
@@ -72,7 +72,7 @@ public class GameOverScene implements GameScene {
         g2d.setPaint(Color.GRAY);
 
         // Drawing the terrain
-        gameStatus.getWorld().getDrawComponent(this.assetsManager).draw(g2d);
+        gameStatus.getWorld().getDrawComponent().draw(g2d);
 
         // Drawing the entities
         gameStatus.getObjects().forEach(e -> e.getDrawComponent().draw(g2d));

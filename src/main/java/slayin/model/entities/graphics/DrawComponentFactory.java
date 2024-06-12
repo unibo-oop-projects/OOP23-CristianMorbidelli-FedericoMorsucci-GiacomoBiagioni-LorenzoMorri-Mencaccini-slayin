@@ -10,27 +10,33 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.IntStream;
+import java.nio.file.Paths;
 
 import slayin.model.World;
 import slayin.model.bounding.BoundingBox;
 import slayin.model.bounding.BoundingBoxImplCirc;
 import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.entities.character.Character;
+import slayin.model.entities.character.Health;
 import slayin.model.entities.character.MeleeWeapon;
 import slayin.model.entities.enemies.Enemy;
 import slayin.model.entities.GameObject.Direction;
+import slayin.model.entities.boss.Minotaur;
 import slayin.model.score.GameScore;
 import slayin.model.utility.ImageUtility;
 import slayin.model.utility.Pair;
 import slayin.model.utility.assets.Asset;
 import slayin.model.utility.assets.AssetsManager;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+
 import slayin.model.entities.Dummy;
 import slayin.model.utility.Constants;
 
@@ -54,17 +60,26 @@ public class DrawComponentFactory {
                 BufferedImage imgCharacter;
                 List<BufferedImage> imgWeapons = new ArrayList<>();
                 List<MeleeWeapon> weapons = character.getWeapons();
-                pathCharacter = DrawComponentFactory.class.getResource("/assets/character/" + character.getClass().getSimpleName() + FORMAT_SPRITE);
+
+                //recupero le immagini
+                String path = Paths.get("assets","character",character.getName() + FORMAT_SPRITE).toString();
+                pathCharacter = DrawComponentFactory.class.getClassLoader().getResource(path);
                 for( var weapon : weapons){
-                    pathWeapon = DrawComponentFactory.class.getResource("/assets/character/" + weapon.getName() + character.getClass().getSimpleName() + FORMAT_SPRITE);
+                    path = Paths.get("assets","character",weapon.getName() + character.getName() + FORMAT_SPRITE).toString();
+                    pathWeapon = DrawComponentFactory.class.getClassLoader().getResource(path);
                     imgWeapons.add((BufferedImage) ImageIO.read(new File(pathWeapon.toURI())));
                 }
                 imgCharacter = (BufferedImage) ImageIO.read(new File(pathCharacter.toURI()));
+
                 // se la direzione è a sinistra ruoto l'immagine
                 if (character.getDir() == Direction.LEFT){
                     imgCharacter= ImageUtility.flipImage(imgCharacter);
                     imgWeapons = imgWeapons.stream().map(w->ImageUtility.flipImage(w)).toList();
                 }
+
+                //controllo se il personaggio ha preso danno da poco in tal caso coloro di rosso il personaggio
+                if(character.decLifeIsBlocked()) imgCharacter= tintImage(imgCharacter, Color.red);
+
                 // disegno il personaggio
                 BoundingBoxImplRet bBoxCharacter =(BoundingBoxImplRet)character.getBoundingBox();
                 g.drawImage(imgCharacter, (int) bBoxCharacter.getX(), (int) bBoxCharacter.getY(),(int)bBoxCharacter.getWidth(),(int)bBoxCharacter.getHeight(), null);
@@ -85,6 +100,7 @@ public class DrawComponentFactory {
 
     }
 
+
     /**
      * constructs a drawcomponent to draw a bounding box
      * 
@@ -98,9 +114,8 @@ public class DrawComponentFactory {
                 g.drawRect((int) newBBox.getX(), (int) newBBox.getY(), (int) newBBox.getWidth(),
                         (int) newBBox.getHeight());
             } else if (bBox instanceof BoundingBoxImplCirc) {
-                // TODO: da testare che sia giusto
                 BoundingBoxImplCirc newBBox = (BoundingBoxImplCirc) bBox;
-                g.drawOval((int) newBBox.getPoint().getX(), (int) newBBox.getPoint().getY(), (int) newBBox.getRadius(),
+                g.fillOval((int) newBBox.getPoint().getX(), (int) newBBox.getPoint().getY(), (int) newBBox.getRadius(),
                         (int) newBBox.getRadius());
             }
         };
@@ -110,12 +125,30 @@ public class DrawComponentFactory {
     public static DrawComponent graphicsComponentEnemy(Enemy enemy){
         return (g) ->{
             try{
-                URL pathEnemy;
-                BufferedImage imgEnemy;
-                pathEnemy = DrawComponentFactory.class.getResource("/assets/entities/enemies/"+enemy.getClass().getSimpleName() + FORMAT_SPRITE);
-                imgEnemy = (BufferedImage) ImageIO.read(new File(pathEnemy.toURI()));
-                if (enemy.getDir() == Direction.RIGHT){
-                    imgEnemy= ImageUtility.flipImage(imgEnemy);
+                URL pathSlime;
+                BufferedImage imgSlime;
+                String path = Paths.get("assets","entities","enemies","slime" + FORMAT_SPRITE).toString();
+                pathSlime = DrawComponentFactory.class.getClassLoader().getResource(path);
+                imgSlime = (BufferedImage) ImageIO.read(new File(pathSlime.toURI()));
+                BoundingBoxImplRet bBoxSlime =(BoundingBoxImplRet)slime.getBoundingBox();
+                g.drawImage(imgSlime, (int) bBoxSlime.getX(), (int) bBoxSlime.getY(),(int)bBoxSlime.getWidth(),(int)bBoxSlime.getHeight(), null);
+            } catch (URISyntaxException | IOException e) {
+                System.out.println("impossibile caricare l'immagine dello slime");
+                e.printStackTrace();
+            }
+        };
+    }
+
+    public static DrawComponent graphicsComponentFire(Fire fire){
+        return (g) ->{
+            try{
+                URL pathFire;
+                BufferedImage imgFire;
+                String path = Paths.get("assets","entities","enemies","fire" + FORMAT_SPRITE).toString();
+                pathFire = DrawComponentFactory.class.getClassLoader().getResource(path);
+                imgFire = (BufferedImage) ImageIO.read(new File(pathFire.toURI()));
+                if (fire.getDir() == Direction.RIGHT){
+                    imgFire= ImageUtility.flipImage(imgFire);
                 }
                 BoundingBoxImplRet bBoxEnemy =(BoundingBoxImplRet)enemy.getBoundingBox();
                 g.drawImage(imgEnemy, (int) bBoxEnemy.getX(), (int) bBoxEnemy.getY(),(int)bBoxEnemy.getWidth(),(int)bBoxEnemy.getHeight(), null);
@@ -160,28 +193,29 @@ public class DrawComponentFactory {
         };
     }
 
-    public static DrawComponent graphicsComponentHealth(AssetsManager assetsManager, Character knight) {
+    public static DrawComponent graphicsComponentHealth(Health knightHealth) {
         return (g) -> {
             resetDrawSettings(g);
 
             var imageWidth = 25;
-            Image hp = assetsManager.getImageAsset(Asset.LIFE_HEART);
+            Image hp = AssetsManager.getImageAsset(Asset.LIFE_HEART);
             g.drawImage(hp, 5, 0, imageWidth, 25, null);
             g.setFont(g.getFont().deriveFont(Font.BOLD, 20));
-            g.drawString(String.valueOf(knight.getLife().getHealth()), 10 + imageWidth, 20);
+            g.drawString(String.valueOf(knightHealth.getHealth()), 10 + imageWidth, 20);
         };
     }
 
-    public static DrawComponent graphicsComponentWorld(AssetsManager assetsManager, World w) {
+    public static DrawComponent graphicsComponentWorld(World w) {
         return (g) -> {
-            Image bImage = assetsManager.getImageAsset(Asset.GAME_BG);
+            Image bImage = AssetsManager.getImageAsset(Asset.GAME_BG);
             g.drawImage(bImage, 0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, null);
         };
     }
 
     public static DrawComponent graphicsComponentDummy(Dummy dummy){
         return (g) -> {
-            URL pathDummy = DrawComponentFactory.class.getResource("/assets/entities/dummy.png");
+            String path = Paths.get("assets","entities","dummy"+FORMAT_SPRITE).toString();
+            URL pathDummy = DrawComponentFactory.class.getClassLoader().getResource(path);
             try {
                 BoundingBoxImplRet entity = (BoundingBoxImplRet) dummy.getBoundingBox();
                 Image img = ImageIO.read(new File(pathDummy.toURI())).getScaledInstance((int) entity.getWidth(), (int) entity.getHeight(), Image.SCALE_DEFAULT);
@@ -193,8 +227,56 @@ public class DrawComponentFactory {
         };
     }
 
+    public static DrawComponent graphicsComponentMinotaur(Minotaur minotaur) {
+        return (g) -> {
+            try{
+                //URL pathMinotaur =DrawComponentFactory.class.getResource(File.separator+"assets"+File.separator+"boss"+File.separator+minotaur.getClass().getSimpleName().toLowerCase()+File.separator+ minotaur.getState() + FORMAT_SPRITE);
+                String path = Paths.get("assets","boss",minotaur.getClass().getSimpleName().toLowerCase(),minotaur.getState() + FORMAT_SPRITE).toString();
+                
+                URL pathMinotaur =DrawComponentFactory.class.getClassLoader().getResource(path);
+                BufferedImage imgMinotaur = ImageIO.read(new File(pathMinotaur.toURI()));
+                if (minotaur.getDir() == Direction.RIGHT){
+                    imgMinotaur = ImageUtility.flipImage(imgMinotaur);
+                }
+                BoundingBoxImplRet bBoxMinotaur =(BoundingBoxImplRet)minotaur.getBoundingBox();
+                g.drawImage(imgMinotaur, (int) bBoxMinotaur.getX(), (int) bBoxMinotaur.getY(),(int)bBoxMinotaur.getWidth(),(int)bBoxMinotaur.getHeight(), null);
+                //uncomment to draw bbox
+                //g.drawRect((int) bBoxMinotaur.getX(), (int) bBoxMinotaur.getY(), (int) bBoxMinotaur.getWidth(),(int) bBoxMinotaur.getHeight());
+            } catch (URISyntaxException | IOException e) {
+                System.out.println("impossibile caricare l'immagine del personaggio");
+                e.printStackTrace();
+            }
+        };
+    }
+
     private static void resetDrawSettings(Graphics g) {
         g.setFont(g.getFont().deriveFont(15.0f));
         g.setColor(Color.white); // Reset color to white
+    }
+
+    /** Tints the given image with the given color.
+     * @param loadImg - the image to paint and tint
+     * @param color - the color to tint. Alpha value of input color isn't used.
+     * @return A tinted version of loadImg */
+    private static BufferedImage tintImage(BufferedImage loadImg, Color color) {
+        BufferedImage img = new BufferedImage(loadImg.getWidth(), loadImg.getHeight(),
+                BufferedImage.TRANSLUCENT);
+        final float tintOpacity = 0.45f;
+        Graphics2D g2d = img.createGraphics(); 
+
+        // Disegna l'immagine di base
+        g2d.drawImage(loadImg, 0, 0, null);
+        
+        // Imposta la modalità di composizione Alpha per fondere i colori
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, tintOpacity));
+
+        // Imposta il colore con l'opacità desiderata
+        g2d.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), (int) (255 * tintOpacity)));
+
+        // Disegna il colore trasparente sopra l'immagine
+        g2d.fillRect(0, 0, loadImg.getWidth(), loadImg.getHeight());
+        
+        g2d.dispose();
+        return img;
     }
 }

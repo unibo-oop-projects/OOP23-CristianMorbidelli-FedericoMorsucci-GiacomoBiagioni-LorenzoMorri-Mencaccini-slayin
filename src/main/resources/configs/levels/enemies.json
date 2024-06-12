@@ -7,33 +7,46 @@
                     "id": 0,
                     "qnt": 1
                 }
-            ]
+            ],
+            "capacity": 1
         },
         {
             "id": 1,
             "enemies": [
                 {
                     "id": 1,
-                    "qnt": 10
+                    "qnt": 20
                 },
                 {
                     "id": 2,
                     "qnt": 5
                 }
-            ]
+            ],
+            "capacity": 10
         },
         {
             "id": 2,
             "enemies": [
                 {
                     "id": 1,
-                    "qnt": 15
+                    "qnt": 25
                 },
                 {
                     "id": 2,
-                    "qnt": 10
+                    "qnt": 7
                 }
-            ]
+            ],
+            "capacity": 15
+        },
+        {
+            "id": 3,
+            "enemies": [
+                {
+                    "id": 3,
+                    "qnt": 1
+                }
+            ],
+            "capacity": 1
         }
     ]
 }

@@ -11,18 +11,43 @@ import slayin.model.entities.GameObject;
  * of the enemies that have yet to appear in that level.
  */
 public class Level {
+
+    /** The ID of a level is its appearing order (EX: first level has id=1; second level has id=2...) */
+    private final int identifier;
     
     /** every level has a set of enemies that will be periodically dispatched in the scene,
      * this list keep track of the ones that has yet to be added to the game
      */
     private final List<GameObject> enemyToDispatch;
+    /** The capacity of a level is the maximum number of enemies that will be able to join the scene at the same time */
+    private final int capacity;
 
     /**
      * The constructor of the Level class that is used by the LevelFactory class to build the levels
+     * @param id - the identifier of the level
      * @param enemies - the list of enemies
+     * @param capacity - the capacity of the level
      */
-    public Level(List<GameObject> enemies){
+    public Level(int id, List<GameObject> enemies, int capacity){
+        this.identifier = id;
         this.enemyToDispatch = new ArrayList<>(enemies);
+        this.capacity = capacity;
+    }
+
+    /**
+     * Getter method for the {@code identifier} attribute
+     * @return the integer value of the level's id
+     */
+    public int getID(){
+        return this.identifier;
+    }
+
+    /**
+     * Getter method for the {@code capacity} attribute
+     * @return the integer value of the level's capacity
+     */
+    public int getCapacity(){
+        return this.capacity;
     }
 
     /**

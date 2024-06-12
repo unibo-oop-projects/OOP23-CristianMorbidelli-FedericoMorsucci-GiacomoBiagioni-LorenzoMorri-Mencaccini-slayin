@@ -7,17 +7,13 @@ import javax.swing.JPanel;
 
 import slayin.core.GameScene;
 import slayin.model.GameStatus;
-import slayin.model.entities.graphics.DrawComponentFactory;
 import slayin.model.utility.SceneType;
-import slayin.model.utility.assets.AssetsManager;
 
 public class GameLevelScene implements GameScene {
     private GameStatus gameStatus;
-    private AssetsManager assetsManager;
     private JPanel gameViewPanel;
 
-    public GameLevelScene(AssetsManager assetsManager, GameStatus gameStatus) {
-        this.assetsManager = assetsManager;
+    public GameLevelScene(GameStatus gameStatus) {
         this.gameStatus = gameStatus;
     }
 
@@ -50,13 +46,10 @@ public class GameLevelScene implements GameScene {
     }
 
     private void drawGame(Graphics g) {
-        gameStatus.getWorld().getDrawComponent(this.assetsManager).draw(g);
+        gameStatus.getWorld().getDrawComponent().draw(g);
         gameStatus.getScoreManager().getDrawComponent().draw(g);
         
-        // TODO: sostituire DrawComponentFactory con la funzione relativa della classe health
-        DrawComponentFactory.graphicsComponentHealth(this.assetsManager, gameStatus.getCharacter()).draw(g);
-        gameStatus.getObjects().forEach(e ->{
-            e.getDrawComponent().draw(g);
-        } );
+        gameStatus.getCharacter().getLife().getDrawComponent().draw(g);
+        gameStatus.getObjects().forEach(e -> e.getDrawComponent().draw(g));
     }
 }

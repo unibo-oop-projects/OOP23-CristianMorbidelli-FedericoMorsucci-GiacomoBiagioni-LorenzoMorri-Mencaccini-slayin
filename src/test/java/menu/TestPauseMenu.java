@@ -20,16 +20,16 @@ public class TestPauseMenu {
 
     @BeforeEach
     void setUp() {
-        status = new GameStatus();
+        status = new GameStatus(null);
         InputController inputController = new InputController(null);
-        sceneController = new SceneController(null, inputController, null);
+        sceneController = new SceneController(null, inputController);
     }
 
     @Test
     void testPauseMenu() {
         sceneController.createWindow();
 
-        sceneController.showMainMenuScene();
+        sceneController.switchScene(SceneType.MAIN_MENU);
         Optional<GameScene> curScene = sceneController.getActiveScene();
 
         assertTrue(curScene.isPresent());
