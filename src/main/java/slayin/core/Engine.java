@@ -7,7 +7,7 @@ import slayin.model.entities.character.MeleeWeapon;
 import java.util.List;
 
 import slayin.model.GameStatus;
-import slayin.model.events.ChangeResolutionEvent;
+import slayin.model.events.ResolutionChangedEvent;
 import slayin.model.events.GameEventListener;
 import slayin.model.events.GameOverEvent;
 import slayin.model.movement.InputController;
@@ -118,7 +118,6 @@ public class Engine {
         });
     }
 
-
     private void processInputs() {
         if(sceneController.isInMenu()) return;
         if(inputController.isJumping()){
@@ -130,10 +129,13 @@ public class Engine {
     private void processEvents() {
         eventListener.getEvents().forEach(e -> {
             if (e instanceof StartGameEvent) {
+                var event = (StartGameEvent) e;
+
                 System.out.println("[EVENT] Starting game");
                 this.initGame();
                 sceneController.showGameScene(status);
 
+                this.status.setupCharacter(event.getPlayableCharacter());
                 this.status.setLevel(levelFactory.buildLevel(1));   // setto il livello a 1; il livello 0 non è accessibile, è pensato soltanto per dei test
                 //this.status.addEnemy(this.status.getLevel().dispatchEnemy().get());
             } else if (e instanceof ShowPauseMenuEvent) {
@@ -185,9 +187,8 @@ public class Engine {
             } else if (e instanceof SimpleChangeSceneEvent) {
                 SimpleChangeSceneEvent event = (SimpleChangeSceneEvent) e;
                 sceneController.switchScene(event.getSceneType());
-            } else if (e instanceof ChangeResolutionEvent) {
-                ChangeResolutionEvent event = (ChangeResolutionEvent) e;
-                sceneController.changeResolution(event.getResolution());
+            } else if (e instanceof ResolutionChangedEvent) {
+                sceneController.updateResolution();
             }
         });
 

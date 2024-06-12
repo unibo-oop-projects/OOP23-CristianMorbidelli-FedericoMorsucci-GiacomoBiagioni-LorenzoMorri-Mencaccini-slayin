@@ -2,7 +2,7 @@ package slayin.model.score;
 
 import slayin.model.entities.graphics.DrawComponent;
 import slayin.model.entities.graphics.DrawComponentFactory;
-import slayin.model.utility.Constants;
+import slayin.model.utility.Globals;
 
 /**
  * The GameScore class is responsible for keeping track of the player's score and combo factor.
@@ -17,7 +17,7 @@ public class GameScore {
     public GameScore() {
         this.score = 0;
         this.comboFactor = 0;
-        this.remainingTime = Constants.COMBO_RESET_TIME;
+        this.remainingTime = Globals.COMBO_RESET_TIME;
     }
 
     /**
@@ -29,7 +29,7 @@ public class GameScore {
         this.score += score + comboFactor;
 
         comboFactor++;
-        remainingTime = Constants.COMBO_RESET_TIME;
+        remainingTime = Globals.COMBO_RESET_TIME;
         startTimestamp = System.currentTimeMillis();
     }
 
@@ -43,7 +43,7 @@ public class GameScore {
 
         if (remainingTime <= 0) {
             comboFactor = 0;
-            remainingTime = Constants.COMBO_RESET_TIME;
+            remainingTime = Globals.COMBO_RESET_TIME;
             return;
         }
 
