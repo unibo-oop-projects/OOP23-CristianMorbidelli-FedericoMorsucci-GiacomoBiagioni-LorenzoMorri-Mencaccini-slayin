@@ -13,11 +13,11 @@ public class TestEntityFactory {
     EntityFactory entityFactory;
     final int worldWidth = 1000;
     final int worldHeight = 1000;
-    final int groundLevel = 800;
+    final int groundLevel = (int) (worldHeight / 1.2);
 
     @BeforeEach
     void setUp(){
-        entityFactory = new EntityFactory(new World(worldWidth, worldHeight, groundLevel));
+        entityFactory = new EntityFactory(new World(worldWidth, worldHeight));
     }
 
     @Test

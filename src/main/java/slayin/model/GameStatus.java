@@ -30,7 +30,7 @@ public class GameStatus {
     private long tickSinceLastEnemyAdded;
 
     public GameStatus(GameEventListener eventListener){
-        world = new World(Globals.RESOLUTION.getWidth(), Globals.RESOLUTION.getHeight(), 600);
+        world = new World(Globals.RESOLUTION.getWidth(), Globals.RESOLUTION.getHeight());
         character = CharacterFactory.getWizard(world);
         enemies = new ArrayList<>();
         shots=new ArrayList<>();

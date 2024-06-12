@@ -15,7 +15,7 @@ import slayin.model.entities.boss.Minotaur.State;
 public class TestMinotaur {
     
     Minotaur minotaur;
-    World world = new World(100, 100, 80); 
+    World world = new World(100, 100); 
     BoundingBoxImplRet boundingBox = new BoundingBoxImplRet(null, 10, 20);
     
     @BeforeEach

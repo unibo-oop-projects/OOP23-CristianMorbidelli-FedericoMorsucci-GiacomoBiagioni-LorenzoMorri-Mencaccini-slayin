@@ -21,11 +21,10 @@ public class TestLevelFactory {
     LevelFactory levelFactory;
     final int worldWidth = 1000;
     final int worldHeight = 1000;
-    final int groundLevel = 800;
 
     @BeforeEach
     void setUp(){
-        this.levelFactory = new LevelFactory(new World(worldWidth, worldHeight, groundLevel));
+        this.levelFactory = new LevelFactory(new World(worldWidth, worldHeight));
     }
 
     @Test
