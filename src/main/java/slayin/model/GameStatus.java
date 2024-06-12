@@ -30,10 +30,9 @@ public class GameStatus {
 
     public GameStatus(GameEventListener eventListener){
         world = new World(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, 600);
-        character = CharacterFactory.getKnight(world);
+        character = CharacterFactory.getWizard(world);
         enemies = new ArrayList<>();
         shots=new ArrayList<>();
-        //enemies.add(new Minotaur(null, new BoundingBoxImplRet(null, 100, 150),world));
         scoreManager = new GameScore();
         this.eventListener = eventListener;
 

@@ -13,12 +13,22 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class CharacterFactory {
-    
 
+/**
+ * Factory class to create different types of characters.
+ */
+public class CharacterFactory { 
+
+    /**
+     * Creates a Knight character.
+     * 
+     * @param w the game world
+     * @return the created Knight character
+     */
     public static Character getKnight(World w){
+        double widthPlayer=w.getWidth()/23.2,heightPlayer=w.getHeight()/10.2,heightWeapon=w.getHeight()/20.5,widthWeapon=w.getWidth()/25.6;
         // la widthFromPlayer la calcolo facendo widthPlayer/2 + BoundingBoxWeapon/2
-        MeleeWeapon weapon = new MeleeWeapon(10, new BoundingBoxImplRet(new P2d(0, 0), 50, 35), 0, 53,"SwordL",-1);
+        MeleeWeapon weapon = new MeleeWeapon(10, new BoundingBoxImplRet(new P2d(0, 0), widthWeapon, heightWeapon), 0,(int)(widthPlayer/2 + widthWeapon/2),"SwordL",-1);
         Consumer<Character> func= new Consumer<Character>() {
 
             @Override
@@ -28,17 +38,25 @@ public class CharacterFactory {
             
         };  
         Function<Character,Optional<GameObject>> getShot= (c)->{return Optional.empty();};
-        return new Character(new P2d(500, 350), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), 55, 70),new Health(10, 10),w,func,getShot,"Knight",weapon);
+        return new Character(new P2d(w.getWidth()/2, w.getGround()), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), widthPlayer, heightPlayer),new Health(10, 10),w,func,getShot,"Knight",weapon);
     }
 
+
+    /**
+     * Creates a modified Knight character.
+     * 
+     * @param w the game world
+     * @return the created modified Knight character
+     */
     public static Character getKnightModify(World w){
-        MeleeWeapon weapon = new MeleeWeapon(10, new BoundingBoxImplRet(new P2d(0, 0), 50, 35), 0, 53,"SwordL",-1);
+        double widthPlayer=w.getWidth()/23.2,heightPlayer=w.getHeight()/10.2,heightWeapon=w.getHeight()/20.5,widthWeapon=w.getWidth()/25.6;
+        MeleeWeapon weapon = new MeleeWeapon(10, new BoundingBoxImplRet(new P2d(0, 0), widthWeapon, heightWeapon), 0, (int)(widthPlayer/2 + widthWeapon/2),"SwordL",-1);
         Consumer<Character> func= new Consumer<Character>() {
 
             @Override
             public void accept(Character t) {
                 //t.getVectorMovement().setY(Constants.FJUMP_CHARACTER);
-                t.addWeapon(new MeleeWeapon(10, new BoundingBoxImplRet(new P2d(0, 0), 50, 35), 0, -53,"SwordR",2000));
+                t.addWeapon(new MeleeWeapon(10, new BoundingBoxImplRet(new P2d(0, 0), widthWeapon, heightWeapon), 0, -(int)(widthPlayer/2 + widthWeapon/2),"SwordR",2000));
                 t.setTimeBlockedJump(1000);
                 t.setTimeBlockedMove(100);
                 if(t.getDir()==Direction.LEFT){
@@ -50,25 +68,33 @@ public class CharacterFactory {
             }
             
         };  
-        Function<Character,Optional<GameObject>> getShot= (c)->{return Optional.empty();};
-        return new Character(new P2d(500, 350), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), 55, 70),new Health(10, 10),w,func,getShot,"Knight",weapon);
+        Function<Character,Optional<GameObject>> getShot= (c)->Optional.empty();
+        return new Character(new P2d(w.getWidth()/2, w.getGround()), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), widthPlayer, heightPlayer),new Health(10, 10),w,func,getShot,"Knight",weapon);
     }
 
 
+    /**
+     * Creates a Wizard character.
+     * 
+     * @param w the game world
+     * @return the created Wizard character
+     */
     public static Character getWizard(World w){
+        double widthPlayer=w.getWidth()/23.2,heightPlayer=w.getHeight()/10.2,heightWeapon=w.getHeight()/3.6,widthWeapon=w.getWidth()/25.6;
         Consumer<Character> func= new Consumer<Character>() {
 
             @Override
             public void accept(Character t) {
                 //t.getVectorMovement().setY(Constants.FJUMP_CHARACTER);
-                t.addWeapon(new MeleeWeapon(10, new BoundingBoxImplRet(new P2d(0, 0), 50, 200), 65, 0,"Vortex",1000));
+                t.addWeapon(new MeleeWeapon(10, new BoundingBoxImplRet(new P2d(0, 0), widthWeapon, heightWeapon), (int)(heightWeapon/2-heightPlayer/2), 0,"Vortex",1000));
                 t.setTimeBlockedJump(2000);
+                t.setTimeBlockedDecLife(1000);
             }
             
         };  
 
         Function<Character,Optional<GameObject>> getShot= (c)->{return Optional.of(new RoundBullet(c,w));};
 
-        return new Character(new P2d(500, 350), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), 55, 70),new Health(10, 10),w,func,getShot,"Wizard");
+        return new Character(new P2d(w.getWidth()/2, w.getGround()), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), widthPlayer, heightPlayer),new Health(10, 10),w,func,getShot,"Wizard");
     }
 }
