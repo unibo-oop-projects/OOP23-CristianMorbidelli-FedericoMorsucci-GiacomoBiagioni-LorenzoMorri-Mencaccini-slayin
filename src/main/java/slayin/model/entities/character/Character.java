@@ -4,23 +4,30 @@ package slayin.model.entities.character;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 import slayin.model.World;
+import slayin.model.World.Edge;
 import slayin.model.bounding.BoundingBox;
+import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.entities.GameObject;
 import slayin.model.entities.graphics.DrawComponent;
 import slayin.model.entities.graphics.DrawComponentFactory;
 import slayin.model.movement.MovementController;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
+import slayin.model.utility.Constants;
 
 /**
  *  Base class for all characters.
  *  by default the character only moves left and right
  */
 public class Character extends GameObject{
+    private Vector2d gravity;
     private Health life;
     private List<MeleeWeapon> weapons;
+    private Consumer<Character> jumpFunc;
+    private Long timeBlockedJump, timeBlockedMove ,timeBlockedDecLife;
 
     /**
      * The constructor of the Character class
@@ -31,10 +38,15 @@ public class Character extends GameObject{
      * @param world - reference world used the character
      * @param weapons - melee weapons belonging to the character
      */
-    public Character(P2d pos, Vector2d vectorMouvement, BoundingBox boundingBox,Health life,World world, MeleeWeapon ... weapons) {
+    public Character(P2d pos, Vector2d vectorMouvement, BoundingBox boundingBox,Health life,World world,Consumer<Character> jumpFunc, MeleeWeapon ... weapons) {
         super(pos, vectorMouvement, boundingBox,world);
         this.life=life;
         this.weapons= new ArrayList<>(Arrays.asList(weapons));
+        gravity= new Vector2d(0, Constants.GRAVITY_CHARACTER);  
+        this.jumpFunc=jumpFunc;
+        this.timeBlockedJump=0L;
+        this.timeBlockedMove=0L;
+        this.timeBlockedDecLife=0L;
     }
 
     /**
@@ -67,7 +79,10 @@ public class Character extends GameObject{
      * @param damage - value that will decrease life, must be greater than zero otherwise it will not decrease life
      */
     public void decLife(int damage){
-        this.life.decLife(damage);
+        if(!(decLifeIsBlocked())){
+            this.life.decLife(damage);
+            this.setTimeBlockedDecLife(1000);
+        }
     }
 
     @Override
@@ -75,23 +90,112 @@ public class Character extends GameObject{
         return DrawComponentFactory.graphicsComponentCharacter(this);
     }
 
+    public void addWeapon(MeleeWeapon weapon){
+        this.weapons.add(weapon);
+    }
 
+    
     public void updateVel(MovementController input) {
-        if(input.isMovingLeft()){
-            this.getVectorMovement().setX(-150);
-        }else if(input.isMovingRight()){
-            this.getVectorMovement().setX(150);
+        if(input.isJumping() && this.getWorld().isTouchingGround(this) && !(jumpIsBlocked())){
+            this.jumpFunc.accept(this);
+            input.setJumping(false);
+        }else if(input.isMovingLeft() && !(moveIsBlocked())){
+            this.getVectorMovement().setX(Constants.FLEFT_CHARACTER);
+            this.setDir(Direction.LEFT);
+        }else if(input.isMovingRight() && !(moveIsBlocked())){
+            this.getVectorMovement().setX(Constants.FRIGHT_CHARACTER);
+            this.setDir(Direction.RIGHT);
+        }
+    }
+
+    private void controlCollision(){
+        List<Edge> collision= this.getWorld().collidingWith(this);
+        BoundingBoxImplRet bBox = (BoundingBoxImplRet) this.getBoundingBox();
+        for(var col : collision){
+
+            if(col == Edge.LEFT_BORDER && this.getDir()==Direction.LEFT){
+                this.getVectorMovement().setX(0);
+                this.getPos().setX(bBox.getWidth()/2);
+            }
+
+            if(col == Edge.RIGHT_BORDER && this.getDir()==Direction.RIGHT){
+                this.getVectorMovement().setX(0);
+                this.getPos().setX(this.getWorld().getWidth()-bBox.getWidth()/2);
+            }
+            if(col == Edge.BOTTOM_BORDER ){
+                this.getVectorMovement().setY(0);
+                this.setPos(new P2d(this.getPos().getX(),this.getWorld().getGround()-(bBox.getHeight()/2)));
+            }
+        }
+    }
+
+    private void updateBoundingBox(){
+        this.getBoundingBox().updatePoint(this.getPos());
+        if(this.getDir()==Direction.LEFT){
+            this.getWeapons().stream().forEach(t->{
+                if(t.getBoxWeapon() instanceof BoundingBoxImplRet){
+                    t.updateBoxWeapon(new P2d(this.getPos().getX()-(t.getWidthFromPlayer()),this.getPos().getY()-t.getHeightFromPlayer()));
+                }//volendo se si hanno armi circolari si può aggiungere il controllo anche per quelle
+            });
+        }else{
+            this.getWeapons().stream().forEach(t->{
+                if(t.getBoxWeapon() instanceof BoundingBoxImplRet){
+                    t.updateBoxWeapon(new P2d(this.getPos().getX()+(t.getWidthFromPlayer()),this.getPos().getY()-t.getHeightFromPlayer()));
+                }//volendo se si hanno armi circolari si può aggiungere il controllo anche per quelle
+            });
         }
     }
 
     @Override
     public void updatePos(int dt) {
+        //remove weapon expired
+        this.weapons.removeIf(w->w.isBroken());
+        //add the gravity 
+        this.setVectorMovement(this.getVectorMovement().sum(gravity.mul(0.001*dt)));
+        //actual movement
         this.setPos(this.getPos().sum(this.getVectorMovement().mul(0.001*dt)));
-        //update the boundingBox
-        if(this.getDir()==Direction.LEFT){
-            this.getWeapons().stream().forEach(t->t.updateBoxWeapon(new P2d(this.getPos().getX()-t.getWidthFromPlayer(),this.getPos().getY()+t.getHeightFromPlayer())));
-        }else{
-            this.getWeapons().stream().forEach(t->t.updateBoxWeapon(new P2d(this.getPos().getX()+t.getWidthFromPlayer(),this.getPos().getY()+t.getHeightFromPlayer())));
-        }
+        //update bounding box player
+        this.getBoundingBox().updatePoint(this.getPos());
+        //controll collision
+        this.controlCollision();
+        //update all bounding box
+        this.updateBoundingBox();
+    }
+
+
+    private boolean decLifeIsBlocked(){
+        return System.currentTimeMillis()<timeBlockedDecLife;
+    }
+
+    /**
+     * setting the time for which the character does not lose his life
+     * @param time - time in milliseconds during which the character does not lose life
+     */
+    public void setTimeBlockedDecLife(int time){
+        this.timeBlockedDecLife= System.currentTimeMillis()+time;
+    }
+    
+    private boolean jumpIsBlocked(){
+        return System.currentTimeMillis()<timeBlockedJump;
+    }
+
+    /**
+     * setting time for which character jumping is blocked
+     * @param time - time in milliseconds for which the jump must be blocked
+     */
+    public void setTimeBlockedJump(int time){
+        this.timeBlockedJump= System.currentTimeMillis()+time;
+    }
+
+    private boolean moveIsBlocked(){
+        return System.currentTimeMillis()<timeBlockedMove;
+    }
+
+    /**
+     * setting time for which character move is blocked
+     * @param time - time in milliseconds for which the move must be blocked
+     */
+    public void setTimeBlockedMove(int time){
+        this.timeBlockedMove= System.currentTimeMillis()+time;
     }
 }

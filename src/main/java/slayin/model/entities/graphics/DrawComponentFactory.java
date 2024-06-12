@@ -22,11 +22,16 @@ import slayin.model.entities.GameObject.Direction;
 import slayin.model.score.GameScore;
 import slayin.model.utility.ImageUtility;
 import slayin.model.utility.Pair;
+import slayin.model.utility.assets.Asset;
+import slayin.model.utility.assets.AssetsManager;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import slayin.model.entities.Dummy;
-import slayin.model.utility.AssetsManager;
 import slayin.model.utility.Constants;
 
 /**
@@ -129,27 +134,48 @@ public class DrawComponentFactory {
      */
     public static DrawComponent graphicsComponentScore(GameScore scoreManager) {
         return (g) -> {
-            g.drawString("Score: " + scoreManager.getScore(), 10, 20);
+            resetDrawSettings(g);
 
-            if (scoreManager.getComboFactor() == 0 || scoreManager.getRemainingTime() <= 0)
-                g.drawString("No Combo", 10, 40);
-            else {
-                String remainingSeconds = String.format("%.1f", scoreManager.getRemainingTime() / 1000.0f);
-                g.drawString("Combo: +" + scoreManager.getComboFactor() + " (Time: " + remainingSeconds + "s)", 10, 40);
+            var scoreHeight = 40;
+            g.drawString("Score: " + scoreManager.getScore(), 10, scoreHeight);
+
+            var comboHeight = 60;
+            if (scoreManager.getComboFactor() == 0 || scoreManager.getRemainingTime() <= 0) {
+                g.drawString("No Combo", 10, comboHeight);
+                return;
             }
+
+            float remainingTime = scoreManager.getRemainingTime() / 1000f;
+            String comboText = "Combo: +" + scoreManager.getComboFactor();
+            g.drawString(comboText, 10, comboHeight);
+
+            FontMetrics fm = g.getFontMetrics(g.getFont());    
+            float comboTimePercentage = remainingTime / (Constants.COMBO_RESET_TIME / 1000f);
+            int pbarHeight = 10;
+            int xSpacing = fm.stringWidth(comboText) + 20;
+
+            g.drawRect(xSpacing, comboHeight - pbarHeight, 100, pbarHeight);
+            g.setColor(Color.BLUE);                
+            g.fillRect(xSpacing, comboHeight - pbarHeight, (int) (comboTimePercentage * 100), pbarHeight);
         };
     }
 
-    public static DrawComponent graphicsComponentHealth(Character knight) {
+    public static DrawComponent graphicsComponentHealth(AssetsManager assetsManager, Character knight) {
         return (g) -> {
-            g.drawString("Health: " + knight.getLife(), 10, 60);
+            resetDrawSettings(g);
+
+            var imageWidth = 25;
+            Image hp = assetsManager.getImageAsset(Asset.LIFE_HEART);
+            g.drawImage(hp, 5, 0, imageWidth, 25, null);
+            g.setFont(g.getFont().deriveFont(Font.BOLD, 20));
+            g.drawString(String.valueOf(knight.getLife().getHealth()), 10 + imageWidth, 20);
         };
     }
 
-    public static DrawComponent graphicsComponentWorld(World w) {
-        Image background = AssetsManager.loadImage("/assets/backgrounds/game_bg.jpg");
+    public static DrawComponent graphicsComponentWorld(AssetsManager assetsManager, World w) {
         return (g) -> {
-            g.drawImage(background, 0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, null);
+            Image bImage = assetsManager.getImageAsset(Asset.GAME_BG);
+            g.drawImage(bImage, 0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, null);
         };
     }
 
@@ -165,5 +191,10 @@ public class DrawComponentFactory {
                 e.printStackTrace();
             }
         };
+    }
+
+    private static void resetDrawSettings(Graphics g) {
+        g.setFont(g.getFont().deriveFont(15.0f));
+        g.setColor(Color.white); // Reset color to white
     }
 }

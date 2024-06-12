@@ -20,7 +20,7 @@ public class TestGameStatus {
 
     @Test
     void testAddRemoveEnemy(){
-        GameObject tmp = new Knight(null, null, null,null,null);
+        GameObject tmp = new Knight(null, null, null,null,null,null);
 
         assertEquals(status.getObjects().size(), 1);    // the status contains the main character only
         assertFalse(status.getObjects().contains(tmp));

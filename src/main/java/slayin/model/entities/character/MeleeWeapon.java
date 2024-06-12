@@ -11,6 +11,8 @@ public class MeleeWeapon {
     private String name;
     private BoundingBox boxWeapon;
     private int heightFromPlayer,widthFromPlayer;
+    private int durationTime;
+    private Long timeCreation;
 
     /**
      * The constructor of the MeleeWeapon class
@@ -18,13 +20,28 @@ public class MeleeWeapon {
      * @param boxWeapon - bounding box weapon
      * @param heightFromPlayer - vertical distance of the weapon from the player's center
      * @param widthFromPlayer - horizontal distance of the weapon from the player's center
+     * @param durationTime - the duration time of the weapon expressed in milliseconds
      */
-    public MeleeWeapon(int damage, BoundingBox boxWeapon,int heightFromPlayer,int widthFromPlayer,String name) {
+    public MeleeWeapon(int damage, BoundingBox boxWeapon,int heightFromPlayer,int widthFromPlayer,String name,int durationTime) {
         this.damage = damage;
         this.boxWeapon = boxWeapon;
         this.heightFromPlayer= heightFromPlayer;
         this.widthFromPlayer= widthFromPlayer;
         this.name= name;
+        this.durationTime=durationTime;
+        this.timeCreation= System.currentTimeMillis();
+
+    }
+    
+    /**
+     * returns true if the weapon's duration is over and false otherwise
+     * @return true if the weapon's duration is over and false otherwise
+     */
+    public Boolean isBroken(){
+        int dt = (int) (System.currentTimeMillis() - this.timeCreation);
+        //TODO: vedi se si trova un metodo migliore per geistire il -1
+        if(durationTime==-1) return false;
+        return dt>this.durationTime;
     }
 
     /**
