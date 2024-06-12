@@ -28,6 +28,10 @@ public class P2d {
         this.y = y;
     }
 
+    public Boolean equalsX(P2d point){
+        return this.x == point.getX();
+    } 
+
     public double distanceFromPoint(double x, double y) {
         return Math.sqrt(Math.pow((this.x - x), 2) + Math.pow((this.y - y), 2));
     }

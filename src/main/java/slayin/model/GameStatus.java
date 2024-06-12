@@ -11,6 +11,7 @@ import slayin.model.entities.character.Health;
 import slayin.model.entities.character.MeleeWeapon;
 import slayin.model.score.GameScore;
 import slayin.model.utility.Constants;
+import slayin.model.utility.EntityFactory;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
 
@@ -41,6 +42,9 @@ public class GameStatus {
 
     public void addEnemy(GameObject entity){
         enemies.add(entity);
+        //
+        EntityFactory tmp = new EntityFactory(world);
+        enemies.add(tmp.buildFire());
     }
 
     public void removeEnemy(GameObject entity){
