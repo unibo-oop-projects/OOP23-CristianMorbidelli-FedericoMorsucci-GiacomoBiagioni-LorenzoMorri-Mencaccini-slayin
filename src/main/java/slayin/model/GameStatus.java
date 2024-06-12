@@ -30,7 +30,7 @@ public class GameStatus {
 
     public GameStatus(GameEventListener eventListener){
         world = new World(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, 600);
-        character = CharacterFactory.getWizard(world);
+        character = CharacterFactory.getKnight(world);
         enemies = new ArrayList<>();
         shots=new ArrayList<>();
         scoreManager = new GameScore();
