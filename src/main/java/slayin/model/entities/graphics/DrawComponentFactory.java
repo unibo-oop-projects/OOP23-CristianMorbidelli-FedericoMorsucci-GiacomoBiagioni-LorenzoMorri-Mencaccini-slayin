@@ -27,6 +27,7 @@ import slayin.model.utility.ImageUtility;
 import slayin.model.utility.Pair;
 import slayin.model.utility.assets.Asset;
 import slayin.model.utility.assets.AssetsManager;
+import slayin.model.entities.enemies.Fire;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -130,7 +131,7 @@ public class DrawComponentFactory {
                 String path = Paths.get("assets","entities","enemies","slime" + FORMAT_SPRITE).toString();
                 pathSlime = DrawComponentFactory.class.getClassLoader().getResource(path);
                 imgSlime = (BufferedImage) ImageIO.read(new File(pathSlime.toURI()));
-                BoundingBoxImplRet bBoxSlime =(BoundingBoxImplRet)slime.getBoundingBox();
+                BoundingBoxImplRet bBoxSlime =(BoundingBoxImplRet)enemy.getBoundingBox();
                 g.drawImage(imgSlime, (int) bBoxSlime.getX(), (int) bBoxSlime.getY(),(int)bBoxSlime.getWidth(),(int)bBoxSlime.getHeight(), null);
             } catch (URISyntaxException | IOException e) {
                 System.out.println("impossibile caricare l'immagine dello slime");
@@ -150,8 +151,8 @@ public class DrawComponentFactory {
                 if (fire.getDir() == Direction.RIGHT){
                     imgFire= ImageUtility.flipImage(imgFire);
                 }
-                BoundingBoxImplRet bBoxEnemy =(BoundingBoxImplRet)enemy.getBoundingBox();
-                g.drawImage(imgEnemy, (int) bBoxEnemy.getX(), (int) bBoxEnemy.getY(),(int)bBoxEnemy.getWidth(),(int)bBoxEnemy.getHeight(), null);
+                BoundingBoxImplRet bBoxEnemy =(BoundingBoxImplRet)fire.getBoundingBox();
+                g.drawImage(imgFire, (int) bBoxEnemy.getX(), (int) bBoxEnemy.getY(),(int)bBoxEnemy.getWidth(),(int)bBoxEnemy.getHeight(), null);
             } catch (URISyntaxException | IOException e) {
                 System.out.println("impossibile caricare l'immagine del nemico");
                 e.printStackTrace();
