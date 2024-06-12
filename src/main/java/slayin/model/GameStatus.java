@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.entities.GameObject;
+import slayin.model.entities.boss.Imp;
 import slayin.model.entities.character.Character;
 import slayin.model.entities.character.CharacterFactory;
 import slayin.model.events.GameEventListener;
@@ -34,6 +36,7 @@ public class GameStatus {
         enemies = new ArrayList<>();
         shots=new ArrayList<>();
         //enemies.add(new Minotaur(null, new BoundingBoxImplRet(null, 100, 150),world));
+        enemies.add(new Imp(null, new BoundingBoxImplRet(null, 70, 70), world));
         scoreManager = new GameScore();
         this.eventListener = eventListener;
 

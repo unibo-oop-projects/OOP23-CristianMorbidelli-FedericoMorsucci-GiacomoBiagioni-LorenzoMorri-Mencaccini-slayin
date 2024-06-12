@@ -24,7 +24,7 @@ public class TestMinotaur {
     }
 
     @Test
-    void testPosLeft(){
+    void testPos(){
         assertTrue(minotaur.getPos().getX()==95.0);
         assertTrue(minotaur.getPos().getY()==70.0);
         minotaur.updatePos(1000); //parte timer prima di state run
@@ -51,6 +51,7 @@ public class TestMinotaur {
         minotaur.updatePos(1000); //va a sbattere -> collisione
         assertTrue(minotaur.getState()==State.RUN);//si muove
         
+        minotaur.updatePos(1000);
         minotaur.updatePos(1000);
 
         assertTrue(minotaur.getState()==State.STUNNED); //ha dato la testata

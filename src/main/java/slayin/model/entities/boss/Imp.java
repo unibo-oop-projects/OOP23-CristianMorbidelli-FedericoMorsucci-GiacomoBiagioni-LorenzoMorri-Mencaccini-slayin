@@ -1,20 +1,25 @@
 package slayin.model.entities.boss;
 
 import slayin.model.World;
-import slayin.model.bounding.BoundingBox;
+import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.entities.graphics.DrawComponent;
 import slayin.model.entities.graphics.DrawComponentFactory;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 public class Imp extends Boss {
 
-    public static enum State { START, ATTACK, WAITING, PUFF, HITTED }
+    public static enum State { START, ATTACK, WAITING, INVISIBLE, HITTED }
     private State state;
     private int numShots;
+    private int shotsFired;
     private boolean posFlag;
+    private ArrayList<P2d> positions = new ArrayList<>();
 
-    public Imp(P2d pos, Vector2d vectorMovement, BoundingBox boundingBox, World world) {
+    public Imp(P2d pos, BoundingBoxImplRet boundingBox, World world) {
         super(new P2d(
                 world.getWidth()/2,
                 world.getHeight()/2 //first position in the centre of the screen
@@ -22,15 +27,37 @@ public class Imp extends Boss {
             new Vector2d(0,0), //Imp teleport in 4 different position
             boundingBox, 
             world);
-        //TODO dimensioni bbox
+
+        this.positions.add(new P2d(
+            world.getWidth()-(boundingBox.getWidth()/2), //right
+            world.getGround()-(boundingBox.getHeight()/2)//ground height
+        ));
+
+        this.positions.add(new P2d(
+            (boundingBox.getWidth()/2), //left
+            world.getGround()-(boundingBox.getHeight()/2)//ground height
+        ));
+
+        this.positions.add(new P2d(
+            world.getWidth()-(boundingBox.getWidth()/2), //right
+            180                                        //max height
+        ));
+
+        this.positions.add(new P2d(
+            (boundingBox.getWidth()/2), //left
+            180                                        //max height
+        ));
 
         this.setHealth(10); //The Imp must receive 10 hits to be defeated
         this.setNumShots(0);//Imp attacks after first hit
+        this.setShotsFired(0);
 
         this.getBoundingBox().updatePoint(this.getPos());//set bounding box position
 
-        this.changeState(State.START); //initial Minotaur state
+        this.changeState(State.START); //initial Imp state
         this.posFlag=false;
+
+        this.setDir(Direction.LEFT); //initial direction (only for drawing correctly image)
     }
 
     @Override
@@ -45,23 +72,35 @@ public class Imp extends Boss {
                 if(posFlag){
                     //reset flag
                     this.posFlag=false;
+                    
+                    //reset shots fired
+                    this.setShotsFired(0);
                 }
                 //spawn in a casual position, wait 5 seconds then attacks
-                if(this.secondDifference(5.0)){
+                if(this.secondDifference(2.0)){
                     changeState(State.ATTACK);
                 }
                 break;
             case ATTACK:
-                //TODO: attacca -> spawn palla
+                if(this.secondDifference(4.0)){
+                    this.changeState(State.WAITING);
+                }
+                //every second shoots a ball
+                if(this.secondDifference(this.getShotsFired()+0.0) && this.numShots!=0){
+                    //TODO: attacca -> spawn palla
+                    if(this.getShotsFired()<this.getNumShots()){//check if it can shoot
+                        this.setShotsFired(this.getShotsFired()+1);//update shotsFired+1
+                    }
+                }                
                 break;
             case WAITING:
-                if(this.secondDifference(5.0)){
-                    changeState(State.PUFF);
+                if(this.secondDifference(2.0)){
+                    this.changeState(State.INVISIBLE);
                 }
                 break;
             case HITTED:
                 if(this.secondDifference(1.0)){
-                    this.changeState(State.PUFF);
+                    this.changeState(State.INVISIBLE);
 
                     //every three hits updates num of shots
                     if(this.getHealth() % 3==0){
@@ -69,7 +108,7 @@ public class Imp extends Boss {
                     }
                 }
                 break;
-            case PUFF:
+            case INVISIBLE:
                 if(secondDifference(1.0)){
                     this.update(); //update position
                     this.changeState(State.START);
@@ -82,14 +121,24 @@ public class Imp extends Boss {
 
     private void update() {
 
-        //if is in puff state 
-        if(this.state==State.PUFF){
+        //if is in INVISIBLE state 
+        if(this.state==State.INVISIBLE){
             if(!this.posFlag){
                 //he changed position, set flag to true
                 this.posFlag=true;
+                BoundingBoxImplRet bBox = (BoundingBoxImplRet) this.getBoundingBox();
                 
-                //TODO: set pos
-                this.setPos(new P2d(getPos()));
+                //update the position to one of the default ones
+                this.setPos(
+                    this.positions.get(
+                        new Random().nextInt(positions.size())//get random position
+                    )
+                );
+                if(this.getPos().getX()>(bBox.getWidth()/2)){ //if is in the right screen side
+                    this.setDir(Direction.LEFT);
+                }else{
+                    this.setDir(Direction.RIGHT);
+                }
                 
                 //update bounding box position
                 this.getBoundingBox().updatePoint(this.getPos());
@@ -98,15 +147,17 @@ public class Imp extends Boss {
     }
 
     /**
-     * if is hitted in any state, change state and decrease health 
+     * if is hitted, change state and decrease health 
      */
     @Override
     public boolean onHit() {
         boolean outcome= false;
-        this.changeState(State.HITTED);
-        this.diminishHealth(1);
-        if(this.getHealth()==0){
-            outcome = true;
+        if(this.state == State.WAITING || this.state == State.ATTACK || this.state == State.START){
+            this.changeState(State.HITTED);
+            this.diminishHealth(1);
+            if(this.getHealth()==0){
+                outcome = true;
+            }
         }
         return outcome;
     }
@@ -136,9 +187,24 @@ public class Imp extends Boss {
     }
 
     /**
-     * @return how many shots imp shoots
+     * @return how many shots imp has to shoot
      */
     public int getNumShots() {
         return this.numShots;
+    }
+
+    /**
+     * set how many shots imp had shoot
+     * @param num
+     */
+    public void setShotsFired(int num) {
+        this.numShots=num;
+    }
+
+    /**
+     * @return how many shots imp shoots
+     */
+    public int getShotsFired() {
+        return this.shotsFired;
     }
 }

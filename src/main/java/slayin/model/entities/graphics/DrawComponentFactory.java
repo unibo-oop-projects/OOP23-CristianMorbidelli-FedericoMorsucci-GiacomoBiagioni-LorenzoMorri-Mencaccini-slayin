@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URISyntaxException;
+import java.nio.file.Paths;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -22,7 +23,6 @@ import slayin.model.entities.enemies.Slime;
 import slayin.model.entities.GameObject.Direction;
 import slayin.model.entities.boss.Imp;
 import slayin.model.entities.boss.Minotaur;
-import slayin.model.entities.boss.Minotaur.State;
 import slayin.model.score.GameScore;
 import slayin.model.utility.ImageUtility;
 import slayin.model.utility.Pair;
@@ -232,7 +232,7 @@ public class DrawComponentFactory {
                 if (minotaur.getDir() == Direction.RIGHT){
                     imgMinotaur = ImageUtility.flipImage(imgMinotaur);
                 }
-                if(minotaur.getState()==State.HITTED){
+                if(minotaur.getState()==Minotaur.State.HITTED){
                     imgMinotaur = tintImage(imgMinotaur, Color.red);
                 }
                 BoundingBoxImplRet bBoxMinotaur =(BoundingBoxImplRet)minotaur.getBoundingBox();
@@ -282,7 +282,28 @@ public class DrawComponentFactory {
     }
 
     public static DrawComponent graphicsComponentImp(Imp imp) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'graphicsComponentImp'");
+        return (g) -> {
+            try{
+                String path = Paths.get("assets","boss",imp.getClass().getSimpleName().toLowerCase(), imp.getState() + FORMAT_SPRITE).toString();
+                URL pathImp =DrawComponentFactory.class.getClassLoader().getResource(path);
+                BufferedImage imgImp = ImageIO.read(new File(pathImp.toURI()));
+                if (imp.getDir() == Direction.RIGHT){
+                    imgImp = ImageUtility.flipImage(imgImp);
+                }
+                if(imp.getState()==Imp.State.HITTED){
+                    imgImp = tintImage(imgImp, Color.red);
+                }
+                if(imp.getState()==Imp.State.ATTACK){
+                    imgImp = tintImage(imgImp, Color.pink);
+                }
+                BoundingBoxImplRet bBoxImp =(BoundingBoxImplRet)imp.getBoundingBox();
+                g.drawImage(imgImp, (int) bBoxImp.getX(), (int) bBoxImp.getY(),(int)bBoxImp.getWidth(),(int)bBoxImp.getHeight(), null);
+                //uncomment to draw bbox
+                //g.drawRect((int) bBoxImp.getX(), (int) bBoxImp.getY(), (int) bBoxImp.getWidth(),(int) bBoxImp.getHeight());
+            } catch (URISyntaxException | IOException e) {
+                System.out.println("impossibile caricare l'immagine del personaggio");
+                e.printStackTrace();
+            }
+        };
     }
 }

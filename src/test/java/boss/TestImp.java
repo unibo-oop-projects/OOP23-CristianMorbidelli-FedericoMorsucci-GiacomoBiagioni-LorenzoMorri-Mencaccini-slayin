@@ -1,0 +1,184 @@
+package boss;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import slayin.model.World;
+import slayin.model.bounding.BoundingBoxImplRet;
+import slayin.model.entities.boss.Imp;
+import slayin.model.entities.boss.Imp.State;
+
+public class TestImp {
+    Imp imp;
+    World world = new World(100, 100, 80); 
+    BoundingBoxImplRet boundingBox = new BoundingBoxImplRet(null, 10, 10);
+    
+    @BeforeEach
+    void setUp(){
+        imp= new Imp(null, boundingBox, world);
+    }
+
+    @Test
+    void testPos(){
+        //posizione iniziale
+        assertTrue(imp.getPos().getX()==50.0);
+        assertTrue(imp.getPos().getY()==50.0);
+        
+        imp.updatePos(1);
+
+        imp.setPreviousTime(this.getCurrentMinusNSeconds(2.0));
+        
+        imp.updatePos(1);//cambio stato -> ATTACK
+
+        //stessa posizione
+        assertTrue(imp.getPos().getX()==50.0);
+        assertTrue(imp.getPos().getY()==50.0);
+
+        imp.setPreviousTime(this.getCurrentMinusNSeconds(4.0));
+        
+        imp.updatePos(1);//cambio stato -> WAITING
+
+        //stessa posizione
+        assertTrue(imp.getPos().getX()==50.0);
+        assertTrue(imp.getPos().getY()==50.0);
+
+        imp.setPreviousTime(this.getCurrentMinusNSeconds(2.0));
+        
+        imp.updatePos(1);//cambio stato -> INVISIBLE
+
+        //stessa posizione
+        assertTrue(imp.getPos().getX()==50.0);
+        assertTrue(imp.getPos().getY()==50.0);
+
+        imp.setPreviousTime(this.getCurrentMinusNSeconds(2.0));
+        
+        imp.updatePos(1);//cambio stato ->START
+        assertFalse(imp.getPos().getX()==50.0);
+        assertTrue(imp.getPos().getX()==5.0 || imp.getPos().getX()==95.0);
+    }
+
+    @Test
+    void testLogic(){
+        assertTrue(imp.getState()==State.START);
+        
+        imp.updatePos(1);
+
+        imp.setPreviousTime(this.getCurrentMinusNSeconds(2.0));
+        
+        imp.updatePos(1);//cambio stato -> ATTACK
+
+        assertFalse(imp.getState()==State.START);
+        assertTrue(imp.getState()==State.ATTACK);
+
+        imp.setPreviousTime(this.getCurrentMinusNSeconds(4.0));
+        
+        imp.updatePos(1);//cambio stato -> WAITING
+
+        assertFalse(imp.getState()==State.START);
+        assertFalse(imp.getState()==State.ATTACK);
+        assertTrue(imp.getState()==State.WAITING);
+
+        imp.setPreviousTime(this.getCurrentMinusNSeconds(2.0));
+        
+        imp.updatePos(1);//cambio stato -> INVISIBLE
+
+        assertFalse(imp.getState()==State.START);
+        assertFalse(imp.getState()==State.ATTACK);
+        assertFalse(imp.getState()==State.WAITING);
+        assertTrue(imp.getState()==State.INVISIBLE);
+
+        imp.setPreviousTime(this.getCurrentMinusNSeconds(2.0));
+        
+        imp.updatePos(1);//cambio stato ->START
+
+        assertFalse(imp.getState()==State.INVISIBLE);
+        assertTrue(imp.getState()==State.START);
+    }
+
+    @Test
+    void testDamageAndNumShots(){
+        assertTrue(imp.getNumShots()==0);
+
+        imp.updatePos(1);
+
+        imp.setPreviousTime(this.getCurrentMinusNSeconds(2.0));
+        
+        imp.updatePos(1);//cambio stato -> ATTACK
+        imp.setPreviousTime(this.getCurrentMinusNSeconds(4.0));
+        
+        imp.updatePos(1);//cambio stato -> WAITING
+
+        imp.onHit();//colpito
+        assertTrue(imp.getHealth()==9);
+        imp.onHit();
+        assertFalse(imp.getHealth()==8);
+        assertTrue(imp.getState()==State.HITTED);
+
+        imp.setPreviousTime(this.getCurrentMinusNSeconds(1.0));
+        
+        imp.updatePos(1);//cambio stato -> INVISIBLE
+
+        assertTrue(imp.getState()==State.INVISIBLE);
+        imp.onHit();
+        assertFalse(imp.getHealth()==8);
+        assertFalse(imp.getState()==State.HITTED);
+
+        imp.setPreviousTime(this.getCurrentMinusNSeconds(2.0));
+        
+        imp.updatePos(1);//cambio stato ->START
+        assertTrue(imp.getNumShots()==1);//colpi aumentati
+
+        assertFalse(imp.getState()==State.INVISIBLE);
+        assertTrue(imp.getState()==State.START);
+
+        imp.onHit();//colpito
+        assertTrue(imp.getHealth()==8);
+        imp.onHit();
+        assertFalse(imp.getHealth()==7);
+        assertTrue(imp.getState()==State.HITTED);
+
+        imp.setPreviousTime(this.getCurrentMinusNSeconds(1.0));
+        
+        imp.updatePos(1);//cambio stato -> INVISIBLE
+
+        assertTrue(imp.getState()==State.INVISIBLE);
+        assertFalse(imp.getState()==State.HITTED);
+
+        imp.setPreviousTime(this.getCurrentMinusNSeconds(2.0));
+        
+        imp.updatePos(1);//cambio stato ->START
+        assertTrue(imp.getNumShots()==1);//colpi invariati
+
+        imp.diminishHealth(1); //tolgo manualmente 1
+        assertTrue(imp.getState()==State.START);
+
+        imp.onHit();//colpito
+        assertTrue(imp.getHealth()==6);
+        imp.onHit();
+        assertFalse(imp.getHealth()==5);
+        assertTrue(imp.getState()==State.HITTED);
+
+        imp.setPreviousTime(this.getCurrentMinusNSeconds(1.0));
+        
+        imp.updatePos(1);//cambio stato -> INVISIBLE
+
+        assertTrue(imp.getState()==State.INVISIBLE);
+        assertFalse(imp.getState()==State.HITTED);
+
+        imp.setPreviousTime(this.getCurrentMinusNSeconds(2.0));
+        
+        imp.updatePos(1);//cambio stato ->START
+        assertTrue(imp.getNumShots()==2);//colpi aumentati
+    }
+
+    //TODO: test ShotsFired!!!!!!!!!
+
+    public double getCurrentMinusNSeconds(double n){
+        double x = (double) System.currentTimeMillis();
+        n=n*1000.0;
+        return (x-n);
+    }
+}
