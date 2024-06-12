@@ -4,9 +4,8 @@ package slayin.model.utility;
  * Enum that represents the possible resolutions of the game
  */
 public enum GameResolution {
-    RES_1(640, 360),
-    RES_2(854, 480),
-    DEFAULT(1280, 720);
+    DEFAULT(1280, 720),
+    HD_PLUS(1600, 900);
 
     private int width;
     private int height;

@@ -30,7 +30,7 @@ public class OptionMenuScene implements SimpleGameScene {
         Image backgroundImage = AssetsManager.getImageAsset(Asset.MAIN_MENU_BG);
 
         SlayinLabel title = new SlayinLabel("Impostazioni", true);
-        SlayinSliderMenu<GameResolution> sliderMenu = new SlayinSliderMenu<GameResolution>(Globals.RESOLUTION, Arrays.asList(GameResolution.values()));
+        SlayinSliderMenu<GameResolution> sliderMenu = new SlayinSliderMenu<GameResolution>(Globals.RESOLUTION, Arrays.asList(GameResolution.values()), (res) -> res.getShowText());
         sliderMenu.addChangeListener(newResolution -> {
             Globals.RESOLUTION = newResolution;
             eventListener.addEvent(new ResolutionChangedEvent());
