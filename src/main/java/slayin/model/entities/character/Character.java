@@ -99,6 +99,11 @@ public class Character extends GameObject{
         }
     }
 
+    /**
+     * Gets shots fired by the character.
+     * 
+     * @return an Optional containing the roll if the jump is not blocked, empty otherwise
+     */
     public Optional<GameObject> getShots(){
         return !(jumpIsBlocked()) ? getShots.apply(this) : Optional.empty();
     }
@@ -108,12 +113,17 @@ public class Character extends GameObject{
         return DrawComponentFactory.graphicsComponentCharacter(this);
     }
 
+    /**
+     * Aggiunge un'arma al personaggio.
+     * 
+     * @param l'arma da aggiungere
+     */
     public void addWeapon(MeleeWeapon weapon){
         this.weapons.add(weapon);
     }
 
     
-    public void updateVel(MovementController input) {
+    public void updateVectorMovement(MovementController input) {
         if(input.isJumping() && this.getWorld().isTouchingGround(this) && !(jumpIsBlocked())){
             this.jumpFunc.accept(this);
             input.setJumping(false);
@@ -126,6 +136,10 @@ public class Character extends GameObject{
         }
     }
 
+
+    /**
+     * Controls collisions with the edges of the world.
+     */
     private void controlCollision(){
         List<Edge> collision= this.getWorld().collidingWith(this);
         BoundingBoxImplRet bBox = (BoundingBoxImplRet) this.getBoundingBox();
@@ -147,6 +161,9 @@ public class Character extends GameObject{
         }
     }
 
+    /**
+     * Updates the bounding box of the character and its weapons.
+     */
     private void updateBoundingBox(){
         this.getBoundingBox().updatePoint(this.getPos());
         if(this.getDir()==Direction.LEFT){
@@ -180,7 +197,11 @@ public class Character extends GameObject{
         this.updateBoundingBox();
     }
 
-
+    /**
+     * Checks if decreasing life is blocked.
+     *
+     * @return True if decreasing life is blocked, false otherwise.
+     */
     public boolean decLifeIsBlocked(){
         return System.currentTimeMillis()<timeBlockedDecLife;
     }
@@ -193,6 +214,12 @@ public class Character extends GameObject{
         this.timeBlockedDecLife= System.currentTimeMillis()+time;
     }
     
+
+    /**
+     * Checks if jumping is blocked.
+     *
+     * @return True if jumping is blocked, false otherwise.
+     */
     private boolean jumpIsBlocked(){
         return System.currentTimeMillis()<timeBlockedJump;
     }
@@ -205,6 +232,12 @@ public class Character extends GameObject{
         this.timeBlockedJump= System.currentTimeMillis()+time;
     }
 
+
+    /**
+     * Checks if movement is blocked.
+     *
+     * @return True if movement is blocked, false otherwise.
+     */
     private boolean moveIsBlocked(){
         return System.currentTimeMillis()<timeBlockedMove;
     }

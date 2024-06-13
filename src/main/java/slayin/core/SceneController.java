@@ -11,12 +11,12 @@ import slayin.model.GameStatus;
 import slayin.model.events.GameEventListener;
 import slayin.model.events.menus.QuitGameEvent;
 import slayin.model.movement.InputController;
-import slayin.model.utility.Constants;
+import slayin.model.utility.GameResolution;
 import slayin.model.utility.SceneType;
-import slayin.model.utility.assets.AssetsManager;
 import slayin.views.GameLevelScene;
 import slayin.views.GameOverScene;
 import slayin.views.MainMenuScene;
+import slayin.views.OptionMenuScene;
 import slayin.views.PauseMenuScene;
 
 public class SceneController {
@@ -25,13 +25,12 @@ public class SceneController {
     private GameEventListener eventListener;
     private InputController inputController;
     private GameStatus gameStatus;
-    private AssetsManager assetsManager;
+    private GameResolution currentResolution;
 
-    public SceneController(GameEventListener eventListener, InputController inputController, AssetsManager assetsManager) {
+    public SceneController(GameEventListener eventListener, InputController inputController) {
         this.activeScene = Optional.empty();
         this.eventListener = eventListener;
         this.inputController = inputController;
-        this.assetsManager = assetsManager;
     }
 
     public void createWindow() {
@@ -39,13 +38,15 @@ public class SceneController {
         this.gameFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.gameFrame.addWindowListener(new WindowAdapter() {
             @Override
-            public void windowClosing(WindowEvent e)
-            {
+            public void windowClosing(WindowEvent e) {
                 eventListener.addEvent(new QuitGameEvent());
             }
         });
 
-        this.gameFrame.setPreferredSize(new Dimension(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
+        if (currentResolution == null)
+            currentResolution = GameResolution.DEFAULT;
+
+        this.gameFrame.setPreferredSize(new Dimension(currentResolution.getWidth(), currentResolution.getHeight()));
         this.gameFrame.setResizable(false);
         this.gameFrame.pack();
         this.gameFrame.setLocationRelativeTo(null);
@@ -62,24 +63,27 @@ public class SceneController {
         this.switchScene(sceneType);
     }
 
-    private void switchScene(SceneType sceneType) {
+    public void switchScene(SceneType sceneType) {
         GameScene newScene = null;
         this.gameFrame.removeKeyListener(inputController);
 
         switch (sceneType) {
             case MAIN_MENU:
-                newScene = new MainMenuScene(eventListener, assetsManager);
+                newScene = new MainMenuScene(eventListener);
                 break;
             case GAME_LEVEL:
-                newScene = new GameLevelScene(assetsManager, gameStatus);
+                newScene = new GameLevelScene(gameStatus);
                 this.gameFrame.addKeyListener(inputController);
                 this.gameFrame.requestFocusInWindow();
                 break;
             case PAUSE_MENU:
-                newScene = new PauseMenuScene(eventListener, assetsManager, gameStatus);
+                newScene = new PauseMenuScene(eventListener, gameStatus);
                 break;
             case GAME_OVER:
-                newScene = new GameOverScene(eventListener, assetsManager, gameStatus);
+                newScene = new GameOverScene(eventListener, gameStatus);
+                break;
+            case OPTION_MENU:
+                newScene = new OptionMenuScene(eventListener);
                 break;
             default:
                 break;
@@ -87,7 +91,7 @@ public class SceneController {
 
         this.gameFrame.getContentPane().removeAll();
         this.gameFrame.setContentPane(newScene.getContent());
-        
+
         if (newScene.shouldRevalidate()) {
             this.gameFrame.revalidate();
         }
@@ -98,21 +102,14 @@ public class SceneController {
     }
 
     public void renderEntitiesInScene() {
-        if (activeScene.isEmpty()) return;
+        if (activeScene.isEmpty())
+            return;
 
         activeScene.get().drawGraphics();
     }
 
-    public void showMainMenuScene() {
-        this.switchScene(SceneType.MAIN_MENU);
-    }
-
     public void showGameScene(GameStatus gameStatus) {
         this.switchScene(SceneType.GAME_LEVEL, gameStatus);
-    }
-
-    public void showGameOverScene() {
-        this.switchScene(SceneType.GAME_OVER);
     }
 
     public void setPauseMenuOpen(boolean inMenu) {
@@ -131,5 +128,9 @@ public class SceneController {
 
     public Optional<GameScene> getActiveScene() {
         return this.activeScene;
+    }
+
+    public void changeResolution(GameResolution resolution) {
+        this.gameFrame.setSize(resolution.getWidth(), resolution.getHeight());
     }
 }

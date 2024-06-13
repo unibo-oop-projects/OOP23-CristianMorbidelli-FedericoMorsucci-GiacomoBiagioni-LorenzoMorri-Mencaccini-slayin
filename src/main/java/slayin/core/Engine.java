@@ -7,16 +7,19 @@ import slayin.model.entities.character.MeleeWeapon;
 import java.util.List;
 
 import slayin.model.GameStatus;
+import slayin.model.events.ChangeResolutionEvent;
 import slayin.model.events.GameEventListener;
 import slayin.model.events.GameOverEvent;
 import slayin.model.movement.InputController;
 import slayin.model.utility.LevelFactory;
+import slayin.model.utility.SceneType;
 import slayin.model.utility.assets.AssetsManager;
 import slayin.model.events.collisions.CharacterCollisionEvent;
 import slayin.model.events.collisions.ShotCollisionWithWorldEvent;
 import slayin.model.events.collisions.WeaponCollisionEvent;
 import slayin.model.events.menus.QuitGameEvent;
 import slayin.model.events.menus.ShowPauseMenuEvent;
+import slayin.model.events.menus.SimpleChangeSceneEvent;
 import slayin.model.events.menus.StartGameEvent;
 
 public class Engine {
@@ -28,14 +31,12 @@ public class Engine {
     private InputController inputController;
     private GameEventListener eventListener;
     
-    private AssetsManager assetsManager;
     private LevelFactory levelFactory;
 
     public Engine() {
         eventListener = new GameEventListener();
         inputController = new InputController(eventListener);
-        assetsManager = new AssetsManager();
-        sceneController = new SceneController(eventListener, inputController, assetsManager);
+        sceneController = new SceneController(eventListener, inputController);
     }
 
     private void initGame() {
@@ -46,9 +47,9 @@ public class Engine {
     public void startGameLoop() {
         long startTime, timePassed, previousTime;
 
-        assetsManager.loadAssets();
+        AssetsManager.loadAssets();
         sceneController.createWindow();
-        sceneController.showMainMenuScene();
+        sceneController.switchScene(SceneType.MAIN_MENU);
 
         previousTime = System.currentTimeMillis();
         while (this.running) { /* Game loop */
@@ -93,7 +94,7 @@ public class Engine {
 
         status.getScoreManager().updateComboTimer();
 
-        /* TODO: check for collisions */
+        //controllo le collisioni
         checkCharacterCollisions();
     }
 
@@ -123,7 +124,7 @@ public class Engine {
         if(inputController.isJumping()){
             if(this.status.getCharacter().getShots().isPresent()) this.status.addShot(this.status.getCharacter().getShots().get());
         } 
-        this.status.getCharacter().updateVel(inputController);
+        this.status.getCharacter().updateVectorMovement(inputController);
     }
 
     private void processEvents() {
@@ -177,12 +178,16 @@ public class Engine {
                     eventListener.addEvent(new GameOverEvent());
                 }                    
             } else if (e instanceof GameOverEvent) {
-                System.out.println("Game Over");
-                sceneController.showGameOverScene();
+                sceneController.switchScene(SceneType.GAME_OVER);
             } else if(e instanceof ShotCollisionWithWorldEvent){
                 var event = (ShotCollisionWithWorldEvent) e;
-                System.out.println("tolgo colpo");
                 this.status.removeShot(event.getShot());
+            } else if (e instanceof SimpleChangeSceneEvent) {
+                SimpleChangeSceneEvent event = (SimpleChangeSceneEvent) e;
+                sceneController.switchScene(event.getSceneType());
+            } else if (e instanceof ChangeResolutionEvent) {
+                ChangeResolutionEvent event = (ChangeResolutionEvent) e;
+                sceneController.changeResolution(event.getResolution());
             }
         });
 

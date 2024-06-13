@@ -1,18 +1,20 @@
 package slayin.model.utility.assets;
 
+import java.nio.file.Paths;
+
 /**
  * Enum class that contains all the assets used in the game
  * with the respective path and type.
  */
 public enum Asset {
-    MAIN_MENU_BG(AssetType.IMAGE, "/assets/backgrounds/mainmenu_bg.jpg"),
-    GAME_BG(AssetType.IMAGE, "/assets/backgrounds/game_bg.jpg"),
+    MAIN_MENU_BG(AssetType.IMAGE, Paths.get("assets","backgrounds","mainmenu_bg.jpg").toString()),
+    GAME_BG(AssetType.IMAGE, Paths.get("assets","backgrounds","game_bg.jpg").toString()),
     
     // UI Components
-    LIFE_HEART(AssetType.IMAGE, "/assets/heart.png"),
+    LIFE_HEART(AssetType.IMAGE, Paths.get("assets","heart.png").toString()),
     
     // Characters
-    DUMMY_ENEMY(AssetType.IMAGE, "/assets/entities/dummy.png");
+    DUMMY_ENEMY(AssetType.IMAGE, Paths.get("assets","entities","dummy.png").toString());
 
     private String path;
     private AssetType assetType;
