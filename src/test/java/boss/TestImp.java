@@ -18,7 +18,7 @@ public class TestImp {
     
     @BeforeEach
     void setUp(){
-        imp= new Imp(null, boundingBox, world);
+        imp= new Imp(null, boundingBox, world, null);
     }
 
     @Test
@@ -37,7 +37,7 @@ public class TestImp {
         assertTrue(imp.getPos().getX()==50.0);
         assertTrue(imp.getPos().getY()==50.0);
 
-        imp.setPreviousTime(this.getCurrentMinusNSeconds(4.0));
+        imp.setPreviousTime(this.getCurrentMinusNSeconds(3.0));
         
         imp.updatePos(1);//cambio stato -> WAITING
 
@@ -73,7 +73,7 @@ public class TestImp {
         assertFalse(imp.getState()==State.START);
         assertTrue(imp.getState()==State.ATTACK);
 
-        imp.setPreviousTime(this.getCurrentMinusNSeconds(4.0));
+        imp.setPreviousTime(this.getCurrentMinusNSeconds(3.0));
         
         imp.updatePos(1);//cambio stato -> WAITING
 
@@ -107,7 +107,7 @@ public class TestImp {
         imp.setPreviousTime(this.getCurrentMinusNSeconds(2.0));
         
         imp.updatePos(1);//cambio stato -> ATTACK
-        imp.setPreviousTime(this.getCurrentMinusNSeconds(4.0));
+        imp.setPreviousTime(this.getCurrentMinusNSeconds(3.0));
         
         imp.updatePos(1);//cambio stato -> WAITING
 
@@ -174,7 +174,40 @@ public class TestImp {
         assertTrue(imp.getNumShots()==2);//colpi aumentati
     }
 
-    //TODO: test ShotsFired!!!!!!!!!
+    @Test
+    void testShotsFired(){
+        assertTrue(imp.getNumShots()==0);
+        imp.diminishHealth(7);
+        imp.setNumShots(3);
+
+        imp.setPreviousTime(this.getCurrentMinusNSeconds(2.0));
+        
+        imp.updatePos(1);//cambio stato -> ATTACK
+
+        imp.setPreviousTime(this.getCurrentMinusNSeconds(0.0));
+        imp.updatePos(1);//first shoot
+        assertTrue(imp.getShotsFired()==1);
+        imp.updatePos(1);//non deve sparare
+        assertTrue(imp.getShotsFired()==1);
+
+        imp.setPreviousTime(this.getCurrentMinusNSeconds(1.0));
+        imp.updatePos(1);//second shoot
+        assertTrue(imp.getShotsFired()==2);
+        imp.updatePos(1);//non deve sparare
+        assertTrue(imp.getShotsFired()==2);
+
+        imp.setPreviousTime(this.getCurrentMinusNSeconds(2.0));
+        imp.updatePos(1);//third shoot
+        assertTrue(imp.getShotsFired()==3);
+        imp.updatePos(1);//non deve sparare
+        assertTrue(imp.getShotsFired()==3);
+
+        imp.setPreviousTime(this.getCurrentMinusNSeconds(3.0));
+        imp.updatePos(1);//non deve sparare, colpi finiti -> passa anche a waiting
+        assertTrue(imp.getShotsFired()==3);
+
+        assertTrue(imp.getState()==State.WAITING);
+    }
 
     public double getCurrentMinusNSeconds(double n){
         double x = (double) System.currentTimeMillis();

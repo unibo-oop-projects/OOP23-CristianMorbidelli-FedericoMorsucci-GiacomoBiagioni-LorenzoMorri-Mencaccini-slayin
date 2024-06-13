@@ -3,6 +3,7 @@ package slayin.model.entities.boss;
 import slayin.model.World;
 import slayin.model.bounding.BoundingBox;
 import slayin.model.entities.GameObject;
+import slayin.model.events.GameEventListener;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
 
@@ -10,6 +11,7 @@ public class Boss extends GameObject {
 
     private int health;
     private double previousTime;
+    private final GameEventListener eventListener;
 
     /**
      * generic constructor
@@ -19,8 +21,9 @@ public class Boss extends GameObject {
      * @param world
      * 
      */
-    public Boss(P2d pos, Vector2d vectorMovement, BoundingBox boundingBox, World world) {
+    public Boss(P2d pos, Vector2d vectorMovement, BoundingBox boundingBox, World world, GameEventListener eventListener) {
         super(pos, vectorMovement, boundingBox, world);
+        this.eventListener=eventListener;
     }
 
 
@@ -102,4 +105,10 @@ public class Boss extends GameObject {
         }
         return outcome;
     }
+
+    protected GameEventListener getEventListener() {
+        return eventListener;
+    }
+
+
 }

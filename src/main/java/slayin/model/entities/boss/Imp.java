@@ -4,6 +4,7 @@ import slayin.model.World;
 import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.entities.graphics.DrawComponent;
 import slayin.model.entities.graphics.DrawComponentFactory;
+import slayin.model.events.GameEventListener;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
 
@@ -18,15 +19,17 @@ public class Imp extends Boss {
     private int shotsFired;
     private boolean posFlag;
     private ArrayList<P2d> positions = new ArrayList<>();
+    private double counter;
 
-    public Imp(P2d pos, BoundingBoxImplRet boundingBox, World world) {
+    public Imp(P2d pos, BoundingBoxImplRet boundingBox, World world, GameEventListener eventListener) {
         super(new P2d(
                 world.getWidth()/2,
                 world.getHeight()/2 //first position in the centre of the screen
             ), 
             new Vector2d(0,0), //Imp teleport in 4 different position
             boundingBox, 
-            world);
+            world,
+            eventListener);
 
         this.positions.add(new P2d(
             world.getWidth()-(boundingBox.getWidth()/2), //right
@@ -40,12 +43,12 @@ public class Imp extends Boss {
 
         this.positions.add(new P2d(
             world.getWidth()-(boundingBox.getWidth()/2), //right
-            180                                        //max height
+            230                                        //max height
         ));
 
         this.positions.add(new P2d(
             (boundingBox.getWidth()/2), //left
-            180                                        //max height
+            230                                        //max height
         ));
 
         this.setHealth(10); //The Imp must receive 10 hits to be defeated
@@ -75,6 +78,9 @@ public class Imp extends Boss {
                     
                     //reset shots fired
                     this.setShotsFired(0);
+
+                    //reset counter
+                    this.counter=0;
                 }
                 //spawn in a casual position, wait 5 seconds then attacks
                 if(this.secondDifference(2.0)){
@@ -82,15 +88,20 @@ public class Imp extends Boss {
                 }
                 break;
             case ATTACK:
-                if(this.secondDifference(4.0)){
+                if(this.secondDifference(3.0)){
                     this.changeState(State.WAITING);
                 }
                 //every second shoots a ball
-                if(this.secondDifference(this.getShotsFired()+0.0) && this.numShots!=0){
-                    //TODO: attacca -> spawn palla
-                    if(this.getShotsFired()<this.getNumShots()){//check if it can shoot
-                        this.setShotsFired(this.getShotsFired()+1);//update shotsFired+1
+                if(this.secondDifference(counter)){
+                    if(this.numShots!=0){
+                        //TODO: attacca -> spawn palla
+                        if(this.getShotsFired()<this.getNumShots()){//check if it can shoot
+                            this.setShotsFired(this.getShotsFired()+1);//update shotsFired+1
+                        }
                     }
+                    this.counter++;//update counter
+                    System.out.println("Colpi lanciati: "+this.getShotsFired());
+                    System.out.println("Counter: "+this.counter);
                 }                
                 break;
             case WAITING:
@@ -119,6 +130,9 @@ public class Imp extends Boss {
         }
     }
 
+    /**
+     * if the position has not been changed, it updates it 
+     */
     private void update() {
 
         //if is in INVISIBLE state 
@@ -198,7 +212,7 @@ public class Imp extends Boss {
      * @param num
      */
     public void setShotsFired(int num) {
-        this.numShots=num;
+        this.shotsFired=num;
     }
 
     /**

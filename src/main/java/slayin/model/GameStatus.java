@@ -36,7 +36,7 @@ public class GameStatus {
         enemies = new ArrayList<>();
         shots=new ArrayList<>();
         //enemies.add(new Minotaur(null, new BoundingBoxImplRet(null, 100, 150),world));
-        enemies.add(new Imp(null, new BoundingBoxImplRet(null, 70, 70), world));
+        enemies.add(new Imp(null, new BoundingBoxImplRet(null, 70, 70), world, eventListener));
         scoreManager = new GameScore();
         this.eventListener = eventListener;
 

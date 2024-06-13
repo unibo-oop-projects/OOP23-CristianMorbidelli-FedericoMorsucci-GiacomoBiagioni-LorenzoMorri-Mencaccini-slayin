@@ -28,6 +28,10 @@ public class Vector2d {
         return new Vector2d(x+v.x,y+v.y);
     }
 
+    public Vector2d sum(int x, int y){
+        return new Vector2d(this.x+x,this.y+y);
+    }
+
 
     public double module(){
         return (double)Math.sqrt(x*x+y*y);
