@@ -100,8 +100,6 @@ public class Imp extends Boss {
                         }
                     }
                     this.counter++;//update counter
-                    System.out.println("Colpi lanciati: "+this.getShotsFired());
-                    System.out.println("Counter: "+this.counter);
                 }                
                 break;
             case WAITING:

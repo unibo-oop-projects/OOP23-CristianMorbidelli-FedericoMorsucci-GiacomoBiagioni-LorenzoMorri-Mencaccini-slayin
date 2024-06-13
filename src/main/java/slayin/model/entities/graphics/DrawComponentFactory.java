@@ -11,7 +11,6 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.IntStream;
-import java.nio.file.Paths;
 
 import slayin.model.World;
 import slayin.model.bounding.BoundingBox;

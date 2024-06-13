@@ -26,7 +26,7 @@ public class Minotaur extends Boss  {
                 world.getGround()-(boundingBox.getHeight()/2)//ground height
             ), 
             new Vector2d(0, 0), 
-            boundingBox, world
+            boundingBox, world, null
         );
 
         this.setHealth(5); //The Minotaur must receive 5 hits to be defeated
