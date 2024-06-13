@@ -17,7 +17,7 @@ public class TestEntityFactory {
 
     @BeforeEach
     void setUp(){
-        entityFactory = new EntityFactory(new World(worldWidth, worldHeight, groundLevel));
+        entityFactory = new EntityFactory(new World(worldWidth, worldHeight, groundLevel),null);
     }
 
     @Test

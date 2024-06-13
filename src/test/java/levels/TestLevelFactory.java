@@ -25,7 +25,7 @@ public class TestLevelFactory {
 
     @BeforeEach
     void setUp(){
-        this.levelFactory = new LevelFactory(new World(worldWidth, worldHeight, groundLevel));
+        this.levelFactory = new LevelFactory(new World(worldWidth, worldHeight, groundLevel),null);
     }
 
     @Test

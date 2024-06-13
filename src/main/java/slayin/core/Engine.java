@@ -41,7 +41,7 @@ public class Engine {
 
     private void initGame() {
         status = new GameStatus(eventListener);
-        levelFactory = new LevelFactory(status.getWorld());
+        levelFactory = new LevelFactory(status.getWorld(), this.eventListener);
     }
 
     public void startGameLoop() {
@@ -85,7 +85,7 @@ public class Engine {
 
         // if the scene's not full, regularly add new enemies (if the current level can provide more)
         status.addEnemiesToScene();
-
+        
         // Update the logical position of the main character and the enemies on the
         // scene
         for (GameObject object : status.getObjects()) {
@@ -96,6 +96,7 @@ public class Engine {
 
         //controllo le collisioni
         checkCharacterCollisions();
+        checkShotCollisions();
     }
 
     private void checkCharacterCollisions(){
@@ -108,14 +109,17 @@ public class Engine {
                 if(weapon.getBoxWeapon().isCollidedWith(enemy.getBoundingBox())) eventListener.addEvent(new WeaponCollisionEvent(enemy,weapon));
             });
             //controllo weapon in movimento
-            this.status.getShots().forEach(shot->{
-                if(shot.getBoundingBox().isCollidedWith(enemy.getBoundingBox())){ 
-                    eventListener.addEvent(new WeaponCollisionEvent(enemy,shot));
-                }
-                if(!(this.status.getWorld().collidingWith(shot).isEmpty())) eventListener.addEvent(new ShotCollisionWithWorldEvent(shot));
-            });
+            this.status.getShots().stream().filter(s->!s.isFromEnemy())
+            .filter(shot->shot.getBoundingBox().isCollidedWith(enemy.getBoundingBox()))
+            .forEach(shot->eventListener.addEvent(new WeaponCollisionEvent(enemy,shot)));
+            //
             if(character.getBoundingBox().isCollidedWith(enemy.getBoundingBox())) eventListener.addEvent(new CharacterCollisionEvent(enemy));
         });
+    }
+
+    private void checkShotCollisions(){
+        //per tutti gli shot controllo se esce dal mondo
+        this.status.getShots().stream().filter(shot->!(this.status.getWorld().collidingWith(shot).isEmpty())).forEach(s->eventListener.addEvent(new ShotCollisionWithWorldEvent(s)));
     }
 
 
@@ -181,6 +185,7 @@ public class Engine {
                 sceneController.switchScene(SceneType.GAME_OVER);
             } else if(e instanceof ShotCollisionWithWorldEvent){
                 var event = (ShotCollisionWithWorldEvent) e;
+                System.out.println("tolgo");
                 this.status.removeShot(event.getShot());
             } else if (e instanceof SimpleChangeSceneEvent) {
                 SimpleChangeSceneEvent event = (SimpleChangeSceneEvent) e;

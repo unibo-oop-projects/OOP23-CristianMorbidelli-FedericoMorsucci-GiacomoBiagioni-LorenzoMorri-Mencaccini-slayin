@@ -15,6 +15,7 @@ import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.entities.GameObject;
 import slayin.model.entities.graphics.DrawComponent;
 import slayin.model.entities.graphics.DrawComponentFactory;
+import slayin.model.entities.shots.ShotObject;
 import slayin.model.movement.MovementController;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
@@ -30,7 +31,7 @@ public class Character extends GameObject{
     private String name;
     private List<MeleeWeapon> weapons;
     private Consumer<Character> jumpFunc;
-    private Function<Character,Optional<GameObject>> getShots;
+    private Function<Character,Optional<ShotObject>> getShots;
     private Long timeBlockedJump, timeBlockedMove ,timeBlockedDecLife;
 
     /**
@@ -42,7 +43,7 @@ public class Character extends GameObject{
      * @param world - reference world used the character
      * @param weapons - melee weapons belonging to the character
      */
-    public Character(P2d pos, Vector2d vectorMouvement, BoundingBox boundingBox,Health life,World world,Consumer<Character> jumpFunc,Function<Character,Optional<GameObject>> getShots,String name, MeleeWeapon ... weapons) {
+    public Character(P2d pos, Vector2d vectorMouvement, BoundingBox boundingBox,Health life,World world,Consumer<Character> jumpFunc,Function<Character,Optional<ShotObject>> getShots,String name, MeleeWeapon ... weapons) {
         super(pos, vectorMouvement, boundingBox,world);
         this.life=life;
         this.weapons= new ArrayList<>(Arrays.asList(weapons));
@@ -104,7 +105,7 @@ public class Character extends GameObject{
      * 
      * @return an Optional containing the roll if the jump is not blocked, empty otherwise
      */
-    public Optional<GameObject> getShots(){
+    public Optional<ShotObject> getShots(){
         return !(jumpIsBlocked()) ? getShots.apply(this) : Optional.empty();
     }
 

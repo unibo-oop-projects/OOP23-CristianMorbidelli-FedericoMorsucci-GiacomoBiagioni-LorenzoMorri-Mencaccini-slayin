@@ -1,9 +1,9 @@
 package slayin.model.entities.character;
 
 import slayin.model.bounding.BoundingBoxImplRet;
-import slayin.model.entities.GameObject;
 import slayin.model.entities.GameObject.Direction;
-import slayin.model.entities.character.shots.RoundBullet;
+import slayin.model.entities.shots.RoundBullet;
+import slayin.model.entities.shots.ShotObject;
 import slayin.model.utility.Constants;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
@@ -37,7 +37,7 @@ public class CharacterFactory {
             }
             
         };  
-        Function<Character,Optional<GameObject>> getShot= (c)->{return Optional.empty();};
+        Function<Character,Optional<ShotObject>> getShot= (c)->{return Optional.empty();};
         return new Character(new P2d(w.getWidth()/2, w.getGround()), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), widthPlayer, heightPlayer),new Health(10, 10),w,func,getShot,"Knight",weapon);
     }
 
@@ -68,7 +68,7 @@ public class CharacterFactory {
             }
             
         };  
-        Function<Character,Optional<GameObject>> getShot= (c)->Optional.empty();
+        Function<Character,Optional<ShotObject>> getShot= (c)->Optional.empty();
         return new Character(new P2d(w.getWidth()/2, w.getGround()), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), widthPlayer, heightPlayer),new Health(10, 10),w,func,getShot,"Knight",weapon);
     }
 
@@ -93,8 +93,29 @@ public class CharacterFactory {
             
         };  
 
-        Function<Character,Optional<GameObject>> getShot= (c)->{return Optional.of(new RoundBullet(c,w));};
+        Function<Character,Optional<ShotObject>> getShot= (c)->{return Optional.of(new RoundBullet(c,w));};
 
         return new Character(new P2d(w.getWidth()/2, w.getGround()), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), widthPlayer, heightPlayer),new Health(10, 10),w,func,getShot,"Wizard");
+    }
+
+
+    /**
+     * Creates a Knave character.
+     * 
+     * @param w the game world
+     * @return the created Knave character
+     */
+    public static Character getKnave(World w){
+        double widthPlayer=w.getWidth()/23.2,heightPlayer=w.getHeight()/10.2,heightWeapon=w.getHeight()/20.5,widthWeapon=w.getWidth()/25.6;
+        MeleeWeapon weaponLeft = new MeleeWeapon(10, new BoundingBoxImplRet(new P2d(0, 0), widthWeapon, heightWeapon), -5, (int)(widthPlayer/2 + widthWeapon/2),"SwordR",-1);
+        MeleeWeapon weaponRight = new MeleeWeapon(10, new BoundingBoxImplRet(new P2d(0, 0), widthWeapon, heightWeapon), -10, -(int)(widthPlayer/2 + widthWeapon/2),"SwordL",-1);
+        Consumer<Character> func= new Consumer<Character>() {
+            @Override
+            public void accept(Character t) {
+                t.getVectorMovement().setY(Constants.FJUMP_CHARACTER);
+            }       
+        };  
+        Function<Character,Optional<ShotObject>> getShot= (c)->Optional.empty();
+        return new Character(new P2d(w.getWidth()/2, w.getGround()), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), widthPlayer, heightPlayer),new Health(10, 10),w,func,getShot,"Knave",weaponLeft,weaponRight);
     }
 }

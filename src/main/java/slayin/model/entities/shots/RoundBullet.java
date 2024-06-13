@@ -1,8 +1,7 @@
-package slayin.model.entities.character.shots;
+package slayin.model.entities.shots;
 
 import slayin.model.World;
 import slayin.model.bounding.BoundingBoxImplCirc;
-import slayin.model.entities.GameObject;
 import slayin.model.entities.character.Character;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
@@ -11,7 +10,7 @@ import slayin.model.utility.Constants;
 /**
  * Represents a round bullet shot by a character in the game.
  */
-public class RoundBullet extends GameObject{
+public class RoundBullet extends ShotObject{
 
 
     /**
@@ -52,6 +51,11 @@ public class RoundBullet extends GameObject{
         this.setPos(this.getPos().sum(this.getVectorMovement().mul(0.001*dt)));
         // aggiorno di nuovo la BoundinBox
         this.getBoundingBox().updatePoint(this.getPos());
+    }
+
+    @Override
+    public boolean isFromEnemy() {
+        return false;
     }
     
 }

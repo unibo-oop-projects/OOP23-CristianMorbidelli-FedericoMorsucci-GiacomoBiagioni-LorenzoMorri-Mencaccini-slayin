@@ -1,6 +1,6 @@
 package slayin.model.events.collisions;
 
-import slayin.model.entities.GameObject;
+import slayin.model.entities.shots.ShotObject;
 import slayin.model.events.GameEvent;
 
 /**
@@ -11,13 +11,13 @@ public class ShotCollisionWithWorldEvent implements GameEvent {
     /**
     * A reference to the slamming shot.
     */
-    private GameObject shot;
+    private ShotObject shot;
 
     /**
     *  The constructor of the ShotCollisionWithWorldEvent class
     *  @param shot - the bullet that touched the edges of the world
     */
-    public ShotCollisionWithWorldEvent(GameObject shot) {
+    public ShotCollisionWithWorldEvent(ShotObject shot) {
         this.shot = shot;
     }
 
@@ -25,7 +25,7 @@ public class ShotCollisionWithWorldEvent implements GameEvent {
     * A getter for the shot attribute
     * @return shot that touched the world
     */
-    public GameObject getShot() {
+    public ShotObject getShot() {
         return shot;
     }
     

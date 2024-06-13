@@ -8,7 +8,7 @@ public class Constants {
     public static final int COMBO_RESET_TIME = 3000;
 
     public final static int GRAVITY_CHARACTER=(int)(WINDOW_HEIGHT/0.144);
-    public final static int FJUMP_CHARACTER=-(int)(WINDOW_HEIGHT/0.36);
+    public final static int FJUMP_CHARACTER=-(int)(WINDOW_HEIGHT/0.40);//0.36
     public final static int FLEFT_CHARACTER=-(int)(WINDOW_WIDTH/2.97);
     public final static int FRIGHT_CHARACTER=(int)(WINDOW_WIDTH/2.97);
 
