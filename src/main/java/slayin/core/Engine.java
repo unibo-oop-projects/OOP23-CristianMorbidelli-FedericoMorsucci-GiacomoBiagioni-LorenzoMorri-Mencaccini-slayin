@@ -11,13 +11,13 @@ import slayin.model.GameStatus;
 import slayin.model.events.ChangeResolutionEvent;
 import slayin.model.events.GameEventListener;
 import slayin.model.events.GameOverEvent;
-import slayin.model.events.SpawnShotsEvent;
 import slayin.model.movement.InputController;
 import slayin.model.utility.LevelFactory;
 import slayin.model.utility.SceneType;
 import slayin.model.utility.assets.AssetsManager;
 import slayin.model.events.collisions.CharacterCollisionEvent;
 import slayin.model.events.collisions.ShotCollisionWithWorldEvent;
+import slayin.model.events.collisions.SpawnShotsEvent;
 import slayin.model.events.collisions.WeaponCollisionEvent;
 import slayin.model.events.menus.QuitGameEvent;
 import slayin.model.events.menus.ShowPauseMenuEvent;
@@ -120,7 +120,7 @@ public class Engine {
     }
 
     private void checkShotCollisions(){
-        //per tutti gli shot controllo se esce dal mondo
+        //check if goes out sides of the screen
         this.status.getShots().stream()
             .filter(shot->!(this.status.getWorld().collidingWithSides(shot).isEmpty()))
             .forEach(s->eventListener.addEvent(new ShotCollisionWithWorldEvent(s)));
@@ -206,6 +206,7 @@ public class Engine {
                 ChangeResolutionEvent event = (ChangeResolutionEvent) e;
                 sceneController.changeResolution(event.getResolution());
             } else if (e instanceof SpawnShotsEvent) {
+                //add to world the shot
                 this.status.addShot(((SpawnShotsEvent)e).getShot());
             }
         });

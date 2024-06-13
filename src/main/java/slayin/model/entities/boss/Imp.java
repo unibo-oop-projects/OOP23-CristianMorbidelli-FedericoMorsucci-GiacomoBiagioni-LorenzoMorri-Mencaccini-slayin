@@ -7,9 +7,8 @@ import slayin.model.entities.graphics.DrawComponent;
 import slayin.model.entities.graphics.DrawComponentFactory;
 import slayin.model.entities.shots.ImpShots;
 import slayin.model.events.GameEventListener;
-import slayin.model.events.SpawnShotsEvent;
+import slayin.model.events.collisions.SpawnShotsEvent;
 import slayin.model.utility.P2d;
-import slayin.model.utility.Vector2d;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -29,7 +28,7 @@ public class Imp extends Boss {
                 world.getWidth()/2,
                 world.getHeight()/2 //first position in the centre of the screen
             ), 
-            new Vector2d(0,0), //Imp teleport in 4 different position
+            null, //Imp teleport in 4 different position
             boundingBox, 
             world,
             eventListener);
@@ -56,14 +55,14 @@ public class Imp extends Boss {
 
         this.setHealth(10); //The Imp must receive 10 hits to be defeated
         this.setNumShots(0);//Imp attacks after first hit
-        this.setShotsFired(0);
+        this.setShotsFired(0);   //counter shots fired
 
         this.getBoundingBox().updatePoint(this.getPos());//set bounding box position
 
         this.changeState(State.START); //initial Imp state
-        this.posFlag=false;
+        this.posFlag=false; //to allow imp to change position
 
-        this.setDir(Direction.LEFT); //initial direction (only for drawing correctly image)
+        this.setDir(Direction.LEFT); //initial direction (only for drawing correctly his image)
     }
 
     @Override
@@ -85,7 +84,7 @@ public class Imp extends Boss {
                     //reset counter
                     this.counter=0;
                 }
-                //spawn in a casual position, wait 5 seconds then attacks
+                //spawn in a casual position, wait 2 seconds then attacks
                 if(this.secondDifference(2.0)){
                     changeState(State.ATTACK);
                 }
@@ -94,18 +93,19 @@ public class Imp extends Boss {
                 if(this.secondDifference(3.0)){
                     this.changeState(State.WAITING);
                 }
-                //every second shoots a ball
-                if(this.secondDifference(counter)){
+                //every second from 0.5 sec shoots a ball
+                if(this.secondDifference(counter+0.5)){
                     if(this.numShots!=0){
                         if(this.getShotsFired()<this.getNumShots()){//check if it can shoot
                             this.attack();
                             this.setShotsFired(this.getShotsFired()+1);//update shotsFired+1
+                            this.counter++;
                         }
                     }
-                    this.counter++;//update counter
                 }                
                 break;
             case WAITING:
+                //does nothing for 2 sec 
                 if(this.secondDifference(2.0)){
                     this.changeState(State.INVISIBLE);
                 }
@@ -132,7 +132,7 @@ public class Imp extends Boss {
     }
 
     /**
-     * 
+     * set initial position and dimension of imp shots, call to event listener
      */
     private void attack() {
         BoundingBoxImplRet bBox = (BoundingBoxImplRet) this.getBoundingBox();
@@ -148,10 +148,10 @@ public class Imp extends Boss {
         //initial position
         P2d point = new P2d(x,this.getPos().getY()-bBox.getHeight()/2);
         
-        //linear
-        boolean linear=true;
+        //linear trajectory
+        boolean linear=true;//if is in ground height
         if(point.getY()<this.getWorld().getHeight()/2){
-            linear=false;
+            linear=false; //if is in fly
         }
         
         //Object ImpShots
@@ -162,8 +162,9 @@ public class Imp extends Boss {
             linear
         );
 
+        //call Engine to add ball in the scene
         this.getEventListener().addEvent(
-            new SpawnShotsEvent(shot)
+            new SpawnShotsEvent(shot) //event
         );
     }
 
@@ -182,7 +183,7 @@ public class Imp extends Boss {
                 //update the position to one of the default ones
                 this.setPos(
                     this.positions.get(
-                        new Random().nextInt(positions.size())//get random position
+                        new Random().nextInt(positions.size())//get random position from the default ones
                     )
                 );
                 if(this.getPos().getX()>(bBox.getWidth()/2)){ //if is in the right screen side
@@ -203,11 +204,13 @@ public class Imp extends Boss {
     @Override
     public boolean onHit() {
         boolean outcome= false;
+        //states in which it can be damaged
         if(this.state == State.WAITING || this.state == State.ATTACK || this.state == State.START){
+            //change state, decrease health
             this.changeState(State.HITTED);
             this.diminishHealth(1);
             if(this.getHealth()==0){
-                outcome = true;
+                outcome = true; //if is defeated
             }
         }
         return outcome;

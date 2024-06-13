@@ -13,22 +13,30 @@ public class ImpShots extends ShotObject{
     private static final int SPEEDY = 500;
     private Double maxHeight;
 
+    /**
+     * set initial position, movement and define the trajectory of the shot
+     * @param pos - initial position
+     * @param boundingBox - circular bounding box
+     * @param world - world of the shot
+     * @param linear - true if has a linear trajectory
+     */
     public ImpShots(P2d pos, BoundingBoxImplCirc boundingBox, World world, boolean linear) {
         super(pos, new Vector2d(0, 0), boundingBox, world);
         //if it must have a zig zag movement
         if(!linear){
+            //to set vertical speed
             this.setVectorMovement(this.getVectorMovement().sum(0,SPEEDY));
         }
 
         if(this.getPos().getX()>(world.getWidth()/2)){ //if is in the right screen side
             this.setDir(Direction.LEFT);//the direction will no ever change
-            this.setVectorMovement(this.getVectorMovement().sum(-SPEEDX,0));
+            this.setVectorMovement(this.getVectorMovement().sum(-SPEEDX,0));//sx
         }else{
             this.setDir(Direction.RIGHT);//the direction will no ever change
-            this.setVectorMovement(this.getVectorMovement().sum(SPEEDX,0));
+            this.setVectorMovement(this.getVectorMovement().sum(SPEEDX,0));//dx
         }
 
-        this.maxHeight=this.getPos().getY();
+        this.maxHeight=this.getPos().getY();//set max height for the shot, the same of imp
     }
 
     @Override
@@ -39,12 +47,6 @@ public class ImpShots extends ShotObject{
     @Override
     public void updatePos(int dt) {
         //update pos
-        this.update(dt);
-
-        System.out.println(this.getPos()+ " "+ this.getVectorMovement());
-    }
-
-    private void update(int dt) {
         this.setPos(this.getPos().sum(this.getVectorMovement().mul(0.001*dt)));
         //update bBox point
         this.getBoundingBox().updatePoint(this.getPos());
@@ -53,12 +55,12 @@ public class ImpShots extends ShotObject{
         
         if(this.getVectorMovement().getY()!=0){
             if(this.getWorld().isTouchingGround(this)){
-                this.getPos().setY(this.getWorld().getGround()-(bBox.getRadius()));
-                this.setVectorMovement(new Vector2d(this.getVectorMovement().getX(), -SPEEDY));
+                this.getPos().setY(this.getWorld().getGround()-(bBox.getRadius()));//if got over limit
+                this.setVectorMovement(new Vector2d(this.getVectorMovement().getX(), -SPEEDY));//invert polarity
             }else{
                 if(this.getPos().getY()<=maxHeight){
-                    this.getPos().setY(maxHeight+bBox.getRadius());
-                    this.setVectorMovement(new Vector2d(this.getVectorMovement().getX(), SPEEDY));
+                    this.getPos().setY(maxHeight+bBox.getRadius());//if got over limit
+                    this.setVectorMovement(new Vector2d(this.getVectorMovement().getX(), SPEEDY));//invert polarity
                 }
             }
         }

@@ -19,7 +19,7 @@ public class Boss extends GameObject {
      * @param vectorMovement
      * @param boundingBox
      * @param world
-     * 
+     * @param eventListener
      */
     public Boss(P2d pos, Vector2d vectorMovement, BoundingBox boundingBox, World world, GameEventListener eventListener) {
         super(pos, vectorMovement, boundingBox, world);
@@ -106,9 +106,10 @@ public class Boss extends GameObject {
         return outcome;
     }
 
+    /**
+     * @return - Event listener for call the Engine
+     */
     protected GameEventListener getEventListener() {
         return eventListener;
     }
-
-
 }
