@@ -13,7 +13,7 @@ import slayin.model.movement.MovementController;
 
 public class TestCharacterFactory {
 
-    Character knight,wizard;
+    Character knight,wizard,knave;
     int widthWorld,heighWorld,ground;
     MovementController inpuController;
     
@@ -25,6 +25,7 @@ public class TestCharacterFactory {
         inpuController= new MovementController();
         knight= CharacterFactory.getKnight(new World(widthWorld, heighWorld, ground));
         wizard= CharacterFactory.getWizard(new World(widthWorld, heighWorld, ground));
+        knave= CharacterFactory.getKnave(new World(widthWorld, heighWorld, ground));
     }
 
     @Test
@@ -71,21 +72,45 @@ public class TestCharacterFactory {
 
     @Test
     void testJumpKnight(){
-        //TODO: da sistemare
         //per questo test considero che le misure del mondo sono 1280x702
         //l'altezza del personaggio sara 70 e 55 di lunghezza
+        //faccio un primo update pos per posizonare bene il personaggio con i limite del ground
+        knight.updatePos(10);
+        //imposto come comando il jump
         inpuController.setJumping(true);
+        //aggiorndo il vectorMovement
         knight.updateVectorMovement(inpuController);
-        System.out.println(knight.getPos().getY());
-        //dopo due secondi il wizzard dovrebbe avere una posizione maggiore di quella inziale
-        knight.updatePos(100);
-        //metto minore perchè nel nostro gioco più le y minori più il personaggio sta salendo
-        System.out.println(knight.getPos().getY());
+        //dopo duecento millisecondi il wizzard dovrebbe avere una y minore di quella inziale
+        knight.updatePos(200);
+        //metto minore perchè nel nostro gioco più le y sono minori più il personaggio sta salendo
         assertTrue(knight.getPos().getY()<ground-(70/2));
+        //dopo 3 secondi il personaggio dovrebbe essere ricarede a terra
+        knight.updatePos(3000);
+        assertEquals((int)knight.getPos().getY(), (int)(ground-(70/2))-1);
     }
-
+    
+    @Test
     void testWizzard(){
         //TODO: fare i test per il wizzard
+    }
+
+    @Test
+    void testJumpKnave(){
+        //per questo test considero che le misure del mondo sono 1280x702
+        //l'altezza del personaggio sara 70 e 55 di lunghezza
+        //faccio un primo update pos per posizonare bene il personaggio con i limite del ground
+        knave.updatePos(10);
+        //imposto come comando il jump
+        inpuController.setJumping(true);
+        //aggiorndo il vectorMovement
+        knave.updateVectorMovement(inpuController);
+        //dopo duecento millisecondi il wizzard dovrebbe avere una y minore di quella inziale
+        knave.updatePos(200);
+        //metto minore perchè nel nostro gioco più le y sono minori più il personaggio sta salendo
+        assertTrue(knave.getPos().getY()<ground-(70/2));
+        //dopo 3 secondi il personaggio dovrebbe essere ricarede a terra
+        knave.updatePos(3000);
+        assertEquals((int)knave.getPos().getY(), (int)(ground-(70/2))-1);
     }
 
     
