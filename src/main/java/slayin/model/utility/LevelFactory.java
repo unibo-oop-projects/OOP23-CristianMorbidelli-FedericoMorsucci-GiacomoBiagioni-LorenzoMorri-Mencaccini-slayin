@@ -16,6 +16,7 @@ import slayin.model.World;
 import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.entities.GameObject;
 import slayin.model.entities.boss.Minotaur;
+import slayin.model.events.GameEventListener;
 
 public class LevelFactory {
 
@@ -23,16 +24,16 @@ public class LevelFactory {
     private static final String enemiesConfigFile = "/configs/levels/enemies.json";
 
     private final World world;
-    EntityFactory entityFactory;
+    private final EntityFactory entityFactory;
     private JSONArray levels;
 
     /**
      * The constructor of a LevelFactory. It builds an object that can build as many levels as needed
      * @param world - the world of the actual game (needed to set the positions in which entities appear)
      */
-    public LevelFactory(World world){
+    public LevelFactory(World world, GameEventListener eventListener){
         this.world = world;
-        entityFactory = new EntityFactory(world);
+        entityFactory = new EntityFactory(world, eventListener);
         try {
             levels = new JSONObject(Files.readString(Path.of(this.getClass().getResource(enemiesConfigFile).toURI()))).getJSONArray("levels");
         } catch (Exception e) {

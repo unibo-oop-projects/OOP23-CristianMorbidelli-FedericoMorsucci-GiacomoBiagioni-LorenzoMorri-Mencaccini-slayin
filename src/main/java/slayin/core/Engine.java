@@ -41,7 +41,7 @@ public class Engine {
 
     private void initGame() {
         status = new GameStatus(eventListener);
-        levelFactory = new LevelFactory(status.getWorld());
+        levelFactory = new LevelFactory(status.getWorld(), this.eventListener);
     }
 
     public void startGameLoop() {

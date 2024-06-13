@@ -7,6 +7,7 @@ import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.entities.GameObject;
 import slayin.model.entities.enemies.Fire;
 import slayin.model.entities.enemies.Slime;
+import slayin.model.events.GameEventListener;
 import slayin.model.entities.Dummy;
 
 /**
@@ -17,10 +18,12 @@ public class EntityFactory {
 
     private final World world;
     private final Random rn;
+    private final GameEventListener eventListener;
 
-    public EntityFactory(World w){
+    public EntityFactory(World w, GameEventListener eventListener){
         this.world = w;
         rn = new Random();
+        this.eventListener = eventListener;
     }
 
     public GameObject buildDummy(){
