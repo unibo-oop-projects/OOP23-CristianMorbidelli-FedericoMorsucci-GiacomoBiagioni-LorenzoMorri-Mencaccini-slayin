@@ -23,6 +23,7 @@ public class LevelFactory {
     private static final String enemiesConfigFile = "/configs/levels/enemies.json";
 
     private final World world;
+    EntityFactory entityFactory;
     private JSONArray levels;
 
     /**
@@ -31,6 +32,7 @@ public class LevelFactory {
      */
     public LevelFactory(World world){
         this.world = world;
+        entityFactory = new EntityFactory(world);
         try {
             levels = new JSONObject(Files.readString(Path.of(this.getClass().getResource(enemiesConfigFile).toURI()))).getJSONArray("levels");
         } catch (Exception e) {
@@ -140,7 +142,6 @@ public class LevelFactory {
             return List.of();
         }
 
-        EntityFactory entityFactory = new EntityFactory(world);
         List<GameObject> enemies = new ArrayList<>();
 
         for(int i=0; i<qnt; i++){
