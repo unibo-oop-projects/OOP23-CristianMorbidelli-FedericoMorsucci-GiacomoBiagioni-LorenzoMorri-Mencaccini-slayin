@@ -1,9 +1,9 @@
 package slayin.model.entities.character;
 
 import slayin.model.bounding.BoundingBoxImplRet;
-import slayin.model.entities.GameObject;
 import slayin.model.entities.GameObject.Direction;
-import slayin.model.entities.character.shots.RoundBullet;
+import slayin.model.entities.shots.RoundBullet;
+import slayin.model.entities.shots.ShotObject;
 import slayin.model.utility.Constants;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
@@ -37,7 +37,7 @@ public class CharacterFactory {
             }
             
         };  
-        Function<Character,Optional<GameObject>> getShot= (c)->{return Optional.empty();};
+        Function<Character,Optional<ShotObject>> getShot= (c)->{return Optional.empty();};
         return new Character(new P2d(w.getWidth()/2, w.getGround()), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), widthPlayer, heightPlayer),new Health(10, 10),w,func,getShot,"Knight",weapon);
     }
 
@@ -68,7 +68,7 @@ public class CharacterFactory {
             }
             
         };  
-        Function<Character,Optional<GameObject>> getShot= (c)->Optional.empty();
+        Function<Character,Optional<ShotObject>> getShot= (c)->Optional.empty();
         return new Character(new P2d(w.getWidth()/2, w.getGround()), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), widthPlayer, heightPlayer),new Health(10, 10),w,func,getShot,"Knight",weapon);
     }
 
@@ -93,7 +93,7 @@ public class CharacterFactory {
             
         };  
 
-        Function<Character,Optional<GameObject>> getShot= (c)->{return Optional.of(new RoundBullet(c,w));};
+        Function<Character,Optional<ShotObject>> getShot= (c)->{return Optional.of(new RoundBullet(c,w));};
 
         return new Character(new P2d(w.getWidth()/2, w.getGround()), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), widthPlayer, heightPlayer),new Health(10, 10),w,func,getShot,"Wizard");
     }
@@ -115,7 +115,7 @@ public class CharacterFactory {
                 t.getVectorMovement().setY(Constants.FJUMP_CHARACTER);
             }       
         };  
-        Function<Character,Optional<GameObject>> getShot= (c)->Optional.empty();
+        Function<Character,Optional<ShotObject>> getShot= (c)->Optional.empty();
         return new Character(new P2d(w.getWidth()/2, w.getGround()), new Vector2d(1, 0), new BoundingBoxImplRet(new P2d(0, 0), widthPlayer, heightPlayer),new Health(10, 10),w,func,getShot,"Knave",weaponLeft,weaponRight);
     }
 }

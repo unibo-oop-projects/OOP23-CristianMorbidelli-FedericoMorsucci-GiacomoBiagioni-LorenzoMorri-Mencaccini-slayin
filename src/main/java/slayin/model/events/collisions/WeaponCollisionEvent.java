@@ -2,6 +2,7 @@ package slayin.model.events.collisions;
 
 import slayin.model.entities.GameObject;
 import slayin.model.entities.character.MeleeWeapon;
+import slayin.model.entities.shots.ShotObject;
 import slayin.model.events.GameEvent;
 
 import java.util.Optional;
@@ -19,7 +20,7 @@ public class WeaponCollisionEvent implements GameEvent{
     /**
     * A reference of the shot.
     */
-    private final Optional<GameObject> shot;
+    private final Optional<ShotObject> shot;
     /**
     * A reference of the weapon.
     */
@@ -30,7 +31,7 @@ public class WeaponCollisionEvent implements GameEvent{
     *  @param collided - the object that has got hit
     *  @param weapon - the weapon that is has generate this event
     */
-    public WeaponCollisionEvent(GameObject collided,GameObject shot) {
+    public WeaponCollisionEvent(GameObject collided,ShotObject shot) {
         this.collided = collided;
         this.shot=Optional.of(shot);
         this.weapon=Optional.empty();
@@ -59,7 +60,7 @@ public class WeaponCollisionEvent implements GameEvent{
     * A getter for the shot attribute
     * @return the shot that is has generate this event
     */
-    public Optional<GameObject> getShot(){
+    public Optional<ShotObject> getShot(){
         return this.shot;
     }
 
