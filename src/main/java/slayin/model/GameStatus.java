@@ -7,6 +7,7 @@ import java.util.Optional;
 import slayin.model.entities.GameObject;
 import slayin.model.entities.character.Character;
 import slayin.model.entities.character.CharacterFactory;
+import slayin.model.entities.shots.ShotObject;
 import slayin.model.events.GameEventListener;
 import slayin.model.events.GameOverEvent;
 import slayin.model.score.GameScore;
@@ -18,7 +19,7 @@ public class GameStatus {
 
     Character character;
     List<GameObject> enemies;
-    List<GameObject> shots;
+    List<ShotObject> shots;
     private GameScore scoreManager;
 
     private GameEventListener eventListener;
@@ -56,11 +57,11 @@ public class GameStatus {
         enemies.remove(entity);
     }
 
-    public void addShot(GameObject shot){
+    public void addShot(ShotObject shot){
         shots.add(shot);
     }
 
-    public void removeShot(GameObject shot){
+    public void removeShot(ShotObject shot){
         shots.remove(shot);
     }
 
@@ -76,7 +77,7 @@ public class GameStatus {
         return this.enemies;
     }
 
-    public List<GameObject> getShots(){
+    public List<ShotObject> getShots(){
         return this.shots;
     }
 
