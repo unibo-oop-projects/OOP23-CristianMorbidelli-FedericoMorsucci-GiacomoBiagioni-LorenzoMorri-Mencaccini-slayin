@@ -7,6 +7,7 @@ import java.util.Optional;
 import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.entities.GameObject;
 import slayin.model.entities.boss.Imp;
+//import slayin.model.entities.boss.Minotaur;
 import slayin.model.entities.character.Character;
 import slayin.model.entities.character.CharacterFactory;
 import slayin.model.entities.shots.ShotObject;
@@ -36,8 +37,8 @@ public class GameStatus {
         character = CharacterFactory.getKnave(world);
         enemies = new ArrayList<>();
         shots=new ArrayList<>();
-        //enemies.add(new Minotaur(null, new BoundingBoxImplRet(null, 100, 150),world));
-        enemies.add(new Imp(null, new BoundingBoxImplRet(null, 70, 70), world, eventListener));
+        //enemies.add(new Minotaur(null, new BoundingBoxImplRet(null, world.getWidth()/12.8, world.getHeight()/4.8),world));
+        enemies.add(new Imp(null, new BoundingBoxImplRet(null, world.getWidth()/18.29, world.getHeight()/10.29), world, eventListener));
         scoreManager = new GameScore();
         this.eventListener = eventListener;
 

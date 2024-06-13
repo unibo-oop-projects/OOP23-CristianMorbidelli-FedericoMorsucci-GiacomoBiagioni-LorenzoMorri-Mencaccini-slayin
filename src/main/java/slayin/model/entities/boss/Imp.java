@@ -45,12 +45,12 @@ public class Imp extends Boss {
 
         this.positions.add(new P2d(
             world.getWidth()-(boundingBox.getWidth()/2), //right
-            280                                        //max height
+            world.getHeight()/2.57                       //max height (in propotion with world)
         ));
 
         this.positions.add(new P2d(
             (boundingBox.getWidth()/2),                  //left
-            280                                        //max height
+            world.getHeight()/2.57                       //max height (in propotion with world)
         ));
 
         this.setHealth(10); //The Imp must receive 10 hits to be defeated

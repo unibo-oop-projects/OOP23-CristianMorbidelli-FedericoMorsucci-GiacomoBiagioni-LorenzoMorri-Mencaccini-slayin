@@ -9,8 +9,8 @@ import slayin.model.utility.Vector2d;
 
 public class ImpShots extends ShotObject{
 
-    private static final int SPEEDX = 400;
-    private static final int SPEEDY = 500;
+    private int SPEEDX;
+    private int SPEEDY;
     private Double maxHeight;
 
     /**
@@ -27,6 +27,9 @@ public class ImpShots extends ShotObject{
             //to set vertical speed
             this.setVectorMovement(this.getVectorMovement().sum(0,SPEEDY));
         }
+        
+        this.setSPEEDX(world.getWidth()/3); //SPEEDX shot (in propotion with world)
+        this.setSPEEDY((int)(world.getHeight()/1.44));//SPEEDY shot (in propotion with world)
 
         if(this.getPos().getX()>(world.getWidth()/2)){ //if is in the right screen side
             this.setDir(Direction.LEFT);//the direction will no ever change
@@ -78,5 +81,36 @@ public class ImpShots extends ShotObject{
     @Override
     public boolean isFromEnemy() {
         return true;
+    }
+
+    /**
+     * @return - SPEEDX of the imp shot
+     */
+    public int getSPEEDX() {
+        return SPEEDX;
+    }
+
+    
+    /**
+     * set SPEEDX with the param value
+     * @param SPEEDX
+     */
+    private void setSPEEDX(int SPEEDX) {
+        this.SPEEDX=SPEEDX;
+    }
+
+    /**
+     * @return - SPEEDY of the imp shot
+     */
+    public int getSPEEDY() {
+        return SPEEDY;
+    }
+
+    /**
+     * set SPEEDY with the param value
+     * @param sPEEDY
+     */
+    private void setSPEEDY(int sPEEDY) {
+        SPEEDY = sPEEDY;
     }
 }
