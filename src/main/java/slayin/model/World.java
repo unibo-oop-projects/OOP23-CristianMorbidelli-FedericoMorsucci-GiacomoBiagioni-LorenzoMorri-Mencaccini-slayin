@@ -38,16 +38,33 @@ public class World {
     // TODO: sostituire BoundingBox
     public List<Edge> collidingWith(GameObject obj){
         List<Edge> out= new ArrayList<>();
+        out.addAll(this.collidingWithSides(obj));
+        out.addAll(this.collidingWithUpOrDown(obj));
+        return out;
+    }
+
+    public List<Edge> collidingWithSides(GameObject obj){
+        List<Edge> out= new ArrayList<>();
         if(obj.getBoundingBox() instanceof BoundingBoxImplRet){
             BoundingBoxImplRet bBox= (BoundingBoxImplRet) obj.getBoundingBox();
             if(bBox.getX()<=0) out.add(Edge.LEFT_BORDER);
             if(bBox.getX()+bBox.getWidth()>=width) out.add(Edge.RIGHT_BORDER);
-            if(bBox.getY()<=0) out.add(Edge.TOP_BORDER);
-            if(bBox.getY()+bBox.getHeight()>=ground) out.add(Edge.BOTTOM_BORDER);
         }else if(obj.getBoundingBox() instanceof BoundingBoxImplCirc){
             BoundingBoxImplCirc bBox= (BoundingBoxImplCirc) obj.getBoundingBox();
             if(bBox.getX()-bBox.getRadius()<=0) out.add(Edge.LEFT_BORDER);
             if(bBox.getX()+bBox.getRadius()>=width) out.add(Edge.RIGHT_BORDER);
+        }
+        return out;
+    }
+
+    public List<Edge> collidingWithUpOrDown(GameObject obj){
+        List<Edge> out= new ArrayList<>();
+        if(obj.getBoundingBox() instanceof BoundingBoxImplRet){
+            BoundingBoxImplRet bBox= (BoundingBoxImplRet) obj.getBoundingBox();
+            if(bBox.getY()<=0) out.add(Edge.TOP_BORDER);
+            if(bBox.getY()+bBox.getHeight()>=ground) out.add(Edge.BOTTOM_BORDER);
+        }else if(obj.getBoundingBox() instanceof BoundingBoxImplCirc){
+            BoundingBoxImplCirc bBox= (BoundingBoxImplCirc) obj.getBoundingBox();
             if(bBox.getY()-bBox.getRadius()<=0) out.add(Edge.TOP_BORDER);
             if(bBox.getY()+bBox.getRadius()>=ground) out.add(Edge.BOTTOM_BORDER);
         }

@@ -21,6 +21,7 @@ import slayin.model.entities.character.Health;
 import slayin.model.entities.character.MeleeWeapon;
 import slayin.model.entities.enemies.Fire;
 import slayin.model.entities.enemies.Slime;
+import slayin.model.entities.shots.ImpShots;
 import slayin.model.entities.GameObject.Direction;
 import slayin.model.entities.boss.Imp;
 import slayin.model.entities.boss.Minotaur;
@@ -233,7 +234,7 @@ public class DrawComponentFactory {
         return (g) -> {
             try{
                 //URL pathMinotaur =DrawComponentFactory.class.getResource(File.separator+"assets"+File.separator+"boss"+File.separator+minotaur.getClass().getSimpleName().toLowerCase()+File.separator+ minotaur.getState() + FORMAT_SPRITE);
-                String path = Paths.get("assets","boss",minotaur.getClass().getSimpleName().toLowerCase(),minotaur.getState() + FORMAT_SPRITE).toString();
+                String path = Paths.get("assets","entities","boss",minotaur.getClass().getSimpleName().toLowerCase(),minotaur.getState() + FORMAT_SPRITE).toString();
                 
                 URL pathMinotaur =DrawComponentFactory.class.getClassLoader().getResource(path);
                 BufferedImage imgMinotaur = ImageIO.read(new File(pathMinotaur.toURI()));
@@ -288,7 +289,7 @@ public class DrawComponentFactory {
     public static DrawComponent graphicsComponentImp(Imp imp) {
         return (g) -> {
             try{
-                String path = Paths.get("assets","boss",imp.getClass().getSimpleName().toLowerCase(), imp.getState() + FORMAT_SPRITE).toString();
+                String path = Paths.get("assets","entities","boss",imp.getClass().getSimpleName().toLowerCase(), imp.getState() + FORMAT_SPRITE).toString();
                 URL pathImp =DrawComponentFactory.class.getClassLoader().getResource(path);
                 BufferedImage imgImp = ImageIO.read(new File(pathImp.toURI()));
                 if (imp.getDir() == Direction.RIGHT){
@@ -304,6 +305,28 @@ public class DrawComponentFactory {
                 g.drawImage(imgImp, (int) bBoxImp.getX(), (int) bBoxImp.getY(),(int)bBoxImp.getWidth(),(int)bBoxImp.getHeight(), null);
                 //uncomment to draw bbox
                 //g.drawRect((int) bBoxImp.getX(), (int) bBoxImp.getY(), (int) bBoxImp.getWidth(),(int) bBoxImp.getHeight());
+            } catch (URISyntaxException | IOException e) {
+                System.out.println("impossibile caricare l'immagine del personaggio");
+                e.printStackTrace();
+            }
+        };
+    }
+
+
+    public static DrawComponent graphicsComponentImpShots(ImpShots impShots) {
+        return (g) -> {
+            try{
+                String path = Paths.get("assets","entities","shots","ImpShots" + FORMAT_SPRITE).toString();
+                
+                URL pathImpShots =DrawComponentFactory.class.getClassLoader().getResource(path);
+                BufferedImage imgImpShots = ImageIO.read(new File(pathImpShots.toURI()));
+                
+                if (impShots.getDir() == Direction.RIGHT){
+                    imgImpShots = ImageUtility.flipImage(imgImpShots);
+                }
+
+                BoundingBoxImplCirc bBoxImpShots =(BoundingBoxImplCirc)impShots.getBoundingBox();
+                g.drawImage(imgImpShots, (int) bBoxImpShots.getX(), (int) bBoxImpShots.getY(),(int)bBoxImpShots.getRadius()*2,(int)bBoxImpShots.getRadius()*2, null);
             } catch (URISyntaxException | IOException e) {
                 System.out.println("impossibile caricare l'immagine del personaggio");
                 e.printStackTrace();

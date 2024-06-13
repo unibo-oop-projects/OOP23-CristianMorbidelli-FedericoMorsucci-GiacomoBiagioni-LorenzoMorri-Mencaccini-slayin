@@ -3,6 +3,7 @@ package slayin.core;
 import slayin.model.entities.GameObject;
 import slayin.model.entities.character.Character;
 import slayin.model.entities.character.MeleeWeapon;
+import slayin.model.entities.shots.ShotObject;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import slayin.model.GameStatus;
 import slayin.model.events.ChangeResolutionEvent;
 import slayin.model.events.GameEventListener;
 import slayin.model.events.GameOverEvent;
+import slayin.model.events.SpawnShotsEvent;
 import slayin.model.movement.InputController;
 import slayin.model.utility.LevelFactory;
 import slayin.model.utility.SceneType;
@@ -119,7 +121,13 @@ public class Engine {
 
     private void checkShotCollisions(){
         //per tutti gli shot controllo se esce dal mondo
-        this.status.getShots().stream().filter(shot->!(this.status.getWorld().collidingWith(shot).isEmpty())).forEach(s->eventListener.addEvent(new ShotCollisionWithWorldEvent(s)));
+        this.status.getShots().stream()
+            .filter(shot->!(this.status.getWorld().collidingWithSides(shot).isEmpty()))
+            .forEach(s->eventListener.addEvent(new ShotCollisionWithWorldEvent(s)));
+        //check if an enemy shot hits the character
+        this.status.getShots().stream()
+            .filter(shot->shot.isFromEnemy() && shot.getBoundingBox().isCollidedWith(this.status.getCharacter().getBoundingBox()))
+            .forEach(s->eventListener.addEvent(new CharacterCollisionEvent(s)));
     }
 
 
@@ -180,7 +188,11 @@ public class Engine {
 
                 if (!status.getCharacter().isAlive()) {
                     eventListener.addEvent(new GameOverEvent());
-                }                    
+                }
+                CharacterCollisionEvent ev = (CharacterCollisionEvent) e;
+                if(ev.getCollidedObject() instanceof ShotObject){
+                    this.status.removeShot((ShotObject)ev.getCollidedObject());
+                }            
             } else if (e instanceof GameOverEvent) {
                 sceneController.switchScene(SceneType.GAME_OVER);
             } else if(e instanceof ShotCollisionWithWorldEvent){
@@ -193,6 +205,8 @@ public class Engine {
             } else if (e instanceof ChangeResolutionEvent) {
                 ChangeResolutionEvent event = (ChangeResolutionEvent) e;
                 sceneController.changeResolution(event.getResolution());
+            } else if (e instanceof SpawnShotsEvent) {
+                this.status.addShot(((SpawnShotsEvent)e).getShot());
             }
         });
 

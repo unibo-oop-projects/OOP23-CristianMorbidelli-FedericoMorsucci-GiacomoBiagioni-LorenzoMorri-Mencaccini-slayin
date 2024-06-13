@@ -1,10 +1,13 @@
 package slayin.model.entities.boss;
 
 import slayin.model.World;
+import slayin.model.bounding.BoundingBoxImplCirc;
 import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.entities.graphics.DrawComponent;
 import slayin.model.entities.graphics.DrawComponentFactory;
+import slayin.model.entities.shots.ImpShots;
 import slayin.model.events.GameEventListener;
+import slayin.model.events.SpawnShotsEvent;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
 
@@ -37,18 +40,18 @@ public class Imp extends Boss {
         ));
 
         this.positions.add(new P2d(
-            (boundingBox.getWidth()/2), //left
+            (boundingBox.getWidth()/2),                  //left
             world.getGround()-(boundingBox.getHeight()/2)//ground height
         ));
 
         this.positions.add(new P2d(
             world.getWidth()-(boundingBox.getWidth()/2), //right
-            230                                        //max height
+            280                                        //max height
         ));
 
         this.positions.add(new P2d(
-            (boundingBox.getWidth()/2), //left
-            230                                        //max height
+            (boundingBox.getWidth()/2),                  //left
+            280                                        //max height
         ));
 
         this.setHealth(10); //The Imp must receive 10 hits to be defeated
@@ -94,8 +97,8 @@ public class Imp extends Boss {
                 //every second shoots a ball
                 if(this.secondDifference(counter)){
                     if(this.numShots!=0){
-                        //TODO: attacca -> spawn palla
                         if(this.getShotsFired()<this.getNumShots()){//check if it can shoot
+                            this.attack();
                             this.setShotsFired(this.getShotsFired()+1);//update shotsFired+1
                         }
                     }
@@ -126,6 +129,42 @@ public class Imp extends Boss {
             default:
                 System.out.println("ERROR: Imp.state = "+ this.state);
         }
+    }
+
+    /**
+     * 
+     */
+    private void attack() {
+        BoundingBoxImplRet bBox = (BoundingBoxImplRet) this.getBoundingBox();
+        
+        //initial x
+        double x;
+        if(this.getDir()==Direction.LEFT){
+            x=this.getPos().getX()-bBox.getWidth();
+        }else{
+            x=this.getPos().getX()+bBox.getWidth();
+        }
+        
+        //initial position
+        P2d point = new P2d(x,this.getPos().getY()-bBox.getHeight()/2);
+        
+        //linear
+        boolean linear=true;
+        if(point.getY()<this.getWorld().getHeight()/2){
+            linear=false;
+        }
+        
+        //Object ImpShots
+        ImpShots shot = new ImpShots(
+            point,
+            new BoundingBoxImplCirc(point, bBox.getWidth()/2),//same radius of width/2
+            this.getWorld(), 
+            linear
+        );
+
+        this.getEventListener().addEvent(
+            new SpawnShotsEvent(shot)
+        );
     }
 
     /**
