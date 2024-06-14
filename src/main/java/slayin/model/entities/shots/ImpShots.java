@@ -22,14 +22,15 @@ public class ImpShots extends ShotObject{
      */
     public ImpShots(P2d pos, BoundingBoxImplCirc boundingBox, World world, boolean linear) {
         super(pos, new Vector2d(0, 0), boundingBox, world);
+        
+        this.setSPEEDX(world.getWidth()/3); //SPEEDX shot (in propotion with world)
+        this.setSPEEDY((int)(world.getHeight()/1.44));//SPEEDY shot (in propotion with world)
+
         //if it must have a zig zag movement
         if(!linear){
             //to set vertical speed
             this.setVectorMovement(this.getVectorMovement().sum(0,SPEEDY));
         }
-        
-        this.setSPEEDX(world.getWidth()/3); //SPEEDX shot (in propotion with world)
-        this.setSPEEDY((int)(world.getHeight()/1.44));//SPEEDY shot (in propotion with world)
 
         if(this.getPos().getX()>(world.getWidth()/2)){ //if is in the right screen side
             this.setDir(Direction.LEFT);//the direction will no ever change
