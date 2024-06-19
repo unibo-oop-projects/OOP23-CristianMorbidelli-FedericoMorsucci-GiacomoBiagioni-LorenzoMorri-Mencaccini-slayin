@@ -1,5 +1,7 @@
 package slayin.model.entities.boss;
 
+import java.nio.file.Paths;
+
 import slayin.model.World;
 import slayin.model.bounding.BoundingBox;
 import slayin.model.entities.GameObject;
@@ -129,5 +131,12 @@ public class Boss extends GameObject {
     protected void changeState(State state){
         this.state=state;
         this.setCurrentTimeToPrevious();
+    }
+
+    /**
+     * @return asset string
+     */
+    public static final String getPath(){
+        return Paths.get("assets","entities","boss").toString();
     }
 }

@@ -1,5 +1,7 @@
 package slayin.model.entities.boss;
 
+import java.nio.file.Paths;
+
 import slayin.model.World;
 import slayin.model.World.Edge;
 import slayin.model.bounding.BoundingBoxImplRet;
@@ -75,7 +77,12 @@ public class Minotaur extends Boss  {
 
     @Override
     public DrawComponent getDrawComponent(){
-        return DrawComponentFactory.graphicsComponentMinotaur(this);
+        return DrawComponentFactory.graphicsComponentBoss(
+            this, 
+            Paths.get(getPath(),
+                this.getClass().getSimpleName().toLowerCase()//his directory
+            ).toString()
+        );
     }
 
     
