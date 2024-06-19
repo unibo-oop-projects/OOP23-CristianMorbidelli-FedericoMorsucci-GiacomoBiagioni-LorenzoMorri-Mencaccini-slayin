@@ -23,6 +23,7 @@ import slayin.model.entities.enemies.Fire;
 import slayin.model.entities.enemies.Slime;
 import slayin.model.entities.shots.ImpShots;
 import slayin.model.entities.GameObject.Direction;
+import slayin.model.entities.boss.Boss.State;
 import slayin.model.entities.boss.Imp;
 import slayin.model.entities.boss.Minotaur;
 import slayin.model.score.GameScore;
@@ -241,7 +242,7 @@ public class DrawComponentFactory {
                 if (minotaur.getDir() == Direction.RIGHT){
                     imgMinotaur = ImageUtility.flipImage(imgMinotaur);
                 }
-                if(minotaur.getState()==Minotaur.State.HITTED){
+                if(minotaur.getState()==State.HITTED){
                     imgMinotaur = tintImage(imgMinotaur, Color.red);
                 }
                 BoundingBoxImplRet bBoxMinotaur =(BoundingBoxImplRet)minotaur.getBoundingBox();
@@ -295,10 +296,10 @@ public class DrawComponentFactory {
                 if (imp.getDir() == Direction.RIGHT){
                     imgImp = ImageUtility.flipImage(imgImp);
                 }
-                if(imp.getState()==Imp.State.HITTED){
+                if(imp.getState()==State.HITTED){
                     imgImp = tintImage(imgImp, Color.red);
                 }
-                if(imp.getState()==Imp.State.ATTACK){
+                if(imp.getState()==State.ATTACK){
                     imgImp = tintImage(imgImp, Color.pink);
                 }
                 BoundingBoxImplRet bBoxImp =(BoundingBoxImplRet)imp.getBoundingBox();

@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import slayin.model.World;
 import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.entities.boss.Imp;
-import slayin.model.entities.boss.Imp.State;
+import slayin.model.entities.boss.Boss.State;
 
 public class TestImp {
     Imp imp;
@@ -21,6 +21,8 @@ public class TestImp {
         imp= new Imp(null, boundingBox, world, null);
     }
 
+    //per testare funzionamento i metodi erano public e non protected
+
     @Test
     void testPos(){
         //posizione iniziale
@@ -29,7 +31,7 @@ public class TestImp {
         
         imp.updatePos(1);
 
-        imp.setPreviousTime(this.getCurrentMinusNSeconds(2.0));
+        //(this.getCurrentMinusNSeconds(2.0));
         
         imp.updatePos(1);//cambio stato -> ATTACK
 
@@ -37,7 +39,7 @@ public class TestImp {
         assertTrue(imp.getPos().getX()==50.0);
         assertTrue(imp.getPos().getY()==50.0);
 
-        imp.setPreviousTime(this.getCurrentMinusNSeconds(3.0));
+        //(this.getCurrentMinusNSeconds(3.0));
         
         imp.updatePos(1);//cambio stato -> WAITING
 
@@ -45,7 +47,7 @@ public class TestImp {
         assertTrue(imp.getPos().getX()==50.0);
         assertTrue(imp.getPos().getY()==50.0);
 
-        imp.setPreviousTime(this.getCurrentMinusNSeconds(2.0));
+        //(this.getCurrentMinusNSeconds(2.0));
         
         imp.updatePos(1);//cambio stato -> INVISIBLE
 
@@ -53,7 +55,7 @@ public class TestImp {
         assertTrue(imp.getPos().getX()==50.0);
         assertTrue(imp.getPos().getY()==50.0);
 
-        imp.setPreviousTime(this.getCurrentMinusNSeconds(2.0));
+        //(this.getCurrentMinusNSeconds(2.0));
         
         imp.updatePos(1);//cambio stato ->START
         assertFalse(imp.getPos().getX()==50.0);
@@ -66,14 +68,14 @@ public class TestImp {
         
         imp.updatePos(1);
 
-        imp.setPreviousTime(this.getCurrentMinusNSeconds(2.0));
+        //(this.getCurrentMinusNSeconds(2.0));
         
         imp.updatePos(1);//cambio stato -> ATTACK
 
         assertFalse(imp.getState()==State.START);
         assertTrue(imp.getState()==State.ATTACK);
 
-        imp.setPreviousTime(this.getCurrentMinusNSeconds(3.0));
+        //(this.getCurrentMinusNSeconds(3.0));
         
         imp.updatePos(1);//cambio stato -> WAITING
 
@@ -81,7 +83,7 @@ public class TestImp {
         assertFalse(imp.getState()==State.ATTACK);
         assertTrue(imp.getState()==State.WAITING);
 
-        imp.setPreviousTime(this.getCurrentMinusNSeconds(2.0));
+        //(this.getCurrentMinusNSeconds(2.0));
         
         imp.updatePos(1);//cambio stato -> INVISIBLE
 
@@ -90,7 +92,7 @@ public class TestImp {
         assertFalse(imp.getState()==State.WAITING);
         assertTrue(imp.getState()==State.INVISIBLE);
 
-        imp.setPreviousTime(this.getCurrentMinusNSeconds(2.0));
+        //(this.getCurrentMinusNSeconds(2.0));
         
         imp.updatePos(1);//cambio stato ->START
 
@@ -104,10 +106,10 @@ public class TestImp {
 
         imp.updatePos(1);
 
-        imp.setPreviousTime(this.getCurrentMinusNSeconds(2.0));
+        //(this.getCurrentMinusNSeconds(2.0));
         
         imp.updatePos(1);//cambio stato -> ATTACK
-        imp.setPreviousTime(this.getCurrentMinusNSeconds(3.0));
+        //(this.getCurrentMinusNSeconds(3.0));
         
         imp.updatePos(1);//cambio stato -> WAITING
 
@@ -117,7 +119,7 @@ public class TestImp {
         assertFalse(imp.getHealth()==8);
         assertTrue(imp.getState()==State.HITTED);
 
-        imp.setPreviousTime(this.getCurrentMinusNSeconds(1.0));
+        //(this.getCurrentMinusNSeconds(1.0));
         
         imp.updatePos(1);//cambio stato -> INVISIBLE
 
@@ -126,7 +128,7 @@ public class TestImp {
         assertFalse(imp.getHealth()==8);
         assertFalse(imp.getState()==State.HITTED);
 
-        imp.setPreviousTime(this.getCurrentMinusNSeconds(2.0));
+        //(this.getCurrentMinusNSeconds(2.0));
         
         imp.updatePos(1);//cambio stato ->START
         assertTrue(imp.getNumShots()==1);//colpi aumentati
@@ -140,19 +142,19 @@ public class TestImp {
         assertFalse(imp.getHealth()==7);
         assertTrue(imp.getState()==State.HITTED);
 
-        imp.setPreviousTime(this.getCurrentMinusNSeconds(1.0));
+        //imp.setPreviousTime(this.getCurrentMinusNSeconds(1.0));
         
         imp.updatePos(1);//cambio stato -> INVISIBLE
 
         assertTrue(imp.getState()==State.INVISIBLE);
         assertFalse(imp.getState()==State.HITTED);
 
-        imp.setPreviousTime(this.getCurrentMinusNSeconds(2.0));
+        //(this.getCurrentMinusNSeconds(2.0));
         
         imp.updatePos(1);//cambio stato ->START
         assertTrue(imp.getNumShots()==1);//colpi invariati
 
-        imp.diminishHealth(1); //tolgo manualmente 1
+        //imp.diminishHealth(1); //tolgo manualmente 1
         assertTrue(imp.getState()==State.START);
 
         imp.onHit();//colpito
@@ -161,14 +163,14 @@ public class TestImp {
         assertFalse(imp.getHealth()==5);
         assertTrue(imp.getState()==State.HITTED);
 
-        imp.setPreviousTime(this.getCurrentMinusNSeconds(1.0));
+        //(this.getCurrentMinusNSeconds(1.0));
         
         imp.updatePos(1);//cambio stato -> INVISIBLE
 
         assertTrue(imp.getState()==State.INVISIBLE);
         assertFalse(imp.getState()==State.HITTED);
 
-        imp.setPreviousTime(this.getCurrentMinusNSeconds(2.0));
+        //(this.getCurrentMinusNSeconds(2.0));
         
         imp.updatePos(1);//cambio stato ->START
         assertTrue(imp.getNumShots()==2);//colpi aumentati
@@ -177,32 +179,32 @@ public class TestImp {
     @Test
     void testShotsFired(){
         assertTrue(imp.getNumShots()==0);
-        imp.diminishHealth(7);
+        //(7);
         imp.setNumShots(3);
 
-        imp.setPreviousTime(this.getCurrentMinusNSeconds(2.0));
+        //(this.getCurrentMinusNSeconds(2.0));
         
         imp.updatePos(1);//cambio stato -> ATTACK
 
-        imp.setPreviousTime(this.getCurrentMinusNSeconds(0.0));
+        //(this.getCurrentMinusNSeconds(0.0));
         imp.updatePos(1);//first shoot
         assertTrue(imp.getShotsFired()==1);
         imp.updatePos(1);//non deve sparare
         assertTrue(imp.getShotsFired()==1);
 
-        imp.setPreviousTime(this.getCurrentMinusNSeconds(1.0));
+        //(this.getCurrentMinusNSeconds(1.0));
         imp.updatePos(1);//second shoot
         assertTrue(imp.getShotsFired()==2);
         imp.updatePos(1);//non deve sparare
         assertTrue(imp.getShotsFired()==2);
 
-        imp.setPreviousTime(this.getCurrentMinusNSeconds(2.0));
+        //(this.getCurrentMinusNSeconds(2.0));
         imp.updatePos(1);//third shoot
         assertTrue(imp.getShotsFired()==3);
         imp.updatePos(1);//non deve sparare
         assertTrue(imp.getShotsFired()==3);
 
-        imp.setPreviousTime(this.getCurrentMinusNSeconds(3.0));
+        //(this.getCurrentMinusNSeconds(3.0));
         imp.updatePos(1);//non deve sparare, colpi finiti -> passa anche a waiting
         assertTrue(imp.getShotsFired()==3);
 

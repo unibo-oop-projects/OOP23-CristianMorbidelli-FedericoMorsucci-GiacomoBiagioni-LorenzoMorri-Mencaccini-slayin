@@ -15,8 +15,6 @@ import java.util.Random;
 
 public class Imp extends Boss {
 
-    public static enum State { START, ATTACK, WAITING, INVISIBLE, HITTED }
-    private State state;
     private int numShots;
     private int shotsFired;
     private boolean posFlag;
@@ -72,7 +70,7 @@ public class Imp extends Boss {
 
     @Override
     public void updatePos(int dt){
-        switch(this.state) {
+        switch(this.getState()) {
             case START:
                 if(posFlag){
                     //reset flag
@@ -127,7 +125,7 @@ public class Imp extends Boss {
                 }
                 break;
             default:
-                System.out.println("ERROR: Imp.state = "+ this.state);
+                System.out.println("ERROR: Imp.state = "+ this.getState());
         }
     }
 
@@ -174,7 +172,7 @@ public class Imp extends Boss {
     private void update() {
 
         //if is in INVISIBLE state 
-        if(this.state==State.INVISIBLE){
+        if(this.getState()==State.INVISIBLE){
             if(!this.posFlag){
                 //he changed position, set flag to true
                 this.posFlag=true;
@@ -205,31 +203,15 @@ public class Imp extends Boss {
     public boolean onHit() {
         boolean outcome= false;
         //states in which it can be damaged
-        if(this.state == State.WAITING || this.state == State.ATTACK || this.state == State.START){
+        if(this.getState() == State.WAITING || this.getState() == State.ATTACK || this.getState() == State.START){
             //change state, decrease health
             this.changeState(State.HITTED);
             this.diminishHealth(1);
-            if(this.getHealth()==0){
+            if(this.isDead()){
                 outcome = true; //if is defeated
             }
         }
         return outcome;
-    }
-    
-    /**
-     * Change Boss State and reset previousTime
-     * @param state 
-     */
-    private void changeState(State state){
-        this.state=state;
-        this.setCurrentTimeToPrevious();
-    }
-
-    /**
-     * @return boss State
-     */
-    public State getState() {
-        return state;
     }
 
     /**

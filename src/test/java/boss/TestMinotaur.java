@@ -8,15 +8,16 @@ import org.junit.jupiter.api.Test;
 
 import slayin.model.World;
 import slayin.model.bounding.BoundingBoxImplRet;
-//import slayin.model.entities.boss.Boss;
+import slayin.model.entities.boss.Boss.State;
 import slayin.model.entities.boss.Minotaur;
-import slayin.model.entities.boss.Minotaur.State;
 
 public class TestMinotaur {
     
     Minotaur minotaur;
     World world = new World(100, 100, 80); 
     BoundingBoxImplRet boundingBox = new BoundingBoxImplRet(null, 10, 20);
+
+    //per testare funzionamento i metodi erano public e non protected
     
     @BeforeEach
     void setUp(){
@@ -29,7 +30,7 @@ public class TestMinotaur {
         assertTrue(minotaur.getPos().getY()==70.0);
         minotaur.updatePos(1000); //parte timer prima di state run
         
-        minotaur.setPreviousTime(this.getCurrentMinusFiveSeconds());
+        //minotaur.setPreviousTime(this.getCurrentMinusFiveSeconds());
         
         minotaur.updatePos(1000); //va a sbattere -> collisione
         minotaur.updatePos(1000);
@@ -46,7 +47,7 @@ public class TestMinotaur {
         
         minotaur.updatePos(1000); //parte timer prima di state run
         
-        minotaur.setPreviousTime(this.getCurrentMinusFiveSeconds());
+        //minotaur.setPreviousTime(this.getCurrentMinusFiveSeconds());
         
         minotaur.updatePos(1000); //va a sbattere -> collisione
         assertTrue(minotaur.getState()==State.RUN);//si muove
@@ -60,7 +61,7 @@ public class TestMinotaur {
         assertTrue(minotaur.getState()==State.HITTED);
 
         minotaur.updatePos(1000);
-        minotaur.setPreviousTime(this.getCurrentMinusFiveSeconds());
+        //minotaur.setPreviousTime(this.getCurrentMinusFiveSeconds());
         minotaur.updatePos(1000);
 
         assertTrue(minotaur.getState()==State.START); //riparte

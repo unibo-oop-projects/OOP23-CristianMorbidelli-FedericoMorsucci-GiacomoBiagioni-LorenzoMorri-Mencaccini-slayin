@@ -9,6 +9,8 @@ import slayin.model.utility.Vector2d;
 
 public class Boss extends GameObject {
 
+    public static enum State { START, RUN, STUNNED, HITTED, ATTACK, WAITING, INVISIBLE}
+    private State state;
     private int health;
     private double previousTime;
     private final GameEventListener eventListener;
@@ -43,7 +45,7 @@ public class Boss extends GameObject {
     /**
      * set CurrentTime;
      */
-    public void setCurrentTimeToPrevious() {
+    protected void setCurrentTimeToPrevious() {
         this.previousTime =(double) System.currentTimeMillis();
     }
 
@@ -51,7 +53,7 @@ public class Boss extends GameObject {
      * set previous time 
      * @param previousTime
      */
-    public void setPreviousTime(double previousTime) {
+    protected void setPreviousTime(double previousTime) {
         this.previousTime = previousTime;
     }
     
@@ -66,7 +68,7 @@ public class Boss extends GameObject {
      * set boss life
      * @param health 
      */
-    public void setHealth(int health) {
+    protected void setHealth(int health) {
         this.health = health;
     }
 
@@ -74,7 +76,7 @@ public class Boss extends GameObject {
      * set boss life - n if n and health is greater then 0
      * @param n - damage
      */
-    public void diminishHealth(int n){
+    protected void diminishHealth(int n){
         if(n>0 && this.health>0){
             this.health = (this.health-n);
         }
@@ -83,7 +85,7 @@ public class Boss extends GameObject {
     /**
      * @return true if health is less or equal then 0
      */
-    public boolean idDead(){
+    protected boolean isDead(){
         boolean outcome=false;
         if(this.health<=0){
             outcome=true;
@@ -96,7 +98,7 @@ public class Boss extends GameObject {
      * @param seconds
      * @return - true if the difference is greater than or equal to the seconds
      */
-    public boolean secondDifference(double seconds){
+    protected boolean secondDifference(double seconds){
         boolean outcome=false;
         
         double difference=(double)((System.currentTimeMillis()-this.previousTime)/1000);
@@ -111,5 +113,21 @@ public class Boss extends GameObject {
      */
     protected GameEventListener getEventListener() {
         return eventListener;
+    }
+
+    /**
+     * @return boss State
+     */
+    public State getState() {
+        return state;
+    }
+
+    /**
+     * Change Boss State and reset previousTime
+     * @param state 
+     */
+    protected void changeState(State state){
+        this.state=state;
+        this.setCurrentTimeToPrevious();
     }
 }

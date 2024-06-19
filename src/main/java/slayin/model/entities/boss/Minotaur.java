@@ -10,8 +10,6 @@ import slayin.model.utility.Vector2d;
 
 public class Minotaur extends Boss  {
     
-    public static enum State { START, RUN, STUNNED, HITTED }
-    private State state;
     private int SPEEDX;
     
     /**
@@ -43,7 +41,7 @@ public class Minotaur extends Boss  {
 
     @Override
     public void updatePos(int dt) {
-        switch(this.state) {
+        switch(this.getState()) {
             case START:
                 //it can't be hitted, wait 5 seconds and runs on the other side
                 if(this.secondDifference(5.0)){
@@ -71,7 +69,7 @@ public class Minotaur extends Boss  {
                 }
                 break;
             default:
-                System.out.println("ERROR: Minotuar.state = "+ this.state);
+                System.out.println("ERROR: Minotuar.state = "+ this.getState());
         }
     }
 
@@ -87,10 +85,10 @@ public class Minotaur extends Boss  {
     @Override
     public boolean onHit() {
         boolean outcome= false;
-        if(this.state==State.STUNNED){
+        if(this.getState()==State.STUNNED){
             this.changeState(State.HITTED);
             this.diminishHealth(1);
-            if(this.getHealth()==0){
+            if(this.isDead()){
                 outcome = true;
             }
         }
@@ -112,7 +110,7 @@ public class Minotaur extends Boss  {
                 setDir(Direction.RIGHT);
                 //in case he went over the edge
                 this.getPos().setX((boundingBox.getWidth()/2));
-                this.state=State.STUNNED;
+                this.changeState(State.STUNNED);
             }
 
             if(col == Edge.RIGHT_BORDER && this.getDir()==Direction.RIGHT){
@@ -120,12 +118,12 @@ public class Minotaur extends Boss  {
                 setDir(Direction.LEFT);
                 //same as the previous one
                 this.getPos().setX((this.getWorld().getWidth()-(boundingBox.getWidth()/2)));
-                this.state=State.STUNNED;
+                this.changeState(State.STUNNED);
             }
         }
 
         //if is running update position
-        if(this.state==State.RUN){
+        if(this.getState()==State.RUN){
             this.setPos(this.getPos().sum(this.getVectorMovement().mul(0.001*dt)));
         }
 
@@ -152,22 +150,6 @@ public class Minotaur extends Boss  {
      */
     private void updateSPEEDX(){
         this.SPEEDX= this.SPEEDX*2;
-    }
-
-    /**
-     * @return boss State
-     */
-    public State getState() {
-        return state;
-    }
-
-    /**
-     * Change Boss State and reset previousTime
-     * @param state 
-     */
-    private void changeState(State state){
-        this.state=state;
-        this.setCurrentTimeToPrevious();
     }
     
 }
