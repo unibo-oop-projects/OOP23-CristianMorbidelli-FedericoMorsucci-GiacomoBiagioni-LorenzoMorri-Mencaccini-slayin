@@ -5,6 +5,8 @@ import java.util.Random;
 import slayin.model.World;
 import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.entities.GameObject;
+import slayin.model.entities.boss.Imp;
+import slayin.model.entities.boss.Minotaur;
 import slayin.model.entities.enemies.Fire;
 import slayin.model.entities.enemies.Slime;
 import slayin.model.events.GameEventListener;
@@ -63,5 +65,17 @@ public class EntityFactory {
         Fire entity = new Fire(new P2d(DUMMY_STARTING_X, DUMMY_STARTING_Y),  new BoundingBoxImplRet(new P2d(DUMMY_STARTING_X, DUMMY_STARTING_Y), FIRE_LENGHT, FIRE_HEIGHT), world);
 
         return entity;
+    }
+
+    public GameObject buildMinotaur(){
+        BoundingBoxImplRet boundingBox= new BoundingBoxImplRet(null, world.getWidth()/12.8, world.getHeight()/4.8);
+        
+        return new Minotaur(null, boundingBox, this.world);
+    }
+
+    public GameObject buildImp(){
+        BoundingBoxImplRet boundingBox=new BoundingBoxImplRet(null, world.getWidth()/18.29, world.getHeight()/10.29);
+        
+        return new Imp(null, boundingBox, this.world, this.eventListener);
     }
 }
