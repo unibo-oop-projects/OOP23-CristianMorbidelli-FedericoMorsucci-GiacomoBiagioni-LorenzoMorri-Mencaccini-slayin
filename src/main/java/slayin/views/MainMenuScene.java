@@ -2,11 +2,10 @@ package slayin.views;
 
 import java.awt.Container;
 
-import slayin.core.GameScene;
+import slayin.core.SimpleGameScene;
 import slayin.model.events.GameEventListener;
 import slayin.model.events.menus.QuitGameEvent;
 import slayin.model.events.menus.SimpleChangeSceneEvent;
-import slayin.model.events.menus.StartGameEvent;
 import slayin.model.utility.SceneType;
 import slayin.model.utility.assets.Asset;
 import slayin.model.utility.assets.AssetsManager;
@@ -16,7 +15,7 @@ import slayin.views.components.SlayinLabel;
 
 import java.awt.Image;
 
-public class MainMenuScene implements GameScene {
+public class MainMenuScene implements SimpleGameScene {
     private GameEventListener eventListener;
 
     public MainMenuScene(GameEventListener eventListener) {
@@ -28,7 +27,7 @@ public class MainMenuScene implements GameScene {
         Image backgroundImage = AssetsManager.getImageAsset(Asset.MAIN_MENU_BG);
 
         SlayinLabel title = new SlayinLabel("Slayin", true);
-        SlayinButton playBtn = new SlayinButton("Gioca", () -> eventListener.addEvent(new StartGameEvent()));
+        SlayinButton playBtn = new SlayinButton("Gioca", () -> eventListener.addEvent(new SimpleChangeSceneEvent(SceneType.CHARACTER_SELECTION)));
         SlayinButton optionsBtn = new SlayinButton("Opzioni", () -> eventListener.addEvent(new SimpleChangeSceneEvent(SceneType.OPTION_MENU)));
         SlayinButton quitBtn = new SlayinButton("Esci", () -> eventListener.addEvent(new QuitGameEvent()));
         
@@ -37,9 +36,6 @@ public class MainMenuScene implements GameScene {
 
         return container;
     }
-
-    @Override
-    public void drawGraphics() {}
 
     @Override
     public SceneType getSceneType() {

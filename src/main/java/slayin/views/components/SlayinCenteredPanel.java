@@ -6,7 +6,7 @@ import java.awt.GridBagLayout;
 
 import javax.swing.JComponent;
 
-import slayin.model.utility.Constants;
+import slayin.model.utility.Globals;
 
 /**
  * Generic panel that centers its components vertically and horizontally
@@ -27,9 +27,11 @@ public class SlayinCenteredPanel extends JComponent {
      * @param fullscreen Whether the panel should be fullscreen or not
      */
     public SlayinCenteredPanel(boolean fullscreen) {
+        super();
+
         if (fullscreen) {
-            this.setSize(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
-            this.setPreferredSize(new Dimension(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
+            this.setSize(Globals.RESOLUTION.getWidth(), Globals.RESOLUTION.getHeight());
+            this.setPreferredSize(new Dimension(Globals.RESOLUTION.getWidth(), Globals.RESOLUTION.getHeight()));
         }
 
         this.buildLayout();

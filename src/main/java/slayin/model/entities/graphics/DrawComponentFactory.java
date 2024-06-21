@@ -41,7 +41,7 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 import slayin.model.entities.Dummy;
-import slayin.model.utility.Constants;
+import slayin.model.utility.Globals;
 
 /**
  * A class that generates the DrawComponent to draw objects.
@@ -186,7 +186,7 @@ public class DrawComponentFactory {
             g.drawString(comboText, 10, comboHeight);
 
             FontMetrics fm = g.getFontMetrics(g.getFont());    
-            float comboTimePercentage = remainingTime / (Constants.COMBO_RESET_TIME / 1000f);
+            float comboTimePercentage = remainingTime / (Globals.COMBO_RESET_TIME / 1000f);
             int pbarHeight = 10;
             int xSpacing = fm.stringWidth(comboText) + 20;
 
@@ -211,7 +211,7 @@ public class DrawComponentFactory {
     public static DrawComponent graphicsComponentWorld(World w) {
         return (g) -> {
             Image bImage = AssetsManager.getImageAsset(Asset.GAME_BG);
-            g.drawImage(bImage, 0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, null);
+            g.drawImage(bImage, 0, 0, Globals.RESOLUTION.getWidth(), Globals.RESOLUTION.getHeight(), null);
         };
     }
 

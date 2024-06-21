@@ -14,7 +14,7 @@ import slayin.model.entities.boss.Minotaur;
 public class TestMinotaur {
     
     Minotaur minotaur;
-    World world = new World(100, 100, 80); 
+    World world = new World(100, 100); 
     BoundingBoxImplRet boundingBox = new BoundingBoxImplRet(null, 10, 20);
 
     //per testare funzionamento i metodi erano public e non protected

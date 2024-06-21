@@ -8,8 +8,8 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import slayin.core.GameScene;
 import slayin.core.SceneController;
+import slayin.core.SimpleGameScene;
 import slayin.model.GameStatus;
 import slayin.model.movement.InputController;
 import slayin.model.utility.SceneType;
@@ -30,10 +30,10 @@ public class TestPauseMenu {
         sceneController.createWindow();
 
         sceneController.switchScene(SceneType.MAIN_MENU);
-        Optional<GameScene> curScene = sceneController.getActiveScene();
+        Optional<SimpleGameScene> curScene = sceneController.getActiveScene();
 
         assertTrue(curScene.isPresent());
-        GameScene scene = curScene.get();
+        SimpleGameScene scene = curScene.get();
         assertEquals(scene.getSceneType(), SceneType.MAIN_MENU);
 
         sceneController.showGameScene(status);

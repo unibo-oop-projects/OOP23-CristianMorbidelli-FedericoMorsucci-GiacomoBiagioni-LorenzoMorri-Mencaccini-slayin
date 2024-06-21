@@ -7,11 +7,12 @@ import java.util.Optional;
 import slayin.model.entities.GameObject;
 import slayin.model.entities.character.Character;
 import slayin.model.entities.character.CharacterFactory;
+import slayin.model.entities.character.PlayableCharacter;
 import slayin.model.entities.shots.ShotObject;
 import slayin.model.events.GameEventListener;
 import slayin.model.events.GameOverEvent;
 import slayin.model.score.GameScore;
-import slayin.model.utility.Constants;
+import slayin.model.utility.Globals;
 
 public class GameStatus {
     World world;
@@ -30,8 +31,7 @@ public class GameStatus {
     private long tickSinceLastEnemyAdded;
 
     public GameStatus(GameEventListener eventListener){
-        world = new World(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, 600);
-        character = CharacterFactory.getKnave(world);
+        world = new World(Globals.RESOLUTION.getWidth(), Globals.RESOLUTION.getHeight());
         enemies = new ArrayList<>();
         shots=new ArrayList<>();
         scoreManager = new GameScore();
@@ -67,6 +67,23 @@ public class GameStatus {
 
     public World getWorld(){
         return this.world;
+    }
+
+    public void setupCharacter(PlayableCharacter typeCharacter){
+        switch (typeCharacter) {
+            case KNIGHT:
+                character= CharacterFactory.getKnight(world);
+                break;
+            case KNAVE:
+                
+                break;
+            case WIZARD:
+                character= CharacterFactory.getWizard(world);
+                break;
+        
+            default:
+                break;
+        }
     }
 
     public Character getCharacter(){

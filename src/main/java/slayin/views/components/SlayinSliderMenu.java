@@ -3,6 +3,7 @@ package slayin.views.components;
 import java.awt.BorderLayout;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -18,6 +19,7 @@ public class SlayinSliderMenu<X> extends JPanel {
     private JButton prevButton;
 
     private Consumer<X> changeListener;
+    private Function<X, String> itemToString;
 
     /**
      * Creates a new SlayinSliderMenu
@@ -25,7 +27,8 @@ public class SlayinSliderMenu<X> extends JPanel {
      * @param curItem the current item of the list
      * @param items   the list of available items
      */
-    public SlayinSliderMenu(X curItem, List<X> items) {
+    public SlayinSliderMenu(X curItem, List<X> items, Function<X, String> itemToString) {
+        this.itemToString = itemToString;
         this.currentItemIndex = items.indexOf(curItem);
 
         this.items = items;
@@ -36,7 +39,8 @@ public class SlayinSliderMenu<X> extends JPanel {
         nextButton.addActionListener(e -> nextItem());
         prevButton.addActionListener(e -> prevItem());
 
-        currentItemLabel = new JLabel(items.get(currentItemIndex).toString(), SwingConstants.CENTER);
+        String itemName = itemToString != null ? itemToString.apply(items.get(currentItemIndex)) : items.get(currentItemIndex).toString();
+        currentItemLabel = new JLabel(itemName, SwingConstants.CENTER);
 
         this.setLayout(new BorderLayout());
 
@@ -79,7 +83,8 @@ public class SlayinSliderMenu<X> extends JPanel {
      * Updates the text of the current item
      */
     private void updateText() {
-        currentItemLabel.setText(items.get(currentItemIndex).toString());
+        String itemName = itemToString != null ? itemToString.apply(items.get(currentItemIndex)) : items.get(currentItemIndex).toString();
+        currentItemLabel.setText(itemName);
     }
 
     /**

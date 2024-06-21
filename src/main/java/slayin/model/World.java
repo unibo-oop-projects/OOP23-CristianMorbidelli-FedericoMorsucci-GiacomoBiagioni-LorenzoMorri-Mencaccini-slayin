@@ -13,10 +13,10 @@ public class World {
     public static enum Edge { LEFT_BORDER, RIGHT_BORDER , TOP_BORDER , BOTTOM_BORDER  }
     private int width,height,ground;
 
-    public World(int width, int height, int ground) {
+    public World(int width, int height) {
         this.width = width;
         this.height = height;
-        this.ground=ground;
+        this.ground = (int) (height / 1.2);
     }
 
     public int getGround(){

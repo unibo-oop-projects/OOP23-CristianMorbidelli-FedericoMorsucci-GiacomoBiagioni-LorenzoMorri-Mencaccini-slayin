@@ -11,8 +11,9 @@ import slayin.model.GameStatus;
 import slayin.model.events.GameEventListener;
 import slayin.model.events.menus.QuitGameEvent;
 import slayin.model.movement.InputController;
-import slayin.model.utility.GameResolution;
+import slayin.model.utility.Globals;
 import slayin.model.utility.SceneType;
+import slayin.views.CharacterSelectionScene;
 import slayin.views.GameLevelScene;
 import slayin.views.GameOverScene;
 import slayin.views.MainMenuScene;
@@ -21,11 +22,10 @@ import slayin.views.PauseMenuScene;
 
 public class SceneController {
     private JFrame gameFrame;
-    private Optional<GameScene> activeScene;
+    private Optional<SimpleGameScene> activeScene;
     private GameEventListener eventListener;
     private InputController inputController;
     private GameStatus gameStatus;
-    private GameResolution currentResolution;
 
     public SceneController(GameEventListener eventListener, InputController inputController) {
         this.activeScene = Optional.empty();
@@ -43,10 +43,7 @@ public class SceneController {
             }
         });
 
-        if (currentResolution == null)
-            currentResolution = GameResolution.DEFAULT;
-
-        this.gameFrame.setPreferredSize(new Dimension(currentResolution.getWidth(), currentResolution.getHeight()));
+        this.gameFrame.setPreferredSize(new Dimension(Globals.RESOLUTION.getWidth(), Globals.RESOLUTION.getHeight()));
         this.gameFrame.setResizable(false);
         this.gameFrame.pack();
         this.gameFrame.setLocationRelativeTo(null);
@@ -64,7 +61,7 @@ public class SceneController {
     }
 
     public void switchScene(SceneType sceneType) {
-        GameScene newScene = null;
+        SimpleGameScene newScene = null;
         this.gameFrame.removeKeyListener(inputController);
 
         switch (sceneType) {
@@ -84,6 +81,9 @@ public class SceneController {
                 break;
             case OPTION_MENU:
                 newScene = new OptionMenuScene(eventListener);
+                break;
+            case CHARACTER_SELECTION:
+                newScene = new CharacterSelectionScene(eventListener);    
                 break;
             default:
                 break;
@@ -105,7 +105,8 @@ public class SceneController {
         if (activeScene.isEmpty())
             return;
 
-        activeScene.get().drawGraphics();
+        if (activeScene.get() instanceof GameScene)
+            ((GameScene) activeScene.get()).drawGraphics();
     }
 
     public void showGameScene(GameStatus gameStatus) {
@@ -126,11 +127,11 @@ public class SceneController {
         return activeScene.get().getSceneType().isMenu();
     }
 
-    public Optional<GameScene> getActiveScene() {
+    public Optional<SimpleGameScene> getActiveScene() {
         return this.activeScene;
     }
 
-    public void changeResolution(GameResolution resolution) {
-        this.gameFrame.setSize(resolution.getWidth(), resolution.getHeight());
+    public void updateResolution() {
+        this.gameFrame.setSize(Globals.RESOLUTION.getWidth(), Globals.RESOLUTION.getHeight());
     }
 }

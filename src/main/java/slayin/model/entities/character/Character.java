@@ -19,7 +19,7 @@ import slayin.model.entities.shots.ShotObject;
 import slayin.model.movement.MovementController;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
-import slayin.model.utility.Constants;
+import slayin.model.utility.Globals;
 
 /**
  *  Base class for all characters.
@@ -47,7 +47,7 @@ public class Character extends GameObject{
         super(pos, vectorMouvement, boundingBox,world);
         this.life=life;
         this.weapons= new ArrayList<>(Arrays.asList(weapons));
-        gravity= new Vector2d(0, Constants.GRAVITY_CHARACTER);  
+        gravity= new Vector2d(0, Globals.GRAVITY_CHARACTER);  
         this.jumpFunc=jumpFunc;
         this.getShots=getShots;
         this.name= name;
@@ -129,10 +129,10 @@ public class Character extends GameObject{
             this.jumpFunc.accept(this);
             input.setJumping(false);
         }else if(input.isMovingLeft() && !(moveIsBlocked())){
-            this.getVectorMovement().setX(Constants.FLEFT_CHARACTER);
+            this.getVectorMovement().setX(Globals.FLEFT_CHARACTER);
             this.setDir(Direction.LEFT);
         }else if(input.isMovingRight() && !(moveIsBlocked())){
-            this.getVectorMovement().setX(Constants.FRIGHT_CHARACTER);
+            this.getVectorMovement().setX(Globals.FRIGHT_CHARACTER);
             this.setDir(Direction.RIGHT);
         }
     }

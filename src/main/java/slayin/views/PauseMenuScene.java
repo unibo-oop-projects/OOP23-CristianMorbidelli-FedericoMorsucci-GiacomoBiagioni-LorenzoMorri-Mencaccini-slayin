@@ -5,18 +5,18 @@ import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-import slayin.core.GameScene;
+import slayin.core.SimpleGameScene;
 import slayin.model.GameStatus;
 import slayin.model.events.GameEventListener;
 import slayin.model.events.menus.QuitGameEvent;
 import slayin.model.events.menus.ShowPauseMenuEvent;
-import slayin.model.utility.Constants;
+import slayin.model.utility.Globals;
 import slayin.model.utility.SceneType;
 import slayin.views.components.SlayinButton;
 import slayin.views.components.SlayinCenteredPanel;
 import slayin.views.components.SlayinLabel;
 
-public class PauseMenuScene implements GameScene {
+public class PauseMenuScene implements SimpleGameScene {
     private GameEventListener eventListener;
     private GameStatus gameStatus;
 
@@ -48,9 +48,6 @@ public class PauseMenuScene implements GameScene {
     }
 
     @Override
-    public void drawGraphics() {}
-
-    @Override
     public SceneType getSceneType() {
         return SceneType.PAUSE_MENU;
     }
@@ -77,6 +74,6 @@ public class PauseMenuScene implements GameScene {
         gameStatus.getObjects().forEach(e -> e.getDrawComponent().draw(g2d));
 
         // Drawing the gray layer over the background
-        g2d.fillRect(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
+        g2d.fillRect(0, 0, Globals.RESOLUTION.getWidth(), Globals.RESOLUTION.getHeight());
     }
 }
