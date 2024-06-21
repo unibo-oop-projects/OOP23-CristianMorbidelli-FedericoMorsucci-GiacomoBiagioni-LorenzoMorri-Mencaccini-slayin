@@ -31,7 +31,6 @@ public class GameStatus {
 
     public GameStatus(GameEventListener eventListener){
         world = new World(Globals.RESOLUTION.getWidth(), Globals.RESOLUTION.getHeight());
-        character = CharacterFactory.getWizard(world);
         enemies = new ArrayList<>();
         shots=new ArrayList<>();
         scoreManager = new GameScore();
@@ -69,8 +68,21 @@ public class GameStatus {
         return this.world;
     }
 
-    public void setupCharacter(PlayableCharacter character){
-        // TODO: Implementare la scelta del personaggio
+    public void setupCharacter(PlayableCharacter typeCharacter){
+        switch (typeCharacter) {
+            case KNIGHT:
+                character= CharacterFactory.getKnight(world);
+                break;
+            case KNAVE:
+                
+                break;
+            case WIZARD:
+                character= CharacterFactory.getWizard(world);
+                break;
+        
+            default:
+                break;
+        }
     }
 
     public Character getCharacter(){
