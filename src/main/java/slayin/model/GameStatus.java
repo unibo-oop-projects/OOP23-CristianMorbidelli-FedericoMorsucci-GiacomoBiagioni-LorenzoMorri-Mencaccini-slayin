@@ -75,7 +75,7 @@ public class GameStatus {
                 character= CharacterFactory.getKnight(world);
                 break;
             case KNAVE:
-                
+                character= CharacterFactory.getKnave(world);
                 break;
             case WIZARD:
                 character= CharacterFactory.getWizard(world);
