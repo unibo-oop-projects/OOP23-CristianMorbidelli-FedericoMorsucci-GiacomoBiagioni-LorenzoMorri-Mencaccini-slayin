@@ -4,7 +4,6 @@ import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.entities.GameObject.Direction;
 import slayin.model.entities.shots.RoundBullet;
 import slayin.model.entities.shots.ShotObject;
-import slayin.model.utility.Constants;
 import slayin.model.utility.Globals;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
@@ -113,7 +112,7 @@ public class CharacterFactory {
         Consumer<Character> func= new Consumer<Character>() {
             @Override
             public void accept(Character t) {
-                t.getVectorMovement().setY(Constants.FJUMP_CHARACTER);
+                t.getVectorMovement().setY(Globals.FJUMP_CHARACTER);
             }       
         };  
         Function<Character,Optional<ShotObject>> getShot= (c)->Optional.empty();

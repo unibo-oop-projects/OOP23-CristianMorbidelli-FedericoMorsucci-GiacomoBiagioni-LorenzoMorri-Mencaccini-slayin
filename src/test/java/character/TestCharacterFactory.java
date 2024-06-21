@@ -23,9 +23,9 @@ public class TestCharacterFactory {
         heighWorld=720;
         ground=600;
         inpuController= new MovementController();
-        knight= CharacterFactory.getKnight(new World(widthWorld, heighWorld, ground));
-        wizard= CharacterFactory.getWizard(new World(widthWorld, heighWorld, ground));
-        knave= CharacterFactory.getKnave(new World(widthWorld, heighWorld, ground));
+        knight= CharacterFactory.getKnight(new World(widthWorld, heighWorld));
+        wizard= CharacterFactory.getWizard(new World(widthWorld, heighWorld));
+        knave= CharacterFactory.getKnave(new World(widthWorld, heighWorld));
     }
 
     @Test

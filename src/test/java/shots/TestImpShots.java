@@ -13,7 +13,7 @@ import slayin.model.utility.P2d;
 
 public class TestImpShots {
     ImpShots shot2,shot1;
-    World world = new World(100, 100, 80);
+    World world = new World(100, 100);
 
     @BeforeEach
     void setUp(){

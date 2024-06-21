@@ -13,7 +13,7 @@ import slayin.model.entities.boss.Boss.State;
 
 public class TestImp {
     Imp imp;
-    World world = new World(100, 100, 80); 
+    World world = new World(100, 100); 
     BoundingBoxImplRet boundingBox = new BoundingBoxImplRet(null, 10, 10);
     
     @BeforeEach
