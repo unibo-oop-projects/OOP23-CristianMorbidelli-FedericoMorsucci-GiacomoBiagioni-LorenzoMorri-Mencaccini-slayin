@@ -9,7 +9,7 @@ import slayin.model.events.GameEventListener;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
 
-public class Boss extends GameObject {
+public abstract class Boss extends GameObject {
 
     public static enum State { START, RUN, STUNNED, HITTED, ATTACK, WAITING, INVISIBLE}
     private State state;
@@ -28,12 +28,6 @@ public class Boss extends GameObject {
     public Boss(P2d pos, Vector2d vectorMovement, BoundingBox boundingBox, World world, GameEventListener eventListener) {
         super(pos, vectorMovement, boundingBox, world);
         this.eventListener=eventListener;
-    }
-
-
-    @Override
-    public void updatePos(int dt) {
-        // every boss has a specific one
     }
 
     /**

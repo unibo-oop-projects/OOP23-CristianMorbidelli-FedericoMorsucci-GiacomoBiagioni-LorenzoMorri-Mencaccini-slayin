@@ -224,7 +224,7 @@ public class Imp extends Boss {
      * set how many shots imp shoots
      * @param numShots
      */
-    public void setNumShots(int numShots) {
+    protected void setNumShots(int numShots) {
         this.numShots=numShots;
     }
 
@@ -239,7 +239,7 @@ public class Imp extends Boss {
      * set how many shots imp had shoot
      * @param num
      */
-    public void setShotsFired(int num) {
+    protected void setShotsFired(int num) {
         this.shotsFired=num;
     }
 

@@ -148,14 +148,14 @@ public class Minotaur extends Boss  {
     /**
      * @param x - SPEEDX setted with x 
      */
-    private void setSPEEDX(int x) {
+    protected void setSPEEDX(int x) {
         SPEEDX = x;
     }
 
     /**
      * Double the value of SPEEDX
      */
-    private void updateSPEEDX(){
+    protected void updateSPEEDX(){
         this.SPEEDX= this.SPEEDX*2;
     }
     
