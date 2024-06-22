@@ -97,8 +97,15 @@ public class EntityFactory {
     public GameObject buildHeadstone(){
         final int HEADSTONE_HEIGHT = world.getHeight() / 14;
         final int HEADSTONE_LENGHT = HEADSTONE_HEIGHT;
+        int spawnx;
 
-        final int HEADSTONE_STARTING_X = (int) rn.nextInt(world.getWidth());    // Starts at a completely random X
+        if(rn.nextInt(1)==1){
+            spawnx = world.getWidth()-HEADSTONE_LENGHT/2;
+        }else{
+            spawnx = HEADSTONE_LENGHT/2;
+        }
+
+        final int HEADSTONE_STARTING_X = spawnx;    // Starts at a completely random X
         final int HEADSTONE_STARTING_Y = world.getGround()-HEADSTONE_HEIGHT/2;    // Starts at the ground level
 
         Headstone entity = new Headstone(new P2d(HEADSTONE_STARTING_X, HEADSTONE_STARTING_Y),  new BoundingBoxImplRet(new P2d(HEADSTONE_STARTING_X, HEADSTONE_STARTING_Y), HEADSTONE_LENGHT, HEADSTONE_HEIGHT), world, this.eventListener);
