@@ -150,14 +150,23 @@ public class LevelFactory {
                 case 0: // Dummy entity; not an actual enemy in the final game
                     enemies.add(entityFactory.buildDummy());
                     break;
-                case 1:
+                case 1: // Slime: enemy that slides at floor level and damage on contact
                     enemies.add(entityFactory.buildSlime());
                     break;
-                case 2:
+                case 2: // Fire: enemy that slides mid air and damage on contact
                     enemies.add(entityFactory.buildFire());
                     break;
-                case 3:
-                    enemies.add(new Minotaur(null, new BoundingBoxImplRet(null, 100, 150),world));
+                case 3: // Couatl
+                    enemies.add(entityFactory.buildCouatl());
+                    break;
+                case 4: // Headstone: enemy that stays at border of the map and shoots; unkillable
+                    enemies.add(entityFactory.buildHeadstone());
+                    break;
+                case 5: // Minotaur: first boss
+                    enemies.add(entityFactory.buildMinotaur());
+                    break;
+                case 6: // Imp: second boss
+                    enemies.add(entityFactory.buildImp());
                     break;
                 default:
                     return List.of();
