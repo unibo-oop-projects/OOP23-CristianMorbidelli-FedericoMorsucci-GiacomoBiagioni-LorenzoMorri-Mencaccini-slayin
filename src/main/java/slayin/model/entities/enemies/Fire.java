@@ -7,6 +7,7 @@ import slayin.model.World.Edge;
 import slayin.model.bounding.BoundingBox;
 import slayin.model.entities.graphics.DrawComponent;
 import slayin.model.entities.graphics.DrawComponentFactory;
+import slayin.model.events.GameEventListener;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
 
@@ -21,11 +22,11 @@ public class Fire extends Enemy{
     private Boolean down = false;
     private double startingY;
 
-    public Fire(P2d pos, BoundingBox boundingBox, World world) {
-        super(pos, new Vector2d(0, 0), boundingBox, world);
+    public Fire(P2d pos, BoundingBox boundingBox, World world, GameEventListener eventListener) {
+        super(pos, new Vector2d(0, 0), boundingBox, world, eventListener);
         random = new Random();
         startingY = this.getPos().getY();
-        name = "Fire";
+        name = "fire";
     }
     
     @Override
@@ -80,11 +81,6 @@ public class Fire extends Enemy{
                 setDir(Direction.LEFT);
             }
         }
-    }
-
-    @Override
-    public Direction getDir(){
-        return super.getDir();
     }
 
     @Override

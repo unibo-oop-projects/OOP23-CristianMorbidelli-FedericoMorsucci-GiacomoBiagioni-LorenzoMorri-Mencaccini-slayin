@@ -9,6 +9,7 @@ import slayin.model.entities.boss.Imp;
 import slayin.model.entities.boss.Minotaur;
 import slayin.model.entities.enemies.Couatl;
 import slayin.model.entities.enemies.Fire;
+import slayin.model.entities.enemies.Headstone;
 import slayin.model.entities.enemies.Slime;
 import slayin.model.events.GameEventListener;
 import slayin.model.entities.Dummy;
@@ -48,10 +49,10 @@ public class EntityFactory {
         final int SLIME_HEIGHT = world.getHeight() / 18;
         final int SLIME_LENGHT = SLIME_HEIGHT*2;
 
-        final int DUMMY_STARTING_X = (int) rn.nextInt(world.getWidth());    // Starts at a completely random X
-        final int DUMMY_STARTING_Y = world.getHeight() - SLIME_HEIGHT/2;    // Starts at the ground level
+        final int SLIME_STARTING_X = (int) rn.nextInt(world.getWidth());    // Starts at a completely random X
+        final int SLIME_STARTING_Y = world.getHeight() - SLIME_HEIGHT/2;    // Starts at the ground level
 
-        Slime entity = new Slime(new P2d(DUMMY_STARTING_X, DUMMY_STARTING_Y),  new BoundingBoxImplRet(new P2d(DUMMY_STARTING_X, DUMMY_STARTING_Y), SLIME_LENGHT, SLIME_HEIGHT), world);
+        Slime entity = new Slime(new P2d(SLIME_STARTING_X, SLIME_STARTING_Y),  new BoundingBoxImplRet(new P2d(SLIME_STARTING_X, SLIME_STARTING_Y), SLIME_LENGHT, SLIME_HEIGHT), world, this.eventListener);
 
         return entity;
     }
@@ -60,10 +61,10 @@ public class EntityFactory {
         final int FIRE_HEIGHT = world.getHeight() / 14;
         final int FIRE_LENGHT = FIRE_HEIGHT;
 
-        final int DUMMY_STARTING_X = (int) rn.nextInt(world.getWidth());    // Starts at a completely random X
-        final int DUMMY_STARTING_Y = world.getHeight()/2 - FIRE_HEIGHT/2;    // Starts at the ground level
+        final int FIRE_STARTING_X = (int) rn.nextInt(world.getWidth());    // Starts at a completely random X
+        final int FIRE_STARTING_Y = world.getHeight()/2 - FIRE_HEIGHT/2;    // Starts at the ground level
 
-        Fire entity = new Fire(new P2d(DUMMY_STARTING_X, DUMMY_STARTING_Y),  new BoundingBoxImplRet(new P2d(DUMMY_STARTING_X, DUMMY_STARTING_Y), FIRE_LENGHT, FIRE_HEIGHT), world);
+        Fire entity = new Fire(new P2d(FIRE_STARTING_X, FIRE_STARTING_Y),  new BoundingBoxImplRet(new P2d(FIRE_STARTING_X, FIRE_STARTING_Y), FIRE_LENGHT, FIRE_HEIGHT), world, this.eventListener);
 
         return entity;
     }
@@ -79,6 +80,8 @@ public class EntityFactory {
         
         return new Imp(null, boundingBox, this.world, this.eventListener);
     }
+
+
     public GameObject buildCouatl(){
         final int COUATL_HEIGHT = world.getHeight() / 18;
         final int COUATL_LENGHT = COUATL_HEIGHT;
@@ -86,8 +89,20 @@ public class EntityFactory {
         final int DUMMY_STARTING_X = (int) rn.nextInt(world.getWidth());    // Starts at a completely random X
         final int DUMMY_STARTING_Y = world.getHeight()/2 - COUATL_HEIGHT/2;    // Starts at the ground level
 
-        Couatl entity = new Couatl(new P2d(DUMMY_STARTING_X, DUMMY_STARTING_Y),  new BoundingBoxImplRet(new P2d(DUMMY_STARTING_X, DUMMY_STARTING_Y), COUATL_LENGHT, COUATL_HEIGHT), world);
+        Couatl entity = new Couatl(new P2d(DUMMY_STARTING_X, DUMMY_STARTING_Y),  new BoundingBoxImplRet(new P2d(DUMMY_STARTING_X, DUMMY_STARTING_Y), COUATL_LENGHT, COUATL_HEIGHT), world, this.eventListener);
 
         return entity;
     }    
+
+    public GameObject buildHeadstone(){
+        final int HEADSTONE_HEIGHT = world.getHeight() / 14;
+        final int HEADSTONE_LENGHT = HEADSTONE_HEIGHT;
+
+        final int HEADSTONE_STARTING_X = (int) rn.nextInt(world.getWidth());    // Starts at a completely random X
+        final int HEADSTONE_STARTING_Y = world.getGround()-HEADSTONE_HEIGHT/2;    // Starts at the ground level
+
+        Headstone entity = new Headstone(new P2d(HEADSTONE_STARTING_X, HEADSTONE_STARTING_Y),  new BoundingBoxImplRet(new P2d(HEADSTONE_STARTING_X, HEADSTONE_STARTING_Y), HEADSTONE_LENGHT, HEADSTONE_HEIGHT), world, this.eventListener);
+
+        return entity;
+    }
 }

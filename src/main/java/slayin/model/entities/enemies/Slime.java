@@ -5,6 +5,7 @@ import slayin.model.World.Edge;
 import slayin.model.bounding.BoundingBox;
 import slayin.model.entities.graphics.DrawComponent;
 import slayin.model.entities.graphics.DrawComponentFactory;
+import slayin.model.events.GameEventListener;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
 
@@ -20,10 +21,10 @@ public class Slime extends Enemy  {
     private int oldDt = 0;
     private Boolean changeDir = false;
 
-    public Slime(P2d pos, BoundingBox boundingBox, World world) {
-        super(pos, new Vector2d(0, SPEEDY), boundingBox, world);
+    public Slime(P2d pos, BoundingBox boundingBox, World world, GameEventListener eventListener) {
+        super(pos, new Vector2d(0, SPEEDY), boundingBox, world, eventListener);
         random = new Random();
-        name = "Slime";
+        name = "slime";
     }
 
     @Override
@@ -52,10 +53,10 @@ public class Slime extends Enemy  {
                     this.setVectorMovement(new Vector2d(SPEEDX, 0));
                 }
             }
-            //the slime can change direction every 3.5s, its a 40% chance
+            //the slime can change direction every 3.5s, its a 20% chance
             if(change){
-                //se minore di 5 cambio direzione, 40% prob
-                if(random.nextInt(1,11)<5){
+                //se minore di 5 cambio direzione, 20% prob
+                if(random.nextInt(1,11)<3){
                     if(this.getVectorMovement().equals(new Vector2d(-SPEEDX, 0))){
                         setDir(Direction.RIGHT);
                         this.setVectorMovement(new Vector2d(SPEEDX, 0));
@@ -83,11 +84,6 @@ public class Slime extends Enemy  {
                 }
             }
         }
-    }
-
-    @Override
-    public Direction getDir(){
-        return super.getDir();
     }
 
     @Override

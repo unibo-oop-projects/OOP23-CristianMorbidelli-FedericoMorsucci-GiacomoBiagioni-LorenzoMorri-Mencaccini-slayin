@@ -206,7 +206,7 @@ public class Engine {
                 SimpleChangeSceneEvent event = (SimpleChangeSceneEvent) e;
                 sceneController.switchScene(event.getSceneType());
             } else if (e instanceof SpawnShotsEvent) {
-                //add to world the shot
+                //add the shot to the world
                 this.status.addShot(((SpawnShotsEvent)e).getShot());
             } else if (e instanceof ResolutionChangedEvent) {
                 sceneController.updateResolution();

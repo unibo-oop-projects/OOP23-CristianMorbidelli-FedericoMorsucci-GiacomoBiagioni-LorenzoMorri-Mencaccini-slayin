@@ -7,6 +7,7 @@ import slayin.model.World.Edge;
 import slayin.model.bounding.BoundingBox;
 import slayin.model.entities.graphics.DrawComponent;
 import slayin.model.entities.graphics.DrawComponentFactory;
+import slayin.model.events.GameEventListener;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
 
@@ -20,8 +21,8 @@ public class Couatl extends Enemy{
     /*private static int SPEEDY = 100;
     private static double startingY;*/
 
-    public Couatl(P2d pos, BoundingBox boundingBox, World world) {
-        super(pos, new Vector2d(0, 0), boundingBox, world);
+    public Couatl(P2d pos, BoundingBox boundingBox, World world, GameEventListener eventListener) {
+        super(pos, new Vector2d(0, 0), boundingBox, world, eventListener);
         random = new Random();
         //startingY = this.getPos().getY(); //TODO
     }
@@ -65,11 +66,6 @@ public class Couatl extends Enemy{
                 setDir(Direction.LEFT);
             }
         }
-    }
-
-    @Override
-    public Direction getDir(){
-        return super.getDir();
     }
 
     @Override

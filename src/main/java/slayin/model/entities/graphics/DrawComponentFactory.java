@@ -20,7 +20,7 @@ import slayin.model.entities.character.Character;
 import slayin.model.entities.character.Health;
 import slayin.model.entities.character.MeleeWeapon;
 import slayin.model.entities.enemies.Enemy;
-import slayin.model.entities.enemies.Fire;
+import slayin.model.entities.shots.HeadstoneShot;
 import slayin.model.entities.shots.ImpShots;
 import slayin.model.entities.GameObject.Direction;
 import slayin.model.entities.boss.Boss;
@@ -147,25 +147,6 @@ public class DrawComponentFactory {
         };
     }
 
-    public static DrawComponent graphicsComponentFire(Fire fire){
-        return (g) ->{
-            try{
-                URL pathFire;
-                BufferedImage imgFire;
-                String path = Paths.get("assets","entities","enemies","fire" + FORMAT_SPRITE).toString();
-                pathFire = DrawComponentFactory.class.getClassLoader().getResource(path);
-                imgFire = (BufferedImage) ImageIO.read(new File(pathFire.toURI()));
-                if (fire.getDir() == Direction.RIGHT){
-                    imgFire= ImageUtility.flipImage(imgFire);
-                }
-                BoundingBoxImplRet bBoxEnemy =(BoundingBoxImplRet)fire.getBoundingBox();
-                g.drawImage(imgFire, (int) bBoxEnemy.getX(), (int) bBoxEnemy.getY(),(int)bBoxEnemy.getWidth(),(int)bBoxEnemy.getHeight(), null);
-            } catch (URISyntaxException | IOException e) {
-                System.out.println("impossibile caricare l'immagine del nemico");
-                e.printStackTrace();
-            }
-        };
-    }
 
     /**
      * Build a DrawComponent to draw the score and the combo factor
@@ -269,7 +250,7 @@ public class DrawComponentFactory {
     public static DrawComponent graphicsComponentImpShots(ImpShots impShots) {
         return (g) -> {
             try{
-                String path = Paths.get("assets","entities","shots","ImpShots" + FORMAT_SPRITE).toString();
+                String path = Paths.get("assets","entities","shots","impShots" + FORMAT_SPRITE).toString();
                 
                 URL pathImpShots =DrawComponentFactory.class.getClassLoader().getResource(path);
                 BufferedImage imgImpShots = ImageIO.read(new File(pathImpShots.toURI()));
@@ -305,6 +286,24 @@ public class DrawComponentFactory {
                 }
                 BoundingBoxImplRet bBoxBoss =(BoundingBoxImplRet)boss.getBoundingBox();
                 g.drawImage(imgBoss, (int) bBoxBoss.getX(), (int) bBoxBoss.getY(),(int)bBoxBoss.getWidth(),(int)bBoxBoss.getHeight(), null);
+            } catch (URISyntaxException | IOException e) {
+                System.out.println("impossibile caricare l'immagine del personaggio");
+                e.printStackTrace();
+            }
+        };
+    }
+
+
+    public static DrawComponent graphicsComponentHeadstoneShot(HeadstoneShot headstoneShot) {
+        return (g) -> {
+            try{
+                String path = Paths.get("assets","entities","shots","Skull" + FORMAT_SPRITE).toString();
+                
+                URL pathSkull =DrawComponentFactory.class.getClassLoader().getResource(path);
+                BufferedImage imgSkull = ImageIO.read(new File(pathSkull.toURI()));
+
+                BoundingBoxImplCirc bBoxSkull =(BoundingBoxImplCirc)headstoneShot.getBoundingBox();
+                g.drawImage(imgSkull, (int) bBoxSkull.getX(), (int) bBoxSkull.getY(),(int)bBoxSkull.getRadius()*2,(int)bBoxSkull.getRadius()*2, null);
             } catch (URISyntaxException | IOException e) {
                 System.out.println("impossibile caricare l'immagine del personaggio");
                 e.printStackTrace();
