@@ -7,6 +7,7 @@ import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.entities.GameObject;
 import slayin.model.entities.boss.Imp;
 import slayin.model.entities.boss.Minotaur;
+import slayin.model.entities.enemies.Couatl;
 import slayin.model.entities.enemies.Fire;
 import slayin.model.entities.enemies.Slime;
 import slayin.model.events.GameEventListener;
@@ -78,4 +79,15 @@ public class EntityFactory {
         
         return new Imp(null, boundingBox, this.world, this.eventListener);
     }
+    public GameObject buildCouatl(){
+        final int COUATL_HEIGHT = world.getHeight() / 18;
+        final int COUATL_LENGHT = COUATL_HEIGHT;
+
+        final int DUMMY_STARTING_X = (int) rn.nextInt(world.getWidth());    // Starts at a completely random X
+        final int DUMMY_STARTING_Y = world.getHeight()/2 - COUATL_HEIGHT/2;    // Starts at the ground level
+
+        Couatl entity = new Couatl(new P2d(DUMMY_STARTING_X, DUMMY_STARTING_Y),  new BoundingBoxImplRet(new P2d(DUMMY_STARTING_X, DUMMY_STARTING_Y), COUATL_LENGHT, COUATL_HEIGHT), world);
+
+        return entity;
+    }    
 }

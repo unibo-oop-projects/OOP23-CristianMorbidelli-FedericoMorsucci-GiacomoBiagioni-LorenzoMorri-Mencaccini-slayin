@@ -10,53 +10,39 @@ import slayin.model.entities.graphics.DrawComponentFactory;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
 
-public class Fire extends Enemy{
+public class Couatl extends Enemy{
 
-    private Random random;
-    private static final int scorePerKill = 2;
-    private static final int SPEEDY = 100;
-    private static final int SPEEDX = 100;
+    private static final int scorePerKill = 3;
     private int oldDt = 0;
-    private Boolean down = false;
-    private double startingY;
+    private Boolean pause = false;
+    private Random random;
+    private static int SPEEDX = 100;
+    /*private static int SPEEDY = 100;
+    private static double startingY;*/
 
-    public Fire(P2d pos, BoundingBox boundingBox, World world) {
+    public Couatl(P2d pos, BoundingBox boundingBox, World world) {
         super(pos, new Vector2d(0, 0), boundingBox, world);
         random = new Random();
-        startingY = this.getPos().getY();
+        //startingY = this.getPos().getY(); //TODO
     }
-    
+
     @Override
-    public void updatePos(int dt) {
+    public void updatePos(int dt){
         oldDt+=dt;
-        //using dt to check if the fire need to go down (every 4s) or if he should stop to go down and start to go left of right
-        if(oldDt>4000 && !down || oldDt>400 && down){
-            down = !down;
+        if(oldDt>3000){
+            pause = !pause;
             oldDt = 0;
         }
-        this.updateDir(down);
+        
+        this.updateDir(pause, false);
         
         this.setPos(this.getPos().sum(this.getVectorMovement().mul(0.001*dt)));
         // aggiorno di nuovo la BoundinBox
         this.getBoundingBox().updatePoint(this.getPos());
     }
-
-    public void updateDir(Boolean down){
-        if(this.getWorld().isTouchingGround(this)){
-            down = false;
-        }
-        if(down){
-            //60% probability to go up if the fire is under his starting Y
-            if(this.getPos().getY()>startingY && random.nextInt(1,11) < 7 && !this.getDir().equals(Direction.DOWN)){
-                this.setDir(Direction.UP);
-                this.setVectorMovement(new Vector2d(0, -SPEEDY));
-                //se non va su, allora puo andare giu
-            }else if(!this.getDir().equals(Direction.UP)){
-                this.setDir(Direction.DOWN);
-                this.setVectorMovement(new Vector2d(0, SPEEDY));
-            }
-        }if((this.getDir().equals(Direction.DOWN) || this.getDir().equals(Direction.UP)) && !down || this.getVectorMovement().equals(new Vector2d(0, 0))){
-            //if im here, i should stop to go down or up, but i need to go left or right (random)
+    
+    public void updateDir(Boolean pause, Boolean down){
+        if(this.getVectorMovement().equals(new Vector2d(0, 0)) && !pause){
             if(random.nextInt(2)==1){
                 setDir(Direction.LEFT);
                 this.setVectorMovement(new Vector2d(-SPEEDX, 0)); 
@@ -65,6 +51,7 @@ public class Fire extends Enemy{
                 this.setVectorMovement(new Vector2d(SPEEDX, 0));
             }
         }
+        //TODO engine stuff
         var collision = this.getWorld().collidingWith(this);
         for(var col : collision){
 
