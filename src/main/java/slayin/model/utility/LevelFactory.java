@@ -13,9 +13,7 @@ import org.json.JSONObject;
 
 import slayin.model.Level;
 import slayin.model.World;
-import slayin.model.bounding.BoundingBoxImplRet;
 import slayin.model.entities.GameObject;
-import slayin.model.entities.boss.Minotaur;
 import slayin.model.events.GameEventListener;
 
 public class LevelFactory {
@@ -33,7 +31,7 @@ public class LevelFactory {
      */
     public LevelFactory(World world, GameEventListener eventListener){
         this.world = world;
-        entityFactory = new EntityFactory(world, eventListener);
+        entityFactory = new EntityFactory(this.world, eventListener);
         try {
             levels = new JSONObject(Files.readString(Path.of(this.getClass().getResource(enemiesConfigFile).toURI()))).getJSONArray("levels");
         } catch (Exception e) {
