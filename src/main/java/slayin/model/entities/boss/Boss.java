@@ -81,7 +81,7 @@ public abstract class Boss extends GameObject {
     /**
      * @return true if health is less or equal then 0
      */
-    protected boolean isDead(){
+    public boolean isDead(){
         boolean outcome=false;
         if(this.health<=0){
             outcome=true;

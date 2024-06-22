@@ -21,7 +21,6 @@ import slayin.model.entities.character.Health;
 import slayin.model.entities.character.MeleeWeapon;
 import slayin.model.entities.enemies.Enemy;
 import slayin.model.entities.enemies.Fire;
-import slayin.model.entities.enemies.Slime;
 import slayin.model.entities.shots.ImpShots;
 import slayin.model.entities.GameObject.Direction;
 import slayin.model.entities.boss.Boss;
@@ -31,7 +30,6 @@ import slayin.model.utility.ImageUtility;
 import slayin.model.utility.Pair;
 import slayin.model.utility.assets.Asset;
 import slayin.model.utility.assets.AssetsManager;
-import slayin.model.entities.enemies.Fire;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
