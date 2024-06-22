@@ -37,7 +37,6 @@ public abstract class Boss extends GameObject {
         return previousTime;
     }
 
-
     /**
      * set CurrentTime;
      */
