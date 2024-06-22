@@ -13,6 +13,7 @@ import java.util.Random;
 public class Slime extends Enemy  {
 
     private Random random;
+    private final String name;
     private static final int scorePerKill = 1;
     private static final int SPEEDY = -50;
     private static final int SPEEDX = 150;
@@ -22,6 +23,7 @@ public class Slime extends Enemy  {
     public Slime(P2d pos, BoundingBox boundingBox, World world) {
         super(pos, new Vector2d(0, SPEEDY), boundingBox, world);
         random = new Random();
+        name = "Slime";
     }
 
     @Override
@@ -91,6 +93,11 @@ public class Slime extends Enemy  {
     @Override
     public int getScorePerKill(){
         return scorePerKill;
+    }
+
+    @Override
+    public String getSimpleName(){
+        return this.name;
     }
 
     @Override

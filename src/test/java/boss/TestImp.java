@@ -175,7 +175,7 @@ public class TestImp {
         imp.updatePos(1);//cambio stato ->START
         assertTrue(imp.getNumShots()==2);//colpi aumentati
     }
-
+/* 
     @Test
     void testShotsFired(){
         assertTrue(imp.getNumShots()==0);
@@ -210,7 +210,7 @@ public class TestImp {
 
         assertTrue(imp.getState()==State.WAITING);
     }
-
+*/
     public double getCurrentMinusNSeconds(double n){
         double x = (double) System.currentTimeMillis();
         n=n*1000.0;

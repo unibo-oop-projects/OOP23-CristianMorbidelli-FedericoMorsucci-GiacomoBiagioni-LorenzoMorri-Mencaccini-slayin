@@ -21,7 +21,6 @@ import slayin.model.entities.character.Health;
 import slayin.model.entities.character.MeleeWeapon;
 import slayin.model.entities.enemies.Enemy;
 import slayin.model.entities.enemies.Fire;
-import slayin.model.entities.enemies.Slime;
 import slayin.model.entities.shots.ImpShots;
 import slayin.model.entities.GameObject.Direction;
 import slayin.model.entities.boss.Boss;
@@ -31,7 +30,6 @@ import slayin.model.utility.ImageUtility;
 import slayin.model.utility.Pair;
 import slayin.model.utility.assets.Asset;
 import slayin.model.utility.assets.AssetsManager;
-import slayin.model.entities.enemies.Fire;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -130,15 +128,20 @@ public class DrawComponentFactory {
     public static DrawComponent graphicsComponentEnemy(Enemy enemy){
         return (g) ->{
             try{
-                URL pathSlime;
-                BufferedImage imgSlime;
-                String path = Paths.get("assets","entities","enemies","slime" + FORMAT_SPRITE).toString();
-                pathSlime = DrawComponentFactory.class.getClassLoader().getResource(path);
-                imgSlime = (BufferedImage) ImageIO.read(new File(pathSlime.toURI()));
-                BoundingBoxImplRet bBoxSlime =(BoundingBoxImplRet)enemy.getBoundingBox();
-                g.drawImage(imgSlime, (int) bBoxSlime.getX(), (int) bBoxSlime.getY(),(int)bBoxSlime.getWidth(),(int)bBoxSlime.getHeight(), null);
+                URL pathEnemy;
+                BufferedImage imgEnemy;
+                String path = Paths.get("assets","entities","enemies", enemy.getSimpleName() + FORMAT_SPRITE).toString();
+                pathEnemy = DrawComponentFactory.class.getClassLoader().getResource(path);
+                imgEnemy = (BufferedImage) ImageIO.read(new File(pathEnemy.toURI()));
+
+                // se la direzione è a sinistra ruoto l'immagine
+                if (enemy.getDir() == Direction.RIGHT){
+                    imgEnemy= ImageUtility.flipImage(imgEnemy);
+                }
+                BoundingBoxImplRet bBoxEnemy =(BoundingBoxImplRet)enemy.getBoundingBox();
+                g.drawImage(imgEnemy, (int) bBoxEnemy.getX(), (int) bBoxEnemy.getY(),(int)bBoxEnemy.getWidth(),(int)bBoxEnemy.getHeight(), null);
             } catch (URISyntaxException | IOException e) {
-                System.out.println("impossibile caricare l'immagine dello slime");
+                System.out.println("impossibile caricare l'immagine del nemico");
                 e.printStackTrace();
             }
         };

@@ -13,6 +13,7 @@ import slayin.model.utility.Vector2d;
 public class Fire extends Enemy{
 
     private Random random;
+    private final String name;
     private static final int scorePerKill = 2;
     private static final int SPEEDY = 100;
     private static final int SPEEDX = 100;
@@ -24,6 +25,7 @@ public class Fire extends Enemy{
         super(pos, new Vector2d(0, 0), boundingBox, world);
         random = new Random();
         startingY = this.getPos().getY();
+        name = "Fire";
     }
     
     @Override
@@ -88,6 +90,11 @@ public class Fire extends Enemy{
     @Override
     public int getScorePerKill(){
         return scorePerKill;
+    }
+
+    @Override
+    public String getSimpleName(){
+        return this.name;
     }
 
     @Override
