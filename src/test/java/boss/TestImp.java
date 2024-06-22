@@ -180,7 +180,7 @@ public class TestImp {
     void testShotsFired(){
         assertTrue(imp.getNumShots()==0);
         //(7);
-        imp.setNumShots(3);
+        //imp.setNumShots(3);
 
         //(this.getCurrentMinusNSeconds(2.0));
         

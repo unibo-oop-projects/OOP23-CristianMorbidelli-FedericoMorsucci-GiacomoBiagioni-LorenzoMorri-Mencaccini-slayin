@@ -10,7 +10,7 @@ import slayin.model.entities.graphics.DrawComponentFactory;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
 
-public class Minotaur extends Boss  {
+public class Minotaur extends Boss {
     
     private int SPEEDX;
     
