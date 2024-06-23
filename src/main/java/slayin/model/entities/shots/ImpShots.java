@@ -12,6 +12,7 @@ public class ImpShots extends ShotObject{
     private int SPEEDX;
     private int SPEEDY;
     private Double maxHeight;
+    private int damage;
 
     /**
      * set initial position, movement and define the trajectory of the shot
@@ -20,7 +21,7 @@ public class ImpShots extends ShotObject{
      * @param world - world of the shot
      * @param linear - true if has a linear trajectory
      */
-    public ImpShots(P2d pos, BoundingBoxImplCirc boundingBox, World world, boolean linear) {
+    public ImpShots(P2d pos, BoundingBoxImplCirc boundingBox, World world, boolean linear, int damage) {
         super(pos, new Vector2d(0, 0), boundingBox, world);
         
         this.setSPEEDX(world.getWidth()/3); //SPEEDX shot (in propotion with world)
@@ -41,6 +42,8 @@ public class ImpShots extends ShotObject{
         }
 
         this.maxHeight=this.getPos().getY();//set max height for the shot, the same of imp
+
+        this.damage=damage;
     }
 
     @Override
@@ -113,5 +116,10 @@ public class ImpShots extends ShotObject{
      */
     private void setSPEEDY(int sPEEDY) {
         SPEEDY = sPEEDY;
+    }
+
+    @Override
+    public int getDamageOnHit() {
+        return this.damage;
     }
 }

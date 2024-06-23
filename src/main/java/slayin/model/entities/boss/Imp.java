@@ -168,7 +168,8 @@ public class Imp extends Boss {
             point,
             new BoundingBoxImplCirc(point, bBox.getWidth()/2),//same radius of width/2
             this.getWorld(), 
-            linear
+            linear,
+            this.getDamageOnHit()
         );
 
         //call Engine to add ball in the scene

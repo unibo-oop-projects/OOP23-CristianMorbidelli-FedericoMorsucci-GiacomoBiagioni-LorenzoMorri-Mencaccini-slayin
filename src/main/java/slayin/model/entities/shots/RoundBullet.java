@@ -57,5 +57,10 @@ public class RoundBullet extends ShotObject{
     public boolean isFromEnemy() {
         return false;
     }
+
+    @Override
+    public int getDamageOnHit() {
+        return 0;
+    }
     
 }

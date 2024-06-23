@@ -30,5 +30,9 @@ public class HeadstoneShot extends ShotObject{
     public DrawComponent getDrawComponent(){
         return DrawComponentFactory.graphicsComponentHeadstoneShot(this);
     }
-    
+
+    @Override
+    public int getDamageOnHit() {
+        return 1;
+    } 
 }

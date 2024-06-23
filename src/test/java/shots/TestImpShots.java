@@ -17,8 +17,8 @@ public class TestImpShots {
 
     @BeforeEach
     void setUp(){
-        shot2= new ImpShots(new P2d(10,10), new BoundingBoxImplCirc(new P2d(90,90), 5), world, false);
-        shot1= new ImpShots(new P2d(10,75), new BoundingBoxImplCirc(new P2d(10,75), 5), world, true);
+        shot2= new ImpShots(new P2d(10,10), new BoundingBoxImplCirc(new P2d(90,90), 5), world, false,0);
+        shot1= new ImpShots(new P2d(10,75), new BoundingBoxImplCirc(new P2d(10,75), 5), world, true,0);
     }
 
     @Test
