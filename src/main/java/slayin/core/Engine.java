@@ -3,6 +3,7 @@ package slayin.core;
 import slayin.model.entities.GameObject;
 import slayin.model.entities.character.Character;
 import slayin.model.entities.character.MeleeWeapon;
+import slayin.model.entities.enemies.Enemy;
 import slayin.model.entities.shots.ShotObject;
 
 import java.util.List;
@@ -24,56 +25,75 @@ import slayin.model.events.menus.ShowPauseMenuEvent;
 import slayin.model.events.menus.SimpleChangeSceneEvent;
 import slayin.model.events.menus.StartGameEvent;
 
+/**
+ * The engine class represents the main core of the game. This is the class that takes care of
+ * the Game Loop: inputs, updates and rendering.
+ */
 public class Engine {
-    private long tickTime = 25; /* 40 fps */
+    /** The {@code tickTime} is a final attribute that is used by the engine for the game loop; the tickTime is the minimum time (in milliseconds) between every loop*/
+    private final long tickTime = 25; /* 40 fps */
+    /** The {@code running} attribute tells when the engine must run the gameLoop and when it shouldn't. 
+     * If this value is {@code True}, then the game is in his normal state and the gameLoop is runned;
+     * if it's {@code False}, the gameLoop is temporarily stopped (the game is paused).*/
     private boolean running = true;
 
-    private SceneController sceneController;
+    private final SceneController sceneController;
+    private final InputController inputController;
+    private final GameEventListener eventListener;
     private GameStatus status;
-    private InputController inputController;
-    private GameEventListener eventListener;
     
     private LevelFactory levelFactory;
 
+    /** The {@code Engine} class constructor doesn't need any parameters when instantiated. This is where the engine creates its controllers for the graphic
+     * rendering and for the input handling, and a listener for in-game events.
+    */
     public Engine() {
         eventListener = new GameEventListener();
         inputController = new InputController(eventListener);
         sceneController = new SceneController(eventListener, inputController);
     }
 
+    /** The {@code initGame} function is where the Engine instantiate an object for the {@code status} of the game.
+     * This is also where a factory that takes care of generating levels is created.*/
     private void initGame() {
         status = new GameStatus(eventListener);
         levelFactory = new LevelFactory(status.getWorld(), this.eventListener);
     }
 
+    /** The effective game loop of the game */
     public void startGameLoop() {
+        /** Numerical attributes for the tick time. The time passed in its loop is also used at every game status' update for numerical calculations. */
         long startTime, timePassed, previousTime;
 
         AssetsManager.loadAssets();
         sceneController.createWindow();
         sceneController.switchScene(SceneType.MAIN_MENU);
 
-        previousTime = System.currentTimeMillis();
+        previousTime = System.currentTimeMillis();  // previousTime shows at what value of System.currentTimeMillis the previous loop ended
         while (this.running) { /* Game loop */
             startTime = System.currentTimeMillis();
 
-            this.processInputs();
+            this.processInputs();   // processing inputs means using the InputController to interact with the main character
 
-            this.updateGameStatus((int) (startTime - previousTime));
-            this.processEvents();
+            this.updateGameStatus((int) (startTime - previousTime)); // Updates the game status
+            this.processEvents();   // Processing the events list
 
-            sceneController.renderEntitiesInScene();
+            sceneController.renderEntitiesInScene();    // Graphical rendering of entities
 
             timePassed = System.currentTimeMillis() - startTime;
-            waitForNextTick(timePassed);
+            waitForNextTick(timePassed);    // The game must "sleep" if the current tick has not reached the tickTime yet
             previousTime = startTime;
         }
 
         sceneController.closeWindow();
     }
 
+    /** A function that makes the gameLoop sleep in order to wait for the tickTime
+     * 
+     * @param timePassed - How long the current tick has lasted
+     */
     private void waitForNextTick(long timePassed) {
-        if (timePassed < tickTime) { /* wait until tickTime before nextFrame */
+        if (timePassed < tickTime) { /* wait until tickTime before next frame */
             try {
                 Thread.sleep(tickTime - timePassed);
             } catch (InterruptedException e) {
@@ -82,8 +102,13 @@ public class Engine {
         }
     }
 
+    /** A function that takes care of managing every aspect of the logical status of the game:
+     * adding or removing entities, moving them in the scene, etc...
+     * 
+     * @param deltaTime - The difference in milliseconds between the last tick and the current one
+     */
     private void updateGameStatus(int deltaTime) {
-        if(sceneController.isInMenu()) return;
+        if(sceneController.isInMenu()) return;  // If the game is at the menu frame, there is no status to update
 
         // if the scene's not full, regularly add new enemies (if the current level can provide more)
         status.addEnemiesToScene();
@@ -120,7 +145,7 @@ public class Engine {
     }
 
     private void checkShotCollisions(){
-        //check if goes out sides of the screen
+        //check if goes outside of the screen
         this.status.getShots().stream()
             .filter(shot->!(this.status.getWorld().collidingWithSides(shot).isEmpty()))
             .forEach(s->eventListener.addEvent(new ShotCollisionWithWorldEvent(s)));
@@ -139,12 +164,13 @@ public class Engine {
         this.status.getCharacter().updateVectorMovement(inputController);
     }
 
+    /** A function that asks the event listener for the list of events, and then resolve them according to their type */
     private void processEvents() {
         eventListener.getEvents().forEach(e -> {
-            if (e instanceof StartGameEvent) {
+            if (e instanceof StartGameEvent) {  // The event raised when the actual game is started
                 var event = (StartGameEvent) e;
 
-                System.out.println("[EVENT] Starting game");
+                //System.out.println("[EVENT] Starting game");
                 this.initGame();
                 sceneController.showGameScene(status);
 
@@ -158,7 +184,7 @@ public class Engine {
                 if (!event.shouldShowPauseMenu())
                     status.getScoreManager().resumeComboTimer();
             } else if (e instanceof QuitGameEvent) {
-                System.out.println("[EVENT] Closing game");
+                //System.out.println("[EVENT] Closing game");
                 this.running = false;
             } else if (e instanceof WeaponCollisionEvent) {
                 WeaponCollisionEvent event = (WeaponCollisionEvent) e;
@@ -172,8 +198,8 @@ public class Engine {
                     // if the GameObject that has been collided returns true; then it must be removed from the scene
                     status.removeEnemy(collided);
                     // if the enemy has been defeated, the score gets increased
-                    // TODO: the fixed 5 must be changed with a value returned by the enemy
-                    status.getScoreManager().increaseScore(5);
+                    
+                    status.getScoreManager().increaseScore(((Enemy) collided).getScorePerKill());
 
                     // since an enemy is dead, it needs to be checked if the level has been completed
                     if(isLevelCompleted()){
@@ -186,13 +212,13 @@ public class Engine {
                     // if the current level is not completed yet, nothing more happens
                 }
             } else if (e instanceof CharacterCollisionEvent) {
+                CharacterCollisionEvent ev = (CharacterCollisionEvent) e;
                 // TODO: change damage amount based on enemy
                 status.getCharacter().decLife(1);
 
                 if (!status.getCharacter().isAlive()) {
                     eventListener.addEvent(new GameOverEvent());
                 }
-                CharacterCollisionEvent ev = (CharacterCollisionEvent) e;
                 if(ev.getCollidedObject() instanceof ShotObject){
                     this.status.removeShot((ShotObject)ev.getCollidedObject());
                 }            
@@ -200,7 +226,7 @@ public class Engine {
                 sceneController.switchScene(SceneType.GAME_OVER);
             } else if(e instanceof ShotCollisionWithWorldEvent){
                 var event = (ShotCollisionWithWorldEvent) e;
-                System.out.println("tolgo");
+                //System.out.println("tolgo");
                 this.status.removeShot(event.getShot());
             } else if (e instanceof SimpleChangeSceneEvent) {
                 SimpleChangeSceneEvent event = (SimpleChangeSceneEvent) e;
