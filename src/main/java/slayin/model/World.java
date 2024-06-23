@@ -35,7 +35,7 @@ public class World {
         return this.collidingWith(obj).stream().filter(e-> e==Edge.BOTTOM_BORDER).findFirst().isPresent();
     }
 
-    // TODO: sostituire BoundingBox
+   
     public List<Edge> collidingWith(GameObject obj){
         List<Edge> out= new ArrayList<>();
         out.addAll(this.collidingWithSides(obj));
@@ -69,7 +69,7 @@ public class World {
             if(bBox.getY()+bBox.getRadius()>=ground) out.add(Edge.BOTTOM_BORDER);
         }
         return out;
-    }
+    } 
 
     public DrawComponent getDrawComponent() {
         return DrawComponentFactory.graphicsComponentWorld(this);
