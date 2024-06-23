@@ -13,6 +13,8 @@ import slayin.model.utility.Globals;
 public class RoundBullet extends ShotObject{
 
 
+    private static final int DAMAGE=0;
+
     /**
      * Constructs a RoundBullet with specified position, movement vector, bounding box, world, and direction.
      *
@@ -60,7 +62,7 @@ public class RoundBullet extends ShotObject{
 
     @Override
     public int getDamageOnHit() {
-        return 0;
+        return DAMAGE;
     }
     
 }
