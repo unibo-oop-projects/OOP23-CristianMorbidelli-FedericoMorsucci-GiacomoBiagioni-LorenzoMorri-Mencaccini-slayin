@@ -213,15 +213,16 @@ public class Engine {
                 }
             } else if (e instanceof CharacterCollisionEvent) {
                 CharacterCollisionEvent ev = (CharacterCollisionEvent) e;
-                // TODO: change damage amount based on enemy
-                status.getCharacter().decLife(1);
+                if(ev.getCollidedObject() instanceof ShotObject){   // Collision with a enemy shot
+                    this.status.removeShot((ShotObject)ev.getCollidedObject());
+                    status.getCharacter().decLife(((ShotObject) ev.getCollidedObject()).getDamageOnHit());
+                }else{  // Collision with enemy
+                    status.getCharacter().decLife(((Enemy) ev.getCollidedObject()).getDamageOnHit());
+                }
 
                 if (!status.getCharacter().isAlive()) {
                     eventListener.addEvent(new GameOverEvent());
-                }
-                if(ev.getCollidedObject() instanceof ShotObject){
-                    this.status.removeShot((ShotObject)ev.getCollidedObject());
-                }            
+                }           
             } else if (e instanceof GameOverEvent) {
                 sceneController.switchScene(SceneType.GAME_OVER);
             } else if(e instanceof ShotCollisionWithWorldEvent){
