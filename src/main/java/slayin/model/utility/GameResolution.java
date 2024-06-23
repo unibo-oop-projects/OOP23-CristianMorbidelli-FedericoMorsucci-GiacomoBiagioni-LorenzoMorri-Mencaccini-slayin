@@ -5,9 +5,7 @@ package slayin.model.utility;
  */
 public enum GameResolution {
     DEFAULT(1280, 720),
-    HD_PLUS(1600, 900),
-    FULL_HD(1920, 1080),
-    WQHD(3440, 1440);
+    HD_PLUS(1600, 900);
 
     private int width;
     private int height;
