@@ -13,6 +13,8 @@ import slayin.model.utility.Vector2d;
 public class Minotaur extends Boss {
     
     private int SPEEDX;
+    private final static int scorePerKill=15;
+    private int damage;
     
     /**
      * Minotaur constructor, set initial health, position and speed
@@ -39,6 +41,10 @@ public class Minotaur extends Boss {
         //initial speed
         this.setSPEEDX(world.getWidth()/3); //SPEEDX=(world width)/3
         this.setVectorMovement(new Vector2d(-SPEEDX, 0));
+
+        //initial damage
+        this.damage=1;
+        
     }
 
     @Override
@@ -67,6 +73,7 @@ public class Minotaur extends Boss {
                     //every two hits updates speedx (first with 4 health)
                     if(this.getHealth() % 2==0){
                         this.updateSPEEDX();
+                        this.damage++;
                     }
                 }
                 break;
@@ -157,6 +164,21 @@ public class Minotaur extends Boss {
      */
     protected void updateSPEEDX(){
         this.SPEEDX= this.SPEEDX*2;
+    }
+
+    @Override
+    public void updateDir() {
+        
+    }
+
+    @Override
+    public int getScorePerKill() {
+        return Minotaur.scorePerKill;
+    }
+
+    @Override
+    public int getDamageOnHit() {
+        return this.damage;
     }
     
 }

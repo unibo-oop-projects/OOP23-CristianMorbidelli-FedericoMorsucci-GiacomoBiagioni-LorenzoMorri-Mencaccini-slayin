@@ -4,18 +4,17 @@ import java.nio.file.Paths;
 
 import slayin.model.World;
 import slayin.model.bounding.BoundingBox;
-import slayin.model.entities.GameObject;
+import slayin.model.entities.enemies.Enemy;
 import slayin.model.events.GameEventListener;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
 
-public abstract class Boss extends GameObject {
+public abstract class Boss extends Enemy {
 
     public static enum State { START, RUN, STUNNED, HITTED, ATTACK, WAITING, INVISIBLE}
     private State state;
     private int health;
     private double previousTime;
-    private final GameEventListener eventListener;
 
     /**
      * generic constructor
@@ -26,8 +25,7 @@ public abstract class Boss extends GameObject {
      * @param eventListener
      */
     public Boss(P2d pos, Vector2d vectorMovement, BoundingBox boundingBox, World world, GameEventListener eventListener) {
-        super(pos, vectorMovement, boundingBox, world);
-        this.eventListener=eventListener;
+        super(pos, vectorMovement, boundingBox, world, eventListener);
     }
 
     /**
@@ -101,13 +99,6 @@ public abstract class Boss extends GameObject {
             outcome=true;
         }
         return outcome;
-    }
-
-    /**
-     * @return - Event listener for call the Engine
-     */
-    protected GameEventListener getEventListener() {
-        return eventListener;
     }
 
     /**

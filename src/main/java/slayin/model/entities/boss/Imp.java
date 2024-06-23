@@ -16,6 +16,8 @@ import java.util.Random;
 
 public class Imp extends Boss {
 
+    private static final int scorePerKill=30;
+    private int damage;
     private int numShots;
     private int shotsFired;
     private boolean posFlag;
@@ -62,6 +64,8 @@ public class Imp extends Boss {
         this.posFlag=false; //to allow imp to change position
 
         this.setDir(Direction.LEFT); //initial direction (only for drawing correctly his image)
+
+        this.damage=1;//initial damage
     }
 
     @Override
@@ -121,6 +125,7 @@ public class Imp extends Boss {
                     //every three hits updates num of shots
                     if(this.getHealth() % 3==0){
                         this.setNumShots(this.getNumShots()+1);
+                        this.damage++;
                     }
                 }
                 break;
@@ -182,7 +187,6 @@ public class Imp extends Boss {
             if(!this.posFlag){
                 //he changed position, set flag to true
                 this.posFlag=true;
-                BoundingBoxImplRet bBox = (BoundingBoxImplRet) this.getBoundingBox();
                 
                 //update the position to one of the default ones
                 this.setPos(
@@ -190,11 +194,7 @@ public class Imp extends Boss {
                         new Random().nextInt(positions.size())//get random position from the default ones
                     )
                 );
-                if(this.getPos().getX()>(bBox.getWidth()/2)){ //if is in the right screen side
-                    this.setDir(Direction.LEFT);
-                }else{
-                    this.setDir(Direction.RIGHT);
-                }
+                this.updateDir();
                 
                 //update bounding box position
                 this.getBoundingBox().updatePoint(this.getPos());
@@ -248,5 +248,25 @@ public class Imp extends Boss {
      */
     public int getShotsFired() {
         return this.shotsFired;
+    }
+
+    @Override
+    public void updateDir() {
+        BoundingBoxImplRet bBox=(BoundingBoxImplRet) this.getBoundingBox();
+        if(this.getPos().getX()>(bBox.getWidth()/2)){ //if is in the right screen side
+            this.setDir(Direction.LEFT);
+        }else{
+            this.setDir(Direction.RIGHT);
+        }
+    }
+
+    @Override
+    public int getScorePerKill() {
+        return Imp.scorePerKill;
+    }
+
+    @Override
+    public int getDamageOnHit() {
+        return this.damage;
     }
 }
