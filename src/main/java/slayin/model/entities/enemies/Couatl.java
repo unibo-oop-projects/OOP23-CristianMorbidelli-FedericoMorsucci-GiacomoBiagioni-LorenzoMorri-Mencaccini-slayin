@@ -16,10 +16,10 @@ public class Couatl extends Enemy{
     private static final int scorePerKill = 3;
     private static final int damageOnHit = 2;
     private int oldDt = 0;
-    private Boolean pause = false;//down;
+    private Boolean pause = false;//,down = false;
     private Random random;
-    private static int SPEEDX = 100;
-    /*private static int SPEEDY = 100;*/
+    private int SPEEDX = this.getWorld().getWidth()/13;
+    //private int SPEEDY = this.getWorld().getHeight()/5;
     //private static double startingY;
 
     public Couatl(P2d pos, BoundingBox boundingBox, World world, GameEventListener eventListener) {
@@ -55,6 +55,8 @@ public class Couatl extends Enemy{
             }
         }
         //TODO engine stuff
+        
+        /////
         var collision = this.getWorld().collidingWith(this);
         for(var col : collision){
 

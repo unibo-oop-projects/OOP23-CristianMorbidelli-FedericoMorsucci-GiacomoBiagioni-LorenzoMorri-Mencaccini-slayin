@@ -18,7 +18,7 @@ public abstract class Enemy extends GameObject {
     protected GameEventListener getEventListener(){
         return this.eventListener;
     }
-    public abstract void updateDir();
+    protected abstract void updateDir();
     public abstract void updatePos(int dt);
     public abstract int getScorePerKill();
     public abstract int getDamageOnHit();    
