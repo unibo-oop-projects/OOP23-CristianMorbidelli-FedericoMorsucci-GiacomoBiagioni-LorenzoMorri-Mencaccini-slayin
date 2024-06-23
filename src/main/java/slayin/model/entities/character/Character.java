@@ -109,6 +109,9 @@ public class Character extends GameObject{
         return !(jumpIsBlocked()) ? getShots.apply(this) : Optional.empty();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DrawComponent getDrawComponent(){
         return DrawComponentFactory.graphicsComponentCharacter(this);
@@ -182,6 +185,9 @@ public class Character extends GameObject{
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void updatePos(int dt) {
         //remove weapon expired
