@@ -248,7 +248,7 @@ public class Engine {
      * @return {@code true} if the enemyList is empty, and the Level object can't supply any more entities; {@code false} otherwise
      */
     private boolean isLevelCompleted(){
-        if(status.getObjects().size() > 1){
+        if(status.getEnemies().size() > 0){
             return false;
         }
 
