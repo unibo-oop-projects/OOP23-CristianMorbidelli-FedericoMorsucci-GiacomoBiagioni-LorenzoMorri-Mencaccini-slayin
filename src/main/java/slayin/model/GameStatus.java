@@ -125,7 +125,7 @@ public class GameStatus {
         long currentTime = System.currentTimeMillis();
 
         if(capacityReached >= 100){
-            System.out.println("NON AGGIUNGO");
+            //System.out.println("NON AGGIUNGO");
             return;     // 100% of level capacity reached; no need to add more enemies
         }
 
