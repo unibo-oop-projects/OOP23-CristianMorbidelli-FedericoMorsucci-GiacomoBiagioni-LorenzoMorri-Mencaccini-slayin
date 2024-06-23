@@ -19,7 +19,7 @@ public class Couatl extends Enemy{
     private Random random;
     private int SPEEDX = this.getWorld().getWidth()/13;
     private int SLOWSPEEDY = -this.getWorld().getWidth()/4;
-    private int FASTSPEEDY = this.getWorld().getHeight()/2;
+    private int FASTSPEEDY = this.getWorld().getHeight();
     private double startingY;
     private static enum State {PAUSE,DOWN,UP,FREE}
     private State state,oldState;
