@@ -13,7 +13,7 @@ import org.json.JSONObject;
 
 import slayin.model.Level;
 import slayin.model.World;
-import slayin.model.entities.GameObject;
+import slayin.model.entities.enemies.Enemy;
 import slayin.model.events.GameEventListener;
 
 public class LevelFactory {
@@ -55,7 +55,7 @@ public class LevelFactory {
             // gets the level capacity and the enemies list
             int capacity = getCapacity(levelJSON);
             // gets the list of enemies objects based on the current level
-            List<GameObject> enemies = getEnemies(levelJSON);
+            List<Enemy> enemies = getEnemies(levelJSON);
             Collections.shuffle(enemies);
 
             lvl = new Level(level, enemies, capacity);
@@ -88,14 +88,14 @@ public class LevelFactory {
      * @param level - the JSON object of the level
      * @return a list which contains all the GameObjects of the enemies of that level
      */
-    private List<GameObject> getEnemies(JSONObject level){
+    private List<Enemy> getEnemies(JSONObject level){
         try {
             // the levels in the json are ordered in a JSON array that contains 
             // infos about the i-th level at its i-th position
             // from the JSON object corrisponding to the wanted level, it parse the infos about enemies
             JSONArray enemiesJSON = level.getJSONArray("enemies");
             // the enemies list gets parsed from JSON and put in a GameObject list
-            List<GameObject> enemies = parseEnemies(enemiesJSON);
+            List<Enemy> enemies = parseEnemies(enemiesJSON);
             
             return enemies;
         } catch (Exception e) {
@@ -116,8 +116,8 @@ public class LevelFactory {
      * @return a list which contains the GameObjects of the enemies in the JSON array
      * @throws JSONException
      */
-    private List<GameObject> parseEnemies(JSONArray enemiesJSON) throws JSONException{
-        List<GameObject> enemies = new ArrayList<>();
+    private List<Enemy> parseEnemies(JSONArray enemiesJSON) throws JSONException{
+        List<Enemy> enemies = new ArrayList<>();
         for(int i=0; i<enemiesJSON.length(); i++){
             JSONObject enemy = enemiesJSON.getJSONObject(i);
             // for each element of the JSON Array, it builds "qnt" enemies corrisponding to "id"
@@ -136,12 +136,12 @@ public class LevelFactory {
      * final lenght of the returned list
      * @return the list of enemies
      */
-    private List<GameObject> buildEnemy(int id, int qnt){
+    private List<Enemy> buildEnemy(int id, int qnt){
         if(qnt<=0){
             return List.of();
         }
 
-        List<GameObject> enemies = new ArrayList<>();
+        List<Enemy> enemies = new ArrayList<>();
 
         for(int i=0; i<qnt; i++){
             switch(id){

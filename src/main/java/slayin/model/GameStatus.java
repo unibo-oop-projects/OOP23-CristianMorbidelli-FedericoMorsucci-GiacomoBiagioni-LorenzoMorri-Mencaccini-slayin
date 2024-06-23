@@ -8,12 +8,17 @@ import slayin.model.entities.GameObject;
 import slayin.model.entities.character.Character;
 import slayin.model.entities.character.CharacterFactory;
 import slayin.model.entities.character.PlayableCharacter;
+import slayin.model.entities.enemies.Enemy;
 import slayin.model.entities.shots.ShotObject;
 import slayin.model.events.GameEventListener;
 import slayin.model.events.GameOverEvent;
 import slayin.model.score.GameScore;
 import slayin.model.utility.Globals;
 
+/**
+ * The {@code GameStatus} manages the current status of the game, including the world, character, enemies, shots,
+ * and other game elements. It also handles the game events and the level progression.
+ */
 public class GameStatus {
     World world;
     private Level level;
@@ -30,6 +35,11 @@ public class GameStatus {
      */
     private long tickSinceLastEnemyAdded;
 
+    /**
+     * Constructor to initialize the game status with a given event listener.
+     *
+     * @param eventListener the event listener for handling game events.
+     */
     public GameStatus(GameEventListener eventListener){
         world = new World(Globals.RESOLUTION.getWidth(), Globals.RESOLUTION.getHeight());
         enemies = new ArrayList<>();
@@ -40,6 +50,11 @@ public class GameStatus {
         tickSinceLastEnemyAdded = 0;
     }
 
+    /**
+     * Gets the list of all game objects including the character, enemies, and shots.
+     *
+     * @return a list of all game objects.
+     */
     public List<GameObject> getObjects(){   
         List<GameObject> all = new ArrayList<>();
         all.add(character);
@@ -48,27 +63,57 @@ public class GameStatus {
         return all;
     }
 
-    public void addEnemy(Optional<GameObject> entity){
+    /**
+     * Adds an enemy to the scene
+     *
+     * @param entity - the enemy to be added.
+     */
+    public void addEnemy(Optional<Enemy> entity){
         if(entity.isPresent())
             enemies.add(entity.get());
     }
 
-    public void removeEnemy(GameObject entity){
+    /**
+     * Removes an enemy from the scene
+     *
+     * @param entity - the enemy to be removed.
+     */
+    public void removeEnemy(Enemy entity){
         enemies.remove(entity);
     }
 
+    /**
+     * Adds a shot to the scene.
+     *
+     * @param shot - the shot to be added.
+     */
     public void addShot(ShotObject shot){
         shots.add(shot);
     }
 
+    /**
+     * Removes a shot from the scene
+     *
+     * @param shot - the shot to be removed
+     */
     public void removeShot(ShotObject shot){
         shots.remove(shot);
     }
 
+    /**
+     * Return the world of the game.
+     *
+     * @return the World object
+     */
     public World getWorld(){
         return this.world;
     }
 
+     /**
+     * Sets up the playable character based on the specified type.
+     *
+     * @param typeCharacter - the type of the character to be set up.
+     */
     public void setupCharacter(PlayableCharacter typeCharacter){
         switch (typeCharacter) {
             case KNIGHT:
@@ -86,19 +131,38 @@ public class GameStatus {
         }
     }
 
-    public Character getCharacter(){
+    /**
+     * Gets the current character.
+     *
+     * @return the current character.
+     */
+    public Character getCharacter() {
         return this.character;
     }
 
-    public List<GameObject> getEnemies(){
+    /**
+     * Gets the list of enemies in the game.
+     *
+     * @return the list of enemies.
+     */
+    public List<GameObject> getEnemies() {
         return this.enemies;
     }
 
-    public List<ShotObject> getShots(){
+    /**
+     * Gets the list of shots in the game.
+     *
+     * @return the list of shots.
+     */
+    public List<ShotObject> getShots() {
         return this.shots;
     }
 
-
+    /**
+     * Sets the current level of the game. Raise a {@code GameOverEvent} if no more levels are present.
+     *
+     * @param level - the Level object to be set.
+     */
     public void setLevel(Optional<Level> level){
         if(level.isPresent()){
             System.out.println("Starting level " + level.get().getID());
@@ -109,16 +173,27 @@ public class GameStatus {
         }
     }
 
-
+    /**
+     * Gets the score manager.
+     *
+     * @return the score manager.
+     */
     public GameScore getScoreManager() {
         return this.scoreManager;
     }
 
-    public Level getLevel(){
+    /**
+     * Gets the current level.
+     *
+     * @return the current level.
+     */
+    public Level getLevel() {
         return this.level;
-
     }
 
+    /**
+     * Adds enemies to the scene based on the level capacity and elapsed time since the last addition.
+     */
     public void addEnemiesToScene() {
         //System.out.println("The scene currently have " + enemies.size() + " enemies; can contain " + level.getCapacity());  
         double capacityReached = ((double) enemies.size()/ (double) level.getCapacity()) * 100;
