@@ -14,6 +14,7 @@ import slayin.model.utility.Vector2d;
 public class Fire extends Enemy{
 
     private Random random;
+    private static final int damageOnHit = 1;
     private static final int scorePerKill = 2;
     private static final int SPEEDY = 100;
     private static final int SPEEDX = 100;
@@ -35,14 +36,15 @@ public class Fire extends Enemy{
             down = !down;
             oldDt = 0;
         }
-        this.updateDir(down);
+        this.updateDir();
         
         this.setPos(this.getPos().sum(this.getVectorMovement().mul(0.001*dt)));
         // aggiorno di nuovo la BoundinBox
         this.getBoundingBox().updatePoint(this.getPos());
     }
 
-    public void updateDir(Boolean down){
+    @Override
+    public void updateDir(){
         if(this.getWorld().isTouchingGround(this)){
             down = false;
         }
@@ -89,5 +91,10 @@ public class Fire extends Enemy{
     @Override
     public DrawComponent getDrawComponent(){
         return DrawComponentFactory.graphicsComponentEnemy((Enemy)this);
+    }
+
+    @Override
+    public int getDamageOnHit() {
+        return Fire.damageOnHit;
     }
 }

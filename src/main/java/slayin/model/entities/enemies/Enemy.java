@@ -9,7 +9,7 @@ import slayin.model.utility.Vector2d;
 
 public abstract class Enemy extends GameObject {
 
-    private GameEventListener eventListener;
+    private final GameEventListener eventListener;
 
     public Enemy(P2d pos, Vector2d vectorMovement, BoundingBox boundingBox, World world, GameEventListener eventListener) {
         super(pos, vectorMovement, boundingBox, world);
@@ -18,11 +18,8 @@ public abstract class Enemy extends GameObject {
     protected GameEventListener getEventListener(){
         return this.eventListener;
     }
-    public void updateDir(){
-    }
-    public void updatePos(int dt){
-    }
-    public int getScorePerKill(){
-        return 0;
-    }
+    public abstract void updateDir();
+    public abstract void updatePos(int dt);
+    public abstract int getScorePerKill();
+    public abstract int getDamageOnHit();    
 }

@@ -14,8 +14,9 @@ import slayin.model.utility.Vector2d;
 public class Couatl extends Enemy{
 
     private static final int scorePerKill = 3;
+    private static final int damageOnHit = 2;
     private int oldDt = 0;
-    private Boolean pause = false;
+    private Boolean pause = false;//down;
     private Random random;
     private static int SPEEDX = 100;
     /*private static int SPEEDY = 100;*/
@@ -35,14 +36,15 @@ public class Couatl extends Enemy{
             oldDt = 0;
         }
         
-        this.updateDir(pause, false);
+        this.updateDir();
         
         this.setPos(this.getPos().sum(this.getVectorMovement().mul(0.001*dt)));
         // aggiorno di nuovo la BoundinBox
         this.getBoundingBox().updatePoint(this.getPos());
     }
     
-    public void updateDir(Boolean pause, Boolean down){
+    @Override
+    public void updateDir(){
         if(this.getVectorMovement().equals(new Vector2d(0, 0)) && !pause){
             if(random.nextInt(2)==1){
                 setDir(Direction.LEFT);
@@ -76,5 +78,10 @@ public class Couatl extends Enemy{
     @Override
     public DrawComponent getDrawComponent(){
         return DrawComponentFactory.graphicsComponentEnemy((Enemy)this);
+    }
+
+    @Override
+    public int getDamageOnHit() {
+        return Couatl.damageOnHit;
     }
 }

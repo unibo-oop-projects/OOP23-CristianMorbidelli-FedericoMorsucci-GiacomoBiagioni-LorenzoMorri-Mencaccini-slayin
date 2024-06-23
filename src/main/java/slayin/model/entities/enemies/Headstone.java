@@ -14,6 +14,7 @@ import slayin.model.utility.Vector2d;
 
 public class Headstone extends Enemy {
 
+    private static final int damageOnHit = 2;
     private static final int scorePerKill = 3;
     private int oldDt = 0;
 
@@ -57,5 +58,15 @@ public class Headstone extends Enemy {
     @Override
     public DrawComponent getDrawComponent(){
         return DrawComponentFactory.graphicsComponentEnemy((Enemy)this);
+    }
+
+    @Override
+    public void updateDir() {
+
+    }
+
+    @Override
+    public int getDamageOnHit() {
+        return Headstone.damageOnHit;
     }
 }

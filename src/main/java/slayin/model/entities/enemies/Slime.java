@@ -14,6 +14,7 @@ import java.util.Random;
 public class Slime extends Enemy  {
 
     private Random random;
+    private static final int damageOnHit = 1;
     private static final int scorePerKill = 1;
     private static final int SPEEDY = -50;
     private static final int SPEEDX = 150;
@@ -33,13 +34,13 @@ public class Slime extends Enemy  {
             changeDir = !changeDir;
             oldDt = 0;
         }
-        this.updateDir(changeDir);
+        this.updateDir();
         this.setPos(this.getPos().sum(this.getVectorMovement().mul(0.001*dt)));
         // aggiorno di nuovo la BoundinBox
         this.getBoundingBox().updatePoint(this.getPos());
     }
-
-    public void updateDir(Boolean change) {
+    @Override
+    public void updateDir() {
         if(!this.getWorld().isTouchingGround(this)){
             if(this.getVectorMovement().equals(new Vector2d(0, SPEEDY))){
                 //random direction when the slime climb to the same Y as the player
@@ -52,7 +53,7 @@ public class Slime extends Enemy  {
                 }
             }
             //the slime can change direction every 3.5s, its a 20% chance
-            if(change){
+            if(changeDir){
                 //se minore di 5 cambio direzione, 20% prob
                 if(random.nextInt(1,11)<3){
                     if(this.getVectorMovement().equals(new Vector2d(-SPEEDX, 0))){
@@ -92,6 +93,11 @@ public class Slime extends Enemy  {
     @Override
     public DrawComponent getDrawComponent(){
         return DrawComponentFactory.graphicsComponentEnemy((Enemy)this);
+    }
+
+    @Override
+    public int getDamageOnHit() {
+        return Slime.damageOnHit;
     }
     
 }
