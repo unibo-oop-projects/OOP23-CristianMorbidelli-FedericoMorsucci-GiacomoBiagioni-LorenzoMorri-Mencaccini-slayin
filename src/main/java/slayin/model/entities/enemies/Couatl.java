@@ -32,15 +32,15 @@ public class Couatl extends Enemy{
         this.oldState = State.FREE;
     }
 
-    
-
     @Override
     public void updatePos(int dt){
-        oldDt+=dt;
-        if(oldDt>2000){
-            this.changeState();
-            oldDt = 0;
-        } 
+        if(this.state==State.FREE || this.state==State.PAUSE){
+            oldDt+=dt;
+            if(oldDt>2000){
+                this.changeState();
+                oldDt = 0;
+            } 
+        }
         this.updateDir();
         
         this.setPos(this.getPos().sum(this.getVectorMovement().mul(0.001*dt)));
