@@ -26,7 +26,7 @@ public class CharacterFactory {
      * @return the created Knight character
      */
     public static Character getKnight(World w){
-        double widthPlayer=w.getWidth()/23.2,heightPlayer=w.getHeight()/10.2,heightWeapon=w.getHeight()/20.5,widthWeapon=w.getWidth()/25.6;
+        final double widthPlayer=w.getWidth()/23.2,heightPlayer=w.getHeight()/10.2,heightWeapon=w.getHeight()/20.5,widthWeapon=w.getWidth()/25.6;
         // la widthFromPlayer la calcolo facendo widthPlayer/2 + BoundingBoxWeapon/2
         MeleeWeapon weapon = new MeleeWeapon(10, new BoundingBoxImplRet(new P2d(0, 0), widthWeapon, heightWeapon), 0,(int)(widthPlayer/2 + widthWeapon/2),"SwordL",-1);
         Consumer<Character> func= new Consumer<Character>() {
@@ -49,7 +49,7 @@ public class CharacterFactory {
      * @return the created modified Knight character
      */
     public static Character getKnightModify(World w){
-        double widthPlayer=w.getWidth()/23.2,heightPlayer=w.getHeight()/10.2,heightWeapon=w.getHeight()/20.5,widthWeapon=w.getWidth()/25.6;
+        final double widthPlayer=w.getWidth()/23.2,heightPlayer=w.getHeight()/10.2,heightWeapon=w.getHeight()/20.5,widthWeapon=w.getWidth()/25.6;
         MeleeWeapon weapon = new MeleeWeapon(10, new BoundingBoxImplRet(new P2d(0, 0), widthWeapon, heightWeapon), 0, (int)(widthPlayer/2 + widthWeapon/2),"SwordL",-1);
         Consumer<Character> func= new Consumer<Character>() {
 
@@ -80,15 +80,15 @@ public class CharacterFactory {
      * @return the created Wizard character
      */
     public static Character getWizard(World w){
-        double widthPlayer=w.getWidth()/23.2,heightPlayer=w.getHeight()/10.2,heightWeapon=w.getHeight()/3.6,widthWeapon=w.getWidth()/25.6;
+        final double widthPlayer=w.getWidth()/23.2,heightPlayer=w.getHeight()/10.2,heightWeapon=w.getHeight()/1.6,widthWeapon=w.getWidth()/25.6;
         Consumer<Character> func= new Consumer<Character>() {
 
             @Override
             public void accept(Character t) {
                 //t.getVectorMovement().setY(Constants.FJUMP_CHARACTER);
-                t.addWeapon(new MeleeWeapon(10, new BoundingBoxImplRet(new P2d(0, 0), widthWeapon, heightWeapon), (int)(heightWeapon/2-heightPlayer/2), 0,"Vortex",1000));
-                t.setTimeBlockedJump(2000);
-                t.setTimeBlockedDecLife(1000);
+                t.addWeapon(new MeleeWeapon(10, new BoundingBoxImplRet(new P2d(0, 0), widthWeapon, heightWeapon), (int)(heightWeapon/2-heightPlayer/2), 0,"Vortex",1500));
+                t.setTimeBlockedJump(2300);
+                t.setTimeBlockedDecLife(1500);
             }
             
         };  
@@ -106,7 +106,7 @@ public class CharacterFactory {
      * @return the created Knave character
      */
     public static Character getKnave(World w){
-        double widthPlayer=w.getWidth()/23.2,heightPlayer=w.getHeight()/10.2,heightWeapon=w.getHeight()/20.5,widthWeapon=w.getWidth()/25.6;
+        final double widthPlayer=w.getWidth()/23.2,heightPlayer=w.getHeight()/10.2,heightWeapon=w.getHeight()/20.5,widthWeapon=w.getWidth()/25.6;
         MeleeWeapon weaponLeft = new MeleeWeapon(10, new BoundingBoxImplRet(new P2d(0, 0), widthWeapon, heightWeapon), -5, (int)(widthPlayer/2 + widthWeapon/2),"SwordR",-1);
         MeleeWeapon weaponRight = new MeleeWeapon(10, new BoundingBoxImplRet(new P2d(0, 0), widthWeapon, heightWeapon), -10, -(int)(widthPlayer/2 + widthWeapon/2),"SwordL",-1);
         Consumer<Character> func= new Consumer<Character>() {
