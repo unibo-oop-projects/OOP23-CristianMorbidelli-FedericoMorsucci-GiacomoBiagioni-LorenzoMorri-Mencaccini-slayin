@@ -9,8 +9,11 @@ import slayin.model.utility.Vector2d;
 
 public class HeadstoneShot extends ShotObject{
 
+    private final int damagePerShot;
+
     public HeadstoneShot(P2d pos, Vector2d vectorMovement, BoundingBoxImplCirc boundingBox, World world) {
         super(pos, vectorMovement, boundingBox, world);
+        damagePerShot = 1;
     }
 
     @Override
@@ -33,6 +36,6 @@ public class HeadstoneShot extends ShotObject{
 
     @Override
     public int getDamageOnHit() {
-        return 1;
+        return damagePerShot;
     } 
 }
