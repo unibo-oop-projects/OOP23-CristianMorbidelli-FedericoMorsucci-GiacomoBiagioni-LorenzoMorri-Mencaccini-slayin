@@ -16,26 +16,28 @@ public class Couatl extends Enemy{
     private static final int scorePerKill = 3;
     private static final int damageOnHit = 2;
     private int oldDt = 0;
-    private Boolean pause = false;//,down = false;
+    private Boolean pause = false,down = false,up = false;
     private Random random;
     private int SPEEDX = this.getWorld().getWidth()/13;
-    //private int SPEEDY = this.getWorld().getHeight()/5;
-    //private static double startingY;
+    private int SLOWSPEEDY = this.getWorld().getWidth()/4;
+    private int FASTSPEEDY = this.getWorld().getHeight()/2;
+    private double startingY;
 
     public Couatl(P2d pos, BoundingBox boundingBox, World world, GameEventListener eventListener) {
         super(pos, new Vector2d(0, 0), boundingBox, world, eventListener);
         random = new Random();
-        //startingY = this.getPos().getY();
+        startingY = this.getPos().getY();
     }
 
     @Override
     public void updatePos(int dt){
         oldDt+=dt;
-        if(oldDt>3000){
-            pause = !pause;
+        if(oldDt>2000){
+            if(!down && !up){
+                pause = !pause;
+            }
             oldDt = 0;
-        }
-        
+        } 
         this.updateDir();
         
         this.setPos(this.getPos().sum(this.getVectorMovement().mul(0.001*dt)));
@@ -45,7 +47,7 @@ public class Couatl extends Enemy{
     
     @Override
     public void updateDir(){
-        if(this.getVectorMovement().equals(new Vector2d(0, 0)) && !pause){
+        if(this.getVectorMovement().equals(new Vector2d(0, 0)) && !pause && this.getPos().getY()==startingY){
             if(random.nextInt(2)==1){
                 setDir(Direction.LEFT);
                 this.setVectorMovement(new Vector2d(-SPEEDX, 0)); 
@@ -53,8 +55,23 @@ public class Couatl extends Enemy{
                 setDir(Direction.RIGHT);
                 this.setVectorMovement(new Vector2d(SPEEDX, 0));
             }
+        }else{
+            if(pause && !down && !up){
+                this.setVectorMovement(new Vector2d(0, 0));
+            }else if(up){
+                this.setVectorMovement(new Vector2d(0, SLOWSPEEDY));
+                if(this.getPos().getY()<=startingY){
+                    up = false;
+                }
+            }else if(down){
+                this.setVectorMovement(new Vector2d(0, FASTSPEEDY));
+                if(this.getWorld().isTouchingGround(this)){
+                    down = false;
+                    pause = true;
+                }
+            }
         }
-        //TODO engine stuff
+        
         
         /////
         var collision = this.getWorld().collidingWith(this);
