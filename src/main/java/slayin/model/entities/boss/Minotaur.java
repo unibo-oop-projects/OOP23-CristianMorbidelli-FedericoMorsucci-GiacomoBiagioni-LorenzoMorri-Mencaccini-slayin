@@ -19,7 +19,7 @@ public class Minotaur extends Boss {
     /**
      * Minotaur constructor, set initial health, position and speed
      * @param pos - intial position (will be changed to the default one)
-     * @param boundingBox - bounding box rectangular
+     * @param boundingBox - bounding box rectangular (pos will be changed to the default one)
      * @param world - reference world used the boss
      */
     public Minotaur(P2d pos, BoundingBoxImplRet boundingBox, World world) {
@@ -42,8 +42,7 @@ public class Minotaur extends Boss {
         this.setSPEEDX(world.getWidth()/3); //SPEEDX=(world width)/3
         this.setVectorMovement(new Vector2d(-SPEEDX, 0));
 
-        //initial damage
-        this.damage=1;
+        this.damage=1;//initial damage
         
     }
 
@@ -149,25 +148,23 @@ public class Minotaur extends Boss {
 
     @Override
     public void updateDir() {
-        var collision = this.getWorld().collidingWith(this);
+        var collision = this.getWorld().collidingWithSides(this);//if is colliding with a world side
         BoundingBoxImplRet boundingBox = (BoundingBoxImplRet) this.getBoundingBox();
  
         for(var col : collision){
 
             if(col == Edge.LEFT_BORDER && this.getDir()==Direction.LEFT){
                 this.setVectorMovement(new Vector2d(SPEEDX,0));
-                setDir(Direction.RIGHT);
-                //in case he went over the edge
-                this.getPos().setX((boundingBox.getWidth()/2));
-                this.changeState(State.STUNNED);
+                setDir(Direction.RIGHT);//change dir
+                this.getPos().setX((boundingBox.getWidth()/2));//in case he went over the edge
+                this.changeState(State.STUNNED);//he gave the headbutt
             }
 
             if(col == Edge.RIGHT_BORDER && this.getDir()==Direction.RIGHT){
                 this.setVectorMovement(new Vector2d(-SPEEDX,0));
-                setDir(Direction.LEFT);
-                //same as the previous one
-                this.getPos().setX((this.getWorld().getWidth()-(boundingBox.getWidth()/2)));
-                this.changeState(State.STUNNED);
+                setDir(Direction.LEFT);//change dir 
+                this.getPos().setX((this.getWorld().getWidth()-(boundingBox.getWidth()/2)));//same as the previous one
+                this.changeState(State.STUNNED);//he gave the headbutt
             }
         }
     }

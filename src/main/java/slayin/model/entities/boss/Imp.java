@@ -17,6 +17,7 @@ import java.util.Random;
 public class Imp extends Boss {
 
     private static final int scorePerKill=30;
+    private int damageShots;
     private int damage;
     private int numShots;
     private int shotsFired;
@@ -24,6 +25,13 @@ public class Imp extends Boss {
     private ArrayList<P2d> positions = new ArrayList<>();
     private double counter;
 
+    /**
+     * Imp constructor, set initial health, positions, numShots, state and direction 
+     * @param pos - initial pos (will be changed to the default one)
+     * @param boundingBox - bounding box (pos will be changed to the default one)
+     * @param world - reference world used the boss
+     * @param eventListener - GameEventListener to spawn ImpShots
+     */
     public Imp(P2d pos, BoundingBoxImplRet boundingBox, World world, GameEventListener eventListener) {
         super(new P2d(
                 world.getWidth()/2,
@@ -32,7 +40,8 @@ public class Imp extends Boss {
             null, //Imp teleport in 4 different position
             boundingBox, 
             world,
-            eventListener);
+            eventListener
+        );
 
         this.positions.add(new P2d(
             world.getWidth()-(boundingBox.getWidth()/2), //right
@@ -65,7 +74,8 @@ public class Imp extends Boss {
 
         this.setDir(Direction.LEFT); //initial direction (only for drawing correctly his image)
 
-        this.damage=1;//initial damage
+        this.damageShots=0;//initial damage shots
+        this.damage=1;//initial damage imp
     }
 
     @Override
@@ -93,7 +103,7 @@ public class Imp extends Boss {
                     this.counter=0;
                 }
                 //spawn in a casual position, wait 2 seconds then attacks
-                if(this.secondDifference(2.0)){
+                if(this.secondDifference(0.5)){
                     changeState(State.ATTACK);
                 }
                 break;
@@ -125,7 +135,7 @@ public class Imp extends Boss {
                     //every three hits updates num of shots
                     if(this.getHealth() % 3==0){
                         this.setNumShots(this.getNumShots()+1);
-                        this.damage++;
+                        this.damageShots++;
                     }
                 }
                 break;
@@ -141,7 +151,7 @@ public class Imp extends Boss {
     }
 
     /**
-     * set initial position and dimension of imp shots, call to event listener
+     * set initial position and dimension of imp shots, spawn shot
      */
     private void attack() {
         BoundingBoxImplRet bBox = (BoundingBoxImplRet) this.getBoundingBox();
@@ -169,7 +179,7 @@ public class Imp extends Boss {
             new BoundingBoxImplCirc(point, bBox.getWidth()/2),//same radius of width/2
             this.getWorld(), 
             linear,
-            this.getDamageOnHit()
+            this.damageShots
         );
 
         //call Engine to add ball in the scene
