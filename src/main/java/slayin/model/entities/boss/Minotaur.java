@@ -114,27 +114,8 @@ public class Minotaur extends Boss {
      * @param dt
      */
     private void update(int dt) {
-        var collision = this.getWorld().collidingWith(this);
         BoundingBoxImplRet boundingBox = (BoundingBoxImplRet) this.getBoundingBox();
- 
-        for(var col : collision){
-
-            if(col == Edge.LEFT_BORDER && this.getDir()==Direction.LEFT){
-                this.setVectorMovement(new Vector2d(SPEEDX,0));
-                setDir(Direction.RIGHT);
-                //in case he went over the edge
-                this.getPos().setX((boundingBox.getWidth()/2));
-                this.changeState(State.STUNNED);
-            }
-
-            if(col == Edge.RIGHT_BORDER && this.getDir()==Direction.RIGHT){
-                this.setVectorMovement(new Vector2d(-SPEEDX,0));
-                setDir(Direction.LEFT);
-                //same as the previous one
-                this.getPos().setX((this.getWorld().getWidth()-(boundingBox.getWidth()/2)));
-                this.changeState(State.STUNNED);
-            }
-        }
+        this.updateDir();
 
         //if is running update position
         if(this.getState()==State.RUN){
@@ -168,7 +149,27 @@ public class Minotaur extends Boss {
 
     @Override
     public void updateDir() {
-        
+        var collision = this.getWorld().collidingWith(this);
+        BoundingBoxImplRet boundingBox = (BoundingBoxImplRet) this.getBoundingBox();
+ 
+        for(var col : collision){
+
+            if(col == Edge.LEFT_BORDER && this.getDir()==Direction.LEFT){
+                this.setVectorMovement(new Vector2d(SPEEDX,0));
+                setDir(Direction.RIGHT);
+                //in case he went over the edge
+                this.getPos().setX((boundingBox.getWidth()/2));
+                this.changeState(State.STUNNED);
+            }
+
+            if(col == Edge.RIGHT_BORDER && this.getDir()==Direction.RIGHT){
+                this.setVectorMovement(new Vector2d(-SPEEDX,0));
+                setDir(Direction.LEFT);
+                //same as the previous one
+                this.getPos().setX((this.getWorld().getWidth()-(boundingBox.getWidth()/2)));
+                this.changeState(State.STUNNED);
+            }
+        }
     }
 
     @Override
