@@ -172,9 +172,9 @@ public class Engine {
 
                 //System.out.println("[EVENT] Starting game");
                 this.initGame();
-                sceneController.showGameScene(status);
-
                 this.status.setupCharacter(event.getPlayableCharacter());
+                
+                sceneController.showGameScene(status);
                 this.status.setLevel(levelFactory.buildLevel(1));   // setto il livello a 1; il livello 0 non è accessibile, è pensato soltanto per dei test
                 //this.status.addEnemy(this.status.getLevel().dispatchEnemy().get());
             } else if (e instanceof ShowPauseMenuEvent) {
