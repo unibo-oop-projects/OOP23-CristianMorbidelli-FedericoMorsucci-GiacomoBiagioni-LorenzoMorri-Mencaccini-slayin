@@ -16,8 +16,8 @@ public class Fire extends Enemy{
     private Random random;
     private static final int damageOnHit = 1;
     private static final int scorePerKill = 2;
-    private static final int SPEEDY = 100;
-    private static final int SPEEDX = 100;
+    private final int SPEEDY = this.getWorld().getHeight()/12;
+    private final int SPEEDX = this.getWorld().getWidth()/12;
     private int oldDt = 0;
     private Boolean down = false;
     private double startingY;

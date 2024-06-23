@@ -16,13 +16,13 @@ public class Slime extends Enemy  {
     private Random random;
     private static final int damageOnHit = 1;
     private static final int scorePerKill = 1;
-    private static final int SPEEDY = -50;
-    private static final int SPEEDX = 150;
+    private final int SPEEDY = - this.getWorld().getHeight()/9;
+    private final int SPEEDX = this.getWorld().getWidth()/6;
     private int oldDt = 0;
     private Boolean changeDir = false;
 
     public Slime(P2d pos, BoundingBox boundingBox, World world, GameEventListener eventListener) {
-        super(pos, new Vector2d(0, SPEEDY), boundingBox, world, eventListener);
+        super(pos, new Vector2d(0, - world.getHeight()/30), boundingBox, world, eventListener);
         random = new Random();
     }
 
@@ -55,7 +55,7 @@ public class Slime extends Enemy  {
             //the slime can change direction every 3.5s, its a 20% chance
             if(changeDir){
                 //se minore di 5 cambio direzione, 20% prob
-                if(random.nextInt(1,11)<3){
+                if(random.nextInt(1,11)<2){
                     if(this.getVectorMovement().equals(new Vector2d(-SPEEDX, 0))){
                         setDir(Direction.RIGHT);
                         this.setVectorMovement(new Vector2d(SPEEDX, 0));
