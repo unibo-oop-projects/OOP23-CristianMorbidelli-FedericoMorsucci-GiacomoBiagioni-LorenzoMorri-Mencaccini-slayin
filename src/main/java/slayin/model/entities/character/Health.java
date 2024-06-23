@@ -56,5 +56,18 @@ public class Health {
             this.health= health-damage;
         }
     }
+
+    /**
+     * Decreases the health by a specified damage value.
+     * The health will only be increased to the maximum life possible.
+     *
+     * @param amount - the value by which to increase the health, must be greater than zero
+     */
+    public void heal(int amount){
+        if(amount>0){
+            this.health += amount;
+            if(this.health>maxHealth) this.health = maxHealth;
+        }
+    }
     
 }
