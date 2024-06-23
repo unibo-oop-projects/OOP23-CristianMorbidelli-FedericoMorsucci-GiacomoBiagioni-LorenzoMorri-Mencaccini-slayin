@@ -25,7 +25,4 @@ public abstract class Enemy extends GameObject {
     public int getScorePerKill(){
         return 0;
     }
-    public String getSimpleName(){
-        return "";
-    }
 }

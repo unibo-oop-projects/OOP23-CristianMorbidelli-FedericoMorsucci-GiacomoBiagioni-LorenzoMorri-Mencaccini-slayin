@@ -14,13 +14,11 @@ import slayin.model.utility.Vector2d;
 
 public class Headstone extends Enemy {
 
-    private final String name;
     private static final int scorePerKill = 3;
     private int oldDt = 0;
 
     public Headstone(P2d pos, BoundingBox boundingBox, World world, GameEventListener eventListener) {
         super(pos, new Vector2d(0, 0), boundingBox, world, eventListener);
-        name = "headstone";
         if(this.getPos().getX()>world.getWidth()/2){
             this.setDir(Direction.LEFT);
         }else{
@@ -54,11 +52,6 @@ public class Headstone extends Enemy {
     @Override
     public int getScorePerKill(){
         return scorePerKill;
-    }
-
-    @Override
-    public String getSimpleName(){
-        return this.name;
     }
 
     @Override

@@ -18,13 +18,13 @@ public class Couatl extends Enemy{
     private Boolean pause = false;
     private Random random;
     private static int SPEEDX = 100;
-    /*private static int SPEEDY = 100;
-    private static double startingY;*/
+    /*private static int SPEEDY = 100;*/
+    //private static double startingY;
 
     public Couatl(P2d pos, BoundingBox boundingBox, World world, GameEventListener eventListener) {
         super(pos, new Vector2d(0, 0), boundingBox, world, eventListener);
         random = new Random();
-        //startingY = this.getPos().getY(); //TODO
+        //startingY = this.getPos().getY();
     }
 
     @Override

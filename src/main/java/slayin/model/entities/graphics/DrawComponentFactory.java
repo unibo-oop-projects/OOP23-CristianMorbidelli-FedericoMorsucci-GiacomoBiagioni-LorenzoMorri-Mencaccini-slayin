@@ -130,7 +130,7 @@ public class DrawComponentFactory {
             try{
                 URL pathEnemy;
                 BufferedImage imgEnemy;
-                String path = Paths.get("assets","entities","enemies", enemy.getSimpleName() + FORMAT_SPRITE).toString();
+                String path = Paths.get("assets","entities","enemies", enemy.getClass().getSimpleName().toLowerCase() + FORMAT_SPRITE).toString();
                 pathEnemy = DrawComponentFactory.class.getClassLoader().getResource(path);
                 imgEnemy = (BufferedImage) ImageIO.read(new File(pathEnemy.toURI()));
 

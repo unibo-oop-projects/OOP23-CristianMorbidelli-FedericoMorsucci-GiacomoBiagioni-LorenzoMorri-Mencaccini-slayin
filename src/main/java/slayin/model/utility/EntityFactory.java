@@ -83,7 +83,7 @@ public class EntityFactory {
 
 
     public GameObject buildCouatl(){
-        final int COUATL_HEIGHT = world.getHeight() / 18;
+        final int COUATL_HEIGHT = world.getHeight() / 12;
         final int COUATL_LENGHT = COUATL_HEIGHT;
 
         final int DUMMY_STARTING_X = (int) rn.nextInt(world.getWidth());    // Starts at a completely random X
