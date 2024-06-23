@@ -196,7 +196,7 @@ public class Engine {
 
                 if(collided.onHit()){
                     // if the GameObject that has been collided returns true; then it must be removed from the scene
-                    status.removeEnemy(collided);
+                    status.removeEnemy((Enemy) collided);
                     // if the enemy has been defeated, the score gets increased
                     
                     status.getScoreManager().increaseScore(((Enemy) collided).getScorePerKill());

@@ -5,9 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import slayin.model.entities.GameObject;
+import slayin.model.entities.enemies.Enemy;
+import slayin.model.utility.EntityFactory;
 import slayin.model.GameStatus;
-import slayin.model.entities.character.Character;
+import slayin.model.World;
 
 import java.util.Optional;
 
@@ -22,7 +23,8 @@ public class TestGameStatus {
 
     @Test
     void testAddRemoveEnemy(){
-        Optional<GameObject> tmp = Optional.of(new Character(null, null, null,null,null,null,null, null));
+        EntityFactory ef = new EntityFactory(new World(100, 100), null);
+        Optional<Enemy> tmp = Optional.of(ef.buildDummy());
 
         assertEquals(status.getObjects().size(), 1);    // the status contains the main character only
         assertFalse(status.getObjects().contains(tmp.get()));

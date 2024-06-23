@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import slayin.model.Level;
 import slayin.model.World;
 import slayin.model.entities.Dummy;
-import slayin.model.entities.GameObject;
+import slayin.model.entities.enemies.Enemy;
 import slayin.model.utility.LevelFactory;
 
 import java.util.List;
@@ -31,8 +31,8 @@ public class TestLevelFactory {
     void testGetEnemies(){
         Level test = levelFactory.buildLevel(0).get();
 
-        List<GameObject> levelEnemies = new ArrayList<>();
-        Optional<GameObject> obj;
+        List<Enemy> levelEnemies = new ArrayList<>();
+        Optional<Enemy> obj;
         do{
             obj = test.dispatchEnemy();
             if(obj.isPresent()){

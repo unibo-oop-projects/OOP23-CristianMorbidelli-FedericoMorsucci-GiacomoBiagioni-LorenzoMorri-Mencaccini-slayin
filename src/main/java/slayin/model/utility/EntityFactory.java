@@ -4,10 +4,10 @@ import java.util.Random;
 
 import slayin.model.World;
 import slayin.model.bounding.BoundingBoxImplRet;
-import slayin.model.entities.GameObject;
 import slayin.model.entities.boss.Imp;
 import slayin.model.entities.boss.Minotaur;
 import slayin.model.entities.enemies.Couatl;
+import slayin.model.entities.enemies.Enemy;
 import slayin.model.entities.enemies.Fire;
 import slayin.model.entities.enemies.Headstone;
 import slayin.model.entities.enemies.Slime;
@@ -30,7 +30,7 @@ public class EntityFactory {
         this.eventListener = eventListener;
     }
 
-    public GameObject buildDummy(){
+    public Enemy buildDummy(){
         final Vector2d DUMMY_STARTING_MOVEMENT = new Vector2d(0, 0);  // Starts with 0 speed
 
         final int DUMMY_HEIGHT = world.getHeight() / 20;
@@ -44,7 +44,7 @@ public class EntityFactory {
         return entity;
     }
 
-    public GameObject buildSlime(){
+    public Enemy buildSlime(){
 
         final int SLIME_HEIGHT = world.getHeight() / 18;
         final int SLIME_LENGHT = SLIME_HEIGHT*2;
@@ -57,7 +57,7 @@ public class EntityFactory {
         return entity;
     }
 
-    public GameObject buildFire(){
+    public Enemy buildFire(){
         final int FIRE_HEIGHT = world.getHeight() / 14;
         final int FIRE_LENGHT = FIRE_HEIGHT;
 
@@ -69,20 +69,20 @@ public class EntityFactory {
         return entity;
     }
 
-    public GameObject buildMinotaur(){
+    public Enemy buildMinotaur(){
         BoundingBoxImplRet boundingBox= new BoundingBoxImplRet(null, world.getWidth()/12.8, world.getHeight()/4.8);
         
         return new Minotaur(null, boundingBox, this.world);
     }
 
-    public GameObject buildImp(){
+    public Enemy buildImp(){
         BoundingBoxImplRet boundingBox=new BoundingBoxImplRet(null, world.getWidth()/18.29, world.getHeight()/10.29);
         
         return new Imp(null, boundingBox, this.world, this.eventListener);
     }
 
 
-    public GameObject buildCouatl(){
+    public Enemy buildCouatl(){
         final int COUATL_HEIGHT = world.getHeight() / 12;
         final int COUATL_LENGHT = COUATL_HEIGHT;
 
@@ -94,7 +94,7 @@ public class EntityFactory {
         return entity;
     }    
 
-    public GameObject buildHeadstone(){
+    public Enemy buildHeadstone(){
         final int HEADSTONE_HEIGHT = world.getHeight() / 14;
         final int HEADSTONE_LENGHT = HEADSTONE_HEIGHT;
         int spawnx;
