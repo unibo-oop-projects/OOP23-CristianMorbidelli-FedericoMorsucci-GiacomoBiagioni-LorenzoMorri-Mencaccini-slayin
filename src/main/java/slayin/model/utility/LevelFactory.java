@@ -16,6 +16,10 @@ import slayin.model.World;
 import slayin.model.entities.enemies.Enemy;
 import slayin.model.events.GameEventListener;
 
+/**
+ * The {@code LevelFactory} is a factory that takes care of building the levels (creating instances of lists of enemy to dispatch)
+ * by reading the infos from the config resource file.
+ */
 public class LevelFactory {
 
     /* the path to the file which contains infos about the enemies contained in each level */

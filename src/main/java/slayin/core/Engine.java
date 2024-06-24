@@ -205,7 +205,8 @@ public class Engine {
                     if(isLevelCompleted()){
                         // current level has been completed
                         // if it was a boss level (max capacity=1) then the character gets healed (1/4 of maximum life)
-                        status.getCharacter().getLife().heal(status.getCharacter().getLife().getMaxHealth()/4);
+                        if(status.getLevel().getCapacity() == 1)
+                            status.getCharacter().getLife().heal(status.getCharacter().getLife().getMaxHealth()/4);
                         // read current level's id from the GameStatus, and tries to build the next one
                        status.setLevel(levelFactory.buildLevel(status.getLevel().getID()+1));     
                        // if the factory won't be able to get the level, the Game Over event will be raised
