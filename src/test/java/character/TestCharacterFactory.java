@@ -88,11 +88,6 @@ public class TestCharacterFactory {
         knight.updatePos(3000);
         assertEquals((int)knight.getPos().getY(), (int)(ground-(70/2))-1);
     }
-    
-    @Test
-    void testWizzard(){
-        //TODO: fare i test per il wizzard
-    }
 
     @Test
     void testJumpKnave(){

@@ -93,7 +93,7 @@ public class DrawComponentFactory {
                         BoundingBoxImplRet bBox= (BoundingBoxImplRet) t.get1().getBoxWeapon();
                         g.drawImage(t.get2(), (int)bBox.getX(), (int) bBox.getY(),(int)bBox.getWidth(),(int)bBox.getHeight(), null);
                     }
-                    //TODO: agigungi diesgni per bounding box circolari
+                    //qui si può aggiungere volendo anche il disegno di boundingBox circolari
                 });
             } catch (URISyntaxException | IOException e) {
                 System.out.println("impossibile caricare l'immagine del personaggio");

@@ -39,7 +39,6 @@ public class MeleeWeapon {
      */
     public Boolean isBroken(){
         int dt = (int) (System.currentTimeMillis() - this.timeCreation);
-        //TODO: vedi se si trova un metodo migliore per geistire il -1
         if(durationTime==-1) return false;
         return dt>this.durationTime;
     }
