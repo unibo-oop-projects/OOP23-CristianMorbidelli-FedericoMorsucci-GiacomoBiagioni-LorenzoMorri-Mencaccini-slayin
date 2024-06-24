@@ -1,10 +1,8 @@
 package slayin.model.utility.assets;
 
 import java.awt.Image;
-import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.io.InputStream;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
@@ -54,12 +52,12 @@ public class AssetsManager {
      */
     private static Image loadAssetImage(Asset asset) {
         try {
-            URL imageUrl = AssetsManager.class.getClassLoader().getResource(asset.getPath());
-            Image image = ImageIO.read(new File(imageUrl.toURI()));
+            InputStream imageUrl = ClassLoader.getSystemResourceAsStream(asset.getPath());
+            Image image = ImageIO.read(imageUrl);
             imageAssets.put(asset, image);
 
             return image;
-        } catch (URISyntaxException | IOException e) {
+        } catch (IOException e) {
             System.out.println("Impossibile caricare l'immagine di sfondo\n> " + e.getMessage());
         }
 

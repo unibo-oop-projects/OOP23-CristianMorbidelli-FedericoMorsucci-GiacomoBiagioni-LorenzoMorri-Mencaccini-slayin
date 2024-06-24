@@ -1,7 +1,9 @@
 package slayin.model.utility;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.List;
 import java.util.Optional;
 import java.util.ArrayList;
@@ -23,11 +25,33 @@ import slayin.model.events.GameEventListener;
 public class LevelFactory {
 
     /* the path to the file which contains infos about the enemies contained in each level */
-    private static final String enemiesConfigFile = "/configs/levels/enemies.json";
+    private static final String enemiesConfigFile = "slayin/configs/levels/enemies.json";
 
     private final World world;
     private final EntityFactory entityFactory;
     private JSONArray levels;
+
+    /**
+     * Read the content of an InputStream and return it as a String
+     * @author Neeme Praks
+     * @see <a href="https://stackoverflow.com/a/3849771">Stack Overflow</a>
+     * 
+     * @param is - the InputStream to read
+     * @return the content of the InputStream as a String
+     */
+    private String readStream(InputStream is) {
+        StringBuilder sb = new StringBuilder(512);
+        try {
+            Reader r = new InputStreamReader(is, "UTF-8");
+            int c = 0;
+            while ((c = r.read()) != -1) {
+                sb.append((char) c);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return sb.toString();
+    }
 
     /**
      * The constructor of a LevelFactory. It builds an object that can build as many levels as needed
@@ -37,7 +61,8 @@ public class LevelFactory {
         this.world = world;
         entityFactory = new EntityFactory(this.world, eventListener);
         try {
-            levels = new JSONObject(Files.readString(Path.of(this.getClass().getResource(enemiesConfigFile).toURI()))).getJSONArray("levels");
+            InputStream imageUrl = ClassLoader.getSystemResourceAsStream(enemiesConfigFile);
+            levels = new JSONObject(readStream(imageUrl)).getJSONArray("levels");
         } catch (Exception e) {
             // Error while reading the json file will result in an empty array 
             levels = null;

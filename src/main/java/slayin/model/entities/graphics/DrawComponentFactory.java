@@ -2,11 +2,8 @@ package slayin.model.entities.graphics;
 
 import javax.imageio.ImageIO;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.net.URISyntaxException;
-import java.nio.file.Paths;
+import java.io.InputStream;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -59,20 +56,20 @@ public class DrawComponentFactory {
     public static DrawComponent graphicsComponentCharacter(CharacterImpl character) {
         return (g) -> {
             try {
-                URL pathCharacter,pathWeapon;
+                InputStream pathCharacter, pathWeapon;
                 BufferedImage imgCharacter;
                 List<BufferedImage> imgWeapons = new ArrayList<>();
                 List<MeleeWeapon> weapons = character.getWeapons();
 
                 //recupero le immagini
-                String path = Paths.get("assets","character",character.getName() + FORMAT_SPRITE).toString();
-                pathCharacter = DrawComponentFactory.class.getClassLoader().getResource(path);
+                String path = "slayin/assets/character/" + character.getName() + FORMAT_SPRITE;
+                pathCharacter = ClassLoader.getSystemResourceAsStream(path);
                 for( var weapon : weapons){
-                    path = Paths.get("assets","character",weapon.getName() + character.getName() + FORMAT_SPRITE).toString();
-                    pathWeapon = DrawComponentFactory.class.getClassLoader().getResource(path);
-                    imgWeapons.add((BufferedImage) ImageIO.read(new File(pathWeapon.toURI())));
+                    path = "slayin/assets/character/" + weapon.getName() + character.getName() + FORMAT_SPRITE;
+                    pathWeapon = ClassLoader.getSystemResourceAsStream(path);
+                    imgWeapons.add((BufferedImage) ImageIO.read(pathWeapon));
                 }
-                imgCharacter = (BufferedImage) ImageIO.read(new File(pathCharacter.toURI()));
+                imgCharacter = (BufferedImage) ImageIO.read(pathCharacter);
 
                 // se la direzione è a sinistra ruoto l'immagine
                 if (character.getDir() == Direction.LEFT){
@@ -95,7 +92,7 @@ public class DrawComponentFactory {
                     }
                     //qui si può aggiungere volendo anche il disegno di boundingBox circolari
                 });
-            } catch (URISyntaxException | IOException e) {
+            } catch (IOException e) {
                 System.out.println("impossibile caricare l'immagine del personaggio");
                 e.printStackTrace();
             }
@@ -128,11 +125,11 @@ public class DrawComponentFactory {
     public static DrawComponent graphicsComponentEnemy(Enemy enemy){
         return (g) ->{
             try{
-                URL pathEnemy;
+                InputStream pathEnemy;
                 BufferedImage imgEnemy;
-                String path = Paths.get("assets","entities","enemies", enemy.getClass().getSimpleName().toLowerCase() + FORMAT_SPRITE).toString();
-                pathEnemy = DrawComponentFactory.class.getClassLoader().getResource(path);
-                imgEnemy = (BufferedImage) ImageIO.read(new File(pathEnemy.toURI()));
+                String path = "slayin/assets/entities/enemies/" + enemy.getClass().getSimpleName().toLowerCase() + FORMAT_SPRITE;
+                pathEnemy = ClassLoader.getSystemResourceAsStream(path);
+                imgEnemy = (BufferedImage) ImageIO.read(pathEnemy);
 
                 // se la direzione è a sinistra ruoto l'immagine
                 if (enemy.getDir() == Direction.RIGHT){
@@ -140,7 +137,7 @@ public class DrawComponentFactory {
                 }
                 BoundingBoxImplRet bBoxEnemy =(BoundingBoxImplRet)enemy.getBoundingBox();
                 g.drawImage(imgEnemy, (int) bBoxEnemy.getX(), (int) bBoxEnemy.getY(),(int)bBoxEnemy.getWidth(),(int)bBoxEnemy.getHeight(), null);
-            } catch (URISyntaxException | IOException e) {
+            } catch (IOException e) {
                 System.out.println("impossibile caricare l'immagine del nemico");
                 e.printStackTrace();
             }
@@ -203,11 +200,11 @@ public class DrawComponentFactory {
 
     public static DrawComponent graphicsComponentDummy(Dummy dummy){
         return (g) -> {
-            String path = Paths.get("assets","entities","dummy"+FORMAT_SPRITE).toString();
-            URL pathDummy = DrawComponentFactory.class.getClassLoader().getResource(path);
+            String path = "slayin/assets/entities/dummy" + FORMAT_SPRITE;
+            InputStream pathDummy = ClassLoader.getSystemResourceAsStream(path);
             try {
                 BoundingBoxImplRet entity = (BoundingBoxImplRet) dummy.getBoundingBox();
-                Image img = ImageIO.read(new File(pathDummy.toURI())).getScaledInstance((int) entity.getWidth(), (int) entity.getHeight(), Image.SCALE_DEFAULT);
+                Image img = ImageIO.read(pathDummy).getScaledInstance((int) entity.getWidth(), (int) entity.getHeight(), Image.SCALE_DEFAULT);
                 g.drawImage(img, (int) entity.getX(), (int) entity.getY(), null);
             } catch (Exception e) {
                 System.out.println("Unable to locate Dummy image from resources");
@@ -250,10 +247,10 @@ public class DrawComponentFactory {
     public static DrawComponent graphicsComponentImpShots(ImpShots impShots) {
         return (g) -> {
             try{
-                String path = Paths.get("assets","entities","shots","impShots" + FORMAT_SPRITE).toString();
+                String path = "slayin/assets/entities/shots/ImpShots" + FORMAT_SPRITE;
                 
-                URL pathImpShots =DrawComponentFactory.class.getClassLoader().getResource(path);
-                BufferedImage imgImpShots = ImageIO.read(new File(pathImpShots.toURI()));
+                InputStream pathImpShots = ClassLoader.getSystemResourceAsStream(path);
+                BufferedImage imgImpShots = ImageIO.read(pathImpShots);
                 
                 if (impShots.getDir() == Direction.RIGHT){
                     imgImpShots = ImageUtility.flipImage(imgImpShots);
@@ -261,7 +258,7 @@ public class DrawComponentFactory {
 
                 BoundingBoxImplCirc bBoxImpShots =(BoundingBoxImplCirc)impShots.getBoundingBox();
                 g.drawImage(imgImpShots, (int) bBoxImpShots.getX(), (int) bBoxImpShots.getY(),(int)bBoxImpShots.getRadius()*2,(int)bBoxImpShots.getRadius()*2, null);
-            } catch (URISyntaxException | IOException e) {
+            } catch (IOException e) {
                 System.out.println("impossibile caricare l'immagine del personaggio");
                 e.printStackTrace();
             }
@@ -271,10 +268,10 @@ public class DrawComponentFactory {
     public static DrawComponent graphicsComponentBoss(Boss boss, String pathB) {
         return (g) -> {
             try{
-                URL pathBoss =DrawComponentFactory.class.getClassLoader().getResource(
-                    Paths.get(pathB , boss.getState() + FORMAT_SPRITE).toString()//path image
+                InputStream pathBoss = ClassLoader.getSystemResourceAsStream(
+                    pathB + "/" + boss.getState() + FORMAT_SPRITE
                 );
-                BufferedImage imgBoss = ImageIO.read(new File(pathBoss.toURI()));
+                BufferedImage imgBoss = ImageIO.read(pathBoss);
                 if (boss.getDir() == Direction.RIGHT){
                     imgBoss = ImageUtility.flipImage(imgBoss);
                 }
@@ -286,7 +283,7 @@ public class DrawComponentFactory {
                 }
                 BoundingBoxImplRet bBoxBoss =(BoundingBoxImplRet)boss.getBoundingBox();
                 g.drawImage(imgBoss, (int) bBoxBoss.getX(), (int) bBoxBoss.getY(),(int)bBoxBoss.getWidth(),(int)bBoxBoss.getHeight(), null);
-            } catch (URISyntaxException | IOException e) {
+            } catch (IOException e) {
                 System.out.println("impossibile caricare l'immagine del personaggio");
                 e.printStackTrace();
             }
@@ -297,14 +294,13 @@ public class DrawComponentFactory {
     public static DrawComponent graphicsComponentHeadstoneShot(HeadstoneShot headstoneShot) {
         return (g) -> {
             try{
-                String path = Paths.get("assets","entities","shots","Skull" + FORMAT_SPRITE).toString();
-                
-                URL pathSkull =DrawComponentFactory.class.getClassLoader().getResource(path);
-                BufferedImage imgSkull = ImageIO.read(new File(pathSkull.toURI()));
+                String path = "slayin/assets/entities/shots/skull" + FORMAT_SPRITE;
+                InputStream pathSkull = ClassLoader.getSystemResourceAsStream(path);
+                BufferedImage imgSkull = ImageIO.read(pathSkull);
 
                 BoundingBoxImplCirc bBoxSkull =(BoundingBoxImplCirc)headstoneShot.getBoundingBox();
                 g.drawImage(imgSkull, (int) bBoxSkull.getX(), (int) bBoxSkull.getY(),(int)bBoxSkull.getRadius()*2,(int)bBoxSkull.getRadius()*2, null);
-            } catch (URISyntaxException | IOException e) {
+            } catch (IOException e) {
                 System.out.println("impossibile caricare l'immagine del personaggio");
                 e.printStackTrace();
             }

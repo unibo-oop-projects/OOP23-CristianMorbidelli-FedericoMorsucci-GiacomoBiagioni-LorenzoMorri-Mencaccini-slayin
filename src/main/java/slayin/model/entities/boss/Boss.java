@@ -1,7 +1,5 @@
 package slayin.model.entities.boss;
 
-import java.nio.file.Paths;
-
 import slayin.model.World;
 import slayin.model.bounding.BoundingBox;
 import slayin.model.entities.enemies.Enemy;
@@ -121,6 +119,6 @@ public abstract class Boss extends Enemy {
      * @return asset string
      */
     public static final String getPath(){
-        return Paths.get("assets","entities","boss").toString();
+        return "slayin/assets/entities/boss";
     }
 }

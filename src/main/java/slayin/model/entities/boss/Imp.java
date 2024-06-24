@@ -10,7 +10,6 @@ import slayin.model.events.GameEventListener;
 import slayin.model.events.collisions.SpawnShotsEvent;
 import slayin.model.utility.P2d;
 
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -82,9 +81,7 @@ public class Imp extends Boss {
     public DrawComponent getDrawComponent(){
         return DrawComponentFactory.graphicsComponentBoss(
             this,
-            Paths.get(getPath(),
-                this.getClass().getSimpleName().toLowerCase()//his directory
-            ).toString()
+            getPath() + "/" + this.getClass().getSimpleName().toLowerCase()
         );
     }
 
