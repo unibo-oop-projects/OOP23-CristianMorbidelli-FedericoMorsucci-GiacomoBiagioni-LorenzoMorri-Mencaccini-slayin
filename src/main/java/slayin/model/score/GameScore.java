@@ -5,9 +5,9 @@ import slayin.model.entities.graphics.DrawComponentFactory;
 import slayin.model.utility.Globals;
 
 /**
- * The GameScore class is responsible for keeping track of the player's score and combo factor.
+ * Implementation of the {@code ScoreManager} interface.
  */
-public class GameScore {
+public class GameScore implements ScoreManager {
     private int score;
     private int comboFactor;
 
@@ -20,77 +20,50 @@ public class GameScore {
         this.remainingTime = Globals.COMBO_RESET_TIME;
     }
 
-    /**
-     * Increases the score by the given amount and updates the combo factor.
-     * 
-     * @param score - the amount to increase the score by
-     */
+    @Override
     public void increaseScore(int score) {
         this.score += score + comboFactor;
-
         comboFactor++;
         remainingTime = Globals.COMBO_RESET_TIME;
         startTimestamp = System.currentTimeMillis();
     }
 
-    /**
-     * Updates the combo timer. If the combo timer reaches 0, the combo factor is set to 0
-     * and the timer is set to the original value.
-     */
+    @Override
     public void updateComboTimer() {
         if (comboFactor == 0)
             return;
-
         if (remainingTime <= 0) {
             comboFactor = 0;
             remainingTime = Globals.COMBO_RESET_TIME;
             return;
         }
-
         remainingTime -= (int) (System.currentTimeMillis() - startTimestamp);
         startTimestamp = System.currentTimeMillis();
     }
 
-    /**
-     * Resumes the combo timer.
-     */
+    @Override
     public void resumeComboTimer() {
         startTimestamp = System.currentTimeMillis();
     }
 
-    /**
-     * Gets the current score.
-     * 
-     * @return the current score
-     */
+    @Override
+    public DrawComponent getDrawComponent() {
+        return DrawComponentFactory.graphicsComponentScore(this);
+    }
+
+    @Override
     public int getScore() {
         return this.score;
     }
 
-    /**
-     * Gets the remaining time of the combo timer.
-     * 
-     * @return the remaining time of the combo timer
-     */
+    @Override
     public int getRemainingTime() {
         return remainingTime;
     }
 
-    /**
-     * Gets the combo factor.
-     * 
-     * @return the combo factor value
-     */
+    @Override
     public int getComboFactor() {
         return comboFactor;
     }
 
-    /**
-     * Gets the DrawComponent to draw the score and the combo factor.
-     * 
-     * @return the DrawComponent to draw the score and the combo factor
-     */
-    public DrawComponent getDrawComponent() {
-        return DrawComponentFactory.graphicsComponentScore(this);
-    }
 }

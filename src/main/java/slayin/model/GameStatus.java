@@ -13,6 +13,7 @@ import slayin.model.entities.shots.ShotObject;
 import slayin.model.events.GameEventListener;
 import slayin.model.events.GameOverEvent;
 import slayin.model.score.GameScore;
+import slayin.model.score.ScoreManager;
 import slayin.model.utility.Globals;
 
 /**
@@ -26,7 +27,7 @@ public class GameStatus {
     Character character;
     List<GameObject> enemies;
     List<ShotObject> shots;
-    private GameScore scoreManager;
+    private ScoreManager scoreManager;
 
     private GameEventListener eventListener;
 
@@ -178,7 +179,7 @@ public class GameStatus {
      *
      * @return the score manager.
      */
-    public GameScore getScoreManager() {
+    public ScoreManager getScoreManager() {
         return this.scoreManager;
     }
 
