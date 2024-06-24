@@ -28,7 +28,7 @@ public class GameOverScene implements SimpleGameScene {
 
     @Override
     public Container getContent() {
-        SlayinLabel gameOverLabel = new SlayinLabel("Game Over", 80f);
+        SlayinLabel gameOverLabel = new SlayinLabel(gameStatus.getCharacter().isAlive() ? "Hai vinto!" : "Game Over", 80f);
         SlayinLabel scoreLabel = new SlayinLabel("Score: " + gameStatus.getScoreManager().getScore(), 50f);
         scoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
         SlayinButton restartButton = new SlayinButton("Restart",
