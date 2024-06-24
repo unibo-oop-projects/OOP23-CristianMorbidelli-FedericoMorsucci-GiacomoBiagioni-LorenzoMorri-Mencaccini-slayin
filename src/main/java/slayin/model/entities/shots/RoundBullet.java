@@ -2,7 +2,7 @@ package slayin.model.entities.shots;
 
 import slayin.model.World;
 import slayin.model.bounding.BoundingBoxImplCirc;
-import slayin.model.entities.character.Character;
+import slayin.model.entities.character.CharacterImpl;
 import slayin.model.utility.P2d;
 import slayin.model.utility.Vector2d;
 import slayin.model.utility.Globals;
@@ -35,7 +35,7 @@ public class RoundBullet extends ShotObject{
      * @param c  the character shoots the bullet
      * @param w  the world in which the bullet exists
      */
-    public RoundBullet(Character c,World w){
+    public RoundBullet(CharacterImpl c,World w){
         this(c.getPos(),c.getDir()==Direction.LEFT ? new Vector2d(-Globals.SPEEDX_BULLET_ROUND, 0) : new Vector2d(Globals.SPEEDX_BULLET_ROUND, 0), new BoundingBoxImplCirc(c.getPos(), Globals.RADIUS_BULLET_ROUND),w, c.getDir());
     }
 

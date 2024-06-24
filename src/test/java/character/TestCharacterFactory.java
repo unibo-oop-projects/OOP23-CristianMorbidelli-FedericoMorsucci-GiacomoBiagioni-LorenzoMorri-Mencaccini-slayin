@@ -7,13 +7,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import slayin.model.World;
-import slayin.model.entities.character.Character;
+import slayin.model.entities.character.CharacterImpl;
 import slayin.model.entities.character.CharacterFactory;
 import slayin.model.movement.MovementController;
 
 public class TestCharacterFactory {
 
-    Character knight,wizard,knave;
+    CharacterImpl knight,wizard,knave;
     int widthWorld,heighWorld,ground;
     MovementController inpuController;
     
@@ -87,11 +87,6 @@ public class TestCharacterFactory {
         //dopo 3 secondi il personaggio dovrebbe essere ricarede a terra
         knight.updatePos(3000);
         assertEquals((int)knight.getPos().getY(), (int)(ground-(70/2))-1);
-    }
-    
-    @Test
-    void testWizzard(){
-        //TODO: fare i test per il wizzard
     }
 
     @Test

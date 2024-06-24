@@ -1,7 +1,7 @@
 package slayin.core;
 
 import slayin.model.entities.GameObject;
-import slayin.model.entities.character.Character;
+import slayin.model.entities.character.CharacterImpl;
 import slayin.model.entities.character.MeleeWeapon;
 import slayin.model.entities.enemies.Enemy;
 import slayin.model.entities.shots.ShotObject;
@@ -127,7 +127,7 @@ public class Engine {
     }
 
     private void checkCharacterCollisions(){
-        Character character = status.getCharacter();
+        CharacterImpl character = status.getCharacter();
         List<MeleeWeapon> weapons = character.getWeapons();
         // collisioni con le weapon del personaggio
         status.getEnemies().forEach(enemy->{
@@ -205,7 +205,8 @@ public class Engine {
                     if(isLevelCompleted()){
                         // current level has been completed
                         // if it was a boss level (max capacity=1) then the character gets healed (1/4 of maximum life)
-                        status.getCharacter().getLife().heal(status.getCharacter().getLife().getMaxHealth()/4);
+                        if(status.getLevel().getCapacity() == 1)
+                            status.getCharacter().getLife().heal(status.getCharacter().getLife().getMaxHealth()/4);
                         // read current level's id from the GameStatus, and tries to build the next one
                        status.setLevel(levelFactory.buildLevel(status.getLevel().getID()+1));     
                        // if the factory won't be able to get the level, the Game Over event will be raised

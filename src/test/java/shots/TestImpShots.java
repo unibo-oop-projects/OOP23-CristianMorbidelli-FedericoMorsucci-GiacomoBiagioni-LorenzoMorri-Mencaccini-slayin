@@ -15,6 +15,9 @@ public class TestImpShots {
     ImpShots shot2,shot1;
     World world = new World(100, 100);
 
+    //they were tested with methods that were public and had speeds not in proportion to the world, 
+    //which after was changed
+
     @BeforeEach
     void setUp(){
         shot2= new ImpShots(new P2d(10,10), new BoundingBoxImplCirc(new P2d(90,90), 5), world, false,0);
