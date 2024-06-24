@@ -35,6 +35,7 @@ public class GameStatus {
      * regulating the enemies' dispatching, in order to avoid to fill the scene to its maximum capacity too fast.
      */
     private long tickSinceLastEnemyAdded;
+    private long timeLevelStarted;
 
     /**
      * Constructor to initialize the game status with a given event listener.
@@ -168,6 +169,7 @@ public class GameStatus {
         if(level.isPresent()){
             System.out.println("Starting level " + level.get().getID());
             this.level = level.get();
+            timeLevelStarted = System.currentTimeMillis();
         }else{    
             // the Optional will be empty if no more levels can be read
             eventListener.addEvent(new GameOverEvent());
@@ -200,7 +202,7 @@ public class GameStatus {
         double capacityReached = ((double) enemies.size()/ (double) level.getCapacity()) * 100;
         long currentTime = System.currentTimeMillis();
 
-        if(capacityReached >= 100){
+        if(capacityReached >= 100 || (System.currentTimeMillis()-timeLevelStarted)<1000){
             //System.out.println("NON AGGIUNGO");
             return;     // 100% of level capacity reached; no need to add more enemies
         }
