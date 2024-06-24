@@ -9,10 +9,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import slayin.core.SceneController;
-import slayin.core.SimpleGameScene;
 import slayin.model.GameStatus;
 import slayin.model.movement.InputController;
 import slayin.model.utility.SceneType;
+import slayin.views.SimpleGameScene;
 
 public class TestPauseMenu {
     SceneController sceneController;

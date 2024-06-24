@@ -1,7 +1,8 @@
-package slayin.core;
+package slayin.views;
 
 /**
- * Extension of the SimpleGameScene interface that adds the drawGraphics method to draw the graphics of the scene.
+ * Extension of the SimpleGameScene interface that adds the drawGraphics method
+ * to draw the graphics of the scene.
  */
 public interface GameScene extends SimpleGameScene {
     /**

@@ -1,21 +1,16 @@
 package slayin.views;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.Image;
 
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 
-import slayin.core.SimpleGameScene;
 import slayin.model.entities.character.PlayableCharacter;
 import slayin.model.events.GameEventListener;
+import slayin.model.events.menus.SimpleChangeSceneEvent;
 import slayin.model.events.menus.StartGameEvent;
 import slayin.model.utility.SceneType;
 import slayin.model.utility.assets.Asset;
@@ -34,10 +29,7 @@ public class CharacterSelectionScene implements SimpleGameScene {
     @Override
     public Container getContent() {
         Image backgroundImage = AssetsManager.getImageAsset(Asset.MAIN_MENU_BG);
-
         SlayinPanel container = new SlayinPanel(backgroundImage);
-        container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
-        container.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         SlayinLabel title = new SlayinLabel("Selezione Personaggio", true);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -47,32 +39,29 @@ public class CharacterSelectionScene implements SimpleGameScene {
         charactersPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
         charactersPanel.setOpaque(false);
 
-        // Aggiunta dei personaggi
-        charactersPanel.add(createCharacterPanel("Knight", PlayableCharacter.KNIGHT));
-        charactersPanel.add(createCharacterPanel("Wizard", PlayableCharacter.WIZARD));
-        charactersPanel.add(createCharacterPanel("Knave", PlayableCharacter.KNAVE));
-        
-        container.addComponents(title, charactersPanel);
+        SlayinButton charBtn1 = new SlayinButton("Knight",
+                () -> eventListener.addEvent(new StartGameEvent(PlayableCharacter.KNIGHT)));
+        SlayinButton charBtn2 = new SlayinButton("Wizard",
+                () -> eventListener.addEvent(new StartGameEvent(PlayableCharacter.WIZARD)));
+        SlayinButton charBtn3 = new SlayinButton("Knave",
+                () -> eventListener.addEvent(new StartGameEvent(PlayableCharacter.KNAVE)));
+
+        charactersPanel.add(charBtn1);
+        charactersPanel.add(charBtn2);
+        charactersPanel.add(charBtn3);
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.Y_AXIS));
+        bottomPanel.setOpaque(false);
+
+        SlayinButton backBtn = new SlayinButton("Indietro",
+                () -> eventListener.addEvent(new SimpleChangeSceneEvent(SceneType.MAIN_MENU)));
+        backBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        bottomPanel.add(backBtn);
+
+        container.addComponents(title, charactersPanel, backBtn);
+
         return container;
-    }
-
-    private JPanel createCharacterPanel(String characterName, PlayableCharacter character) {
-        // Pannello del personaggio
-        JPanel characterPanel = new JPanel();
-        characterPanel.setLayout(new BorderLayout(10, 10));
-        characterPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        characterPanel.setOpaque(true);
-
-        // Immagine del personaggio
-        JLabel imageLabel = new JLabel(new ImageIcon(AssetsManager.getImageAsset(Asset.DUMMY_ENEMY)));
-        imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        characterPanel.add(imageLabel, BorderLayout.CENTER);
-
-        // Bottone di selezione
-        SlayinButton charBtn = new SlayinButton(characterName, () -> eventListener.addEvent(new StartGameEvent(character)));
-        characterPanel.add(charBtn, BorderLayout.SOUTH);
-
-        return characterPanel;
     }
 
     @Override
@@ -84,5 +73,5 @@ public class CharacterSelectionScene implements SimpleGameScene {
     public boolean shouldRevalidate() {
         return false;
     }
-    
+
 }

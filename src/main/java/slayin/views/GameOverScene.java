@@ -7,7 +7,6 @@ import java.awt.Graphics2D;
 
 import javax.swing.SwingConstants;
 
-import slayin.core.SimpleGameScene;
 import slayin.model.GameStatus;
 import slayin.model.events.GameEventListener;
 import slayin.model.events.menus.QuitGameEvent;
@@ -32,7 +31,8 @@ public class GameOverScene implements SimpleGameScene {
         SlayinLabel gameOverLabel = new SlayinLabel("Game Over", 80f);
         SlayinLabel scoreLabel = new SlayinLabel("Score: " + gameStatus.getScoreManager().getScore(), 50f);
         scoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        SlayinButton restartButton = new SlayinButton("Restart", () -> eventListener.addEvent(new SimpleChangeSceneEvent(SceneType.CHARACTER_SELECTION)));
+        SlayinButton restartButton = new SlayinButton("Restart",
+                () -> eventListener.addEvent(new SimpleChangeSceneEvent(SceneType.CHARACTER_SELECTION)));
         SlayinButton quitButton = new SlayinButton("Quit", () -> eventListener.addEvent(new QuitGameEvent()));
 
         SlayinCenteredPanel panel = new SlayinCenteredPanel() {

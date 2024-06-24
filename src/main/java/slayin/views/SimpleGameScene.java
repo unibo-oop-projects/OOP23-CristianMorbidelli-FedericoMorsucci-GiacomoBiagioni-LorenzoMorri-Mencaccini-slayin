@@ -1,4 +1,4 @@
-package slayin.core;
+package slayin.views;
 
 import java.awt.Container;
 

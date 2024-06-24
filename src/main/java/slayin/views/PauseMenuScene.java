@@ -5,7 +5,6 @@ import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-import slayin.core.SimpleGameScene;
 import slayin.model.GameStatus;
 import slayin.model.events.GameEventListener;
 import slayin.model.events.menus.QuitGameEvent;
@@ -28,7 +27,8 @@ public class PauseMenuScene implements SimpleGameScene {
     @Override
     public Container getContent() {
         SlayinLabel title = new SlayinLabel("In Pausa", true);
-        SlayinButton resumeButton = new SlayinButton("Riprendi", () -> eventListener.addEvent(new ShowPauseMenuEvent(false)));
+        SlayinButton resumeButton = new SlayinButton("Riprendi",
+                () -> eventListener.addEvent(new ShowPauseMenuEvent(false)));
         SlayinButton quitButton = new SlayinButton("Esci", () -> eventListener.addEvent(new QuitGameEvent()));
 
         SlayinCenteredPanel menu = new SlayinCenteredPanel() {

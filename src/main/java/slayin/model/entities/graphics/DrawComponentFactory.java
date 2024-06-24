@@ -25,7 +25,7 @@ import slayin.model.entities.shots.ImpShots;
 import slayin.model.entities.GameObject.Direction;
 import slayin.model.entities.boss.Boss;
 import slayin.model.entities.boss.Boss.State;
-import slayin.model.score.GameScore;
+import slayin.model.score.ScoreManager;
 import slayin.model.utility.ImageUtility;
 import slayin.model.utility.Pair;
 import slayin.model.utility.assets.Asset;
@@ -154,7 +154,7 @@ public class DrawComponentFactory {
      * @param scoreManager - the score manager that holds the data to draw
      * @return DrawComponent that draws the score and the combo factor
      */
-    public static DrawComponent graphicsComponentScore(GameScore scoreManager) {
+    public static DrawComponent graphicsComponentScore(ScoreManager scoreManager) {
         return (g) -> {
             resetDrawSettings(g);
 

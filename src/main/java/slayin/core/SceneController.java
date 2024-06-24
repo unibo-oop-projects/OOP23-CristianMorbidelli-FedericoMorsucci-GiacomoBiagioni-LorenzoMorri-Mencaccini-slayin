@@ -16,9 +16,11 @@ import slayin.model.utility.SceneType;
 import slayin.views.CharacterSelectionScene;
 import slayin.views.GameLevelScene;
 import slayin.views.GameOverScene;
+import slayin.views.GameScene;
 import slayin.views.MainMenuScene;
 import slayin.views.OptionMenuScene;
 import slayin.views.PauseMenuScene;
+import slayin.views.SimpleGameScene;
 
 public class SceneController {
     private JFrame gameFrame;
@@ -83,7 +85,7 @@ public class SceneController {
                 newScene = new OptionMenuScene(eventListener);
                 break;
             case CHARACTER_SELECTION:
-                newScene = new CharacterSelectionScene(eventListener);    
+                newScene = new CharacterSelectionScene(eventListener);
                 break;
             default:
                 break;
