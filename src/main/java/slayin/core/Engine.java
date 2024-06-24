@@ -1,7 +1,7 @@
 package slayin.core;
 
 import slayin.model.entities.GameObject;
-import slayin.model.entities.character.Character;
+import slayin.model.entities.character.CharacterImpl;
 import slayin.model.entities.character.MeleeWeapon;
 import slayin.model.entities.enemies.Enemy;
 import slayin.model.entities.shots.ShotObject;
@@ -127,7 +127,7 @@ public class Engine {
     }
 
     private void checkCharacterCollisions(){
-        Character character = status.getCharacter();
+        CharacterImpl character = status.getCharacter();
         List<MeleeWeapon> weapons = character.getWeapons();
         // collisioni con le weapon del personaggio
         status.getEnemies().forEach(enemy->{

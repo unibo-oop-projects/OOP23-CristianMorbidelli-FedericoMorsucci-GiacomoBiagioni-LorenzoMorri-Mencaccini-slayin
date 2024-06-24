@@ -16,7 +16,7 @@ import slayin.model.World;
 import slayin.model.bounding.BoundingBox;
 import slayin.model.bounding.BoundingBoxImplCirc;
 import slayin.model.bounding.BoundingBoxImplRet;
-import slayin.model.entities.character.Character;
+import slayin.model.entities.character.CharacterImpl;
 import slayin.model.entities.character.Health;
 import slayin.model.entities.character.MeleeWeapon;
 import slayin.model.entities.enemies.Enemy;
@@ -56,7 +56,7 @@ public class DrawComponentFactory {
      * @param character - character to draw
      * @return DrawComponent that draws the character passed by parameter
      */
-    public static DrawComponent graphicsComponentCharacter(Character character) {
+    public static DrawComponent graphicsComponentCharacter(CharacterImpl character) {
         return (g) -> {
             try {
                 URL pathCharacter,pathWeapon;

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import slayin.model.entities.GameObject;
-import slayin.model.entities.character.Character;
+import slayin.model.entities.character.CharacterImpl;
 import slayin.model.entities.character.CharacterFactory;
 import slayin.model.entities.character.PlayableCharacter;
 import slayin.model.entities.enemies.Enemy;
@@ -23,7 +23,7 @@ public class GameStatus {
     World world;
     private Level level;
 
-    Character character;
+    CharacterImpl character;
     List<GameObject> enemies;
     List<ShotObject> shots;
     private GameScore scoreManager;
@@ -136,7 +136,7 @@ public class GameStatus {
      *
      * @return the current character.
      */
-    public Character getCharacter() {
+    public CharacterImpl getCharacter() {
         return this.character;
     }
 

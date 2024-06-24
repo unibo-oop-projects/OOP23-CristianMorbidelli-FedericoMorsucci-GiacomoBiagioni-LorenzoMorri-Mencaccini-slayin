@@ -7,13 +7,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import slayin.model.World;
-import slayin.model.entities.character.Character;
+import slayin.model.entities.character.CharacterImpl;
 import slayin.model.entities.character.CharacterFactory;
 import slayin.model.movement.MovementController;
 
 public class TestCharacterFactory {
 
-    Character knight,wizard,knave;
+    CharacterImpl knight,wizard,knave;
     int widthWorld,heighWorld,ground;
     MovementController inpuController;
     
