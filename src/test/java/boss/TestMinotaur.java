@@ -17,7 +17,8 @@ public class TestMinotaur {
     World world = new World(100, 100); 
     BoundingBoxImplRet boundingBox = new BoundingBoxImplRet(null, 10, 20);
 
-    //per testare funzionamento i metodi erano public e non protected
+    //they were tested with methods that were public and had speeds not in proportion to the world, 
+    //which after was changed
     
     @BeforeEach
     void setUp(){
