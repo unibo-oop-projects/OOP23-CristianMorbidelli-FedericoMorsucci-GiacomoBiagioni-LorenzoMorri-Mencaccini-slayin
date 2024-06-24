@@ -13,7 +13,7 @@ import slayin.model.utility.Vector2d;
 public class Minotaur extends Boss {
     
     private int SPEEDX;
-    private final static int scorePerKill=15;
+    private final static int SCOREPERKILL=15;
     private int damage;
     
     /**
@@ -171,7 +171,7 @@ public class Minotaur extends Boss {
 
     @Override
     public int getScorePerKill() {
-        return Minotaur.scorePerKill;
+        return Minotaur.SCOREPERKILL;
     }
 
     @Override

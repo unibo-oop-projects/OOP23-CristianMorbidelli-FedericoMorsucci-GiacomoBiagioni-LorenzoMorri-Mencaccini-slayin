@@ -16,7 +16,7 @@ import java.util.Random;
 
 public class Imp extends Boss {
 
-    private static final int scorePerKill=30;
+    private static final int SCOREPERKILL=30;
     private int damageShots;
     private int damage;
     private int numShots;
@@ -273,7 +273,7 @@ public class Imp extends Boss {
 
     @Override
     public int getScorePerKill() {
-        return Imp.scorePerKill;
+        return Imp.SCOREPERKILL;
     }
 
     @Override
