@@ -122,6 +122,12 @@ public class DrawComponentFactory {
 
     }
 
+    /**
+     * Creates a DrawComponent for rendering an enemy.
+     *
+     * @param enemy the enemy entity to be drawn.
+     * @return a DrawComponent for the specified enemy.
+     */
     public static DrawComponent graphicsComponentEnemy(Enemy enemy){
         return (g) ->{
             try{
@@ -131,7 +137,7 @@ public class DrawComponentFactory {
                 pathEnemy = ClassLoader.getSystemResourceAsStream(path);
                 imgEnemy = (BufferedImage) ImageIO.read(pathEnemy);
 
-                // se la direzione è a sinistra ruoto l'immagine
+                // if the direction is left, the image ll flip
                 if (enemy.getDir() == Direction.RIGHT){
                     imgEnemy= ImageUtility.flipImage(imgEnemy);
                 }
@@ -290,7 +296,12 @@ public class DrawComponentFactory {
         };
     }
 
-
+    /**
+     * Creates a DrawComponent for rendering a HeadstoneShot.
+     *
+     * @param headstoneShot the HeadstoneShot entity to be drawn.
+     * @return a DrawComponent for the specified HeadstoneShot.
+     */
     public static DrawComponent graphicsComponentHeadstoneShot(HeadstoneShot headstoneShot) {
         return (g) -> {
             try{
