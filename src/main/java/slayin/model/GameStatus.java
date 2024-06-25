@@ -25,7 +25,7 @@ public class GameStatus {
     private Level level;
 
     CharacterImpl character;
-    List<GameObject> enemies;
+    List<Enemy> enemies;
     List<ShotObject> shots;
     private ScoreManager scoreManager;
 
@@ -147,7 +147,7 @@ public class GameStatus {
      *
      * @return the list of enemies.
      */
-    public List<GameObject> getEnemies() {
+    public List<Enemy> getEnemies() {
         return this.enemies;
     }
 
