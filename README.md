@@ -3,7 +3,7 @@
 ## Contributors
 - Giacomo Biagioni giacomo.biagioni@studio.unibo.it
 
-- Mattia Mencaccinimattia.mencaccini@studio.unibo.it
+- Mattia Mencaccini mattia.mencaccini@studio.unibo.it
 
 - Cristian Morbidelli cristian.morbidelli@studio.unibo.it
 
