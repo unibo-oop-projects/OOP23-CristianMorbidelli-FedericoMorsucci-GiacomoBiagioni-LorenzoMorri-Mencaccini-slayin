@@ -35,6 +35,9 @@ public class SceneController {
         this.inputController = inputController;
     }
 
+    /**
+     * Creates the main window of the game.
+     */
     public void createWindow() {
         this.gameFrame = new JFrame("Slayin");
         this.gameFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -52,16 +55,30 @@ public class SceneController {
         this.gameFrame.setVisible(true);
     }
 
+    /**
+     * Closes the main window of the game.
+     */
     public void closeWindow() {
         this.gameFrame.setVisible(false);
         this.gameFrame.dispose();
     }
 
+    /**
+     * Switches the scene to the specified one.
+     * 
+     * @param sceneType the type of the scene to switch to
+     * @param gameStatus the game status to pass to the new scene
+     */
     private void switchScene(SceneType sceneType, GameStatus gameStatus) {
         this.gameStatus = gameStatus;
         this.switchScene(sceneType);
     }
 
+    /**
+     * Switches the scene to the specified one.
+     * 
+     * @param sceneType the type of the scene to switch to
+     */
     public void switchScene(SceneType sceneType) {
         SimpleGameScene newScene = null;
         this.gameFrame.removeKeyListener(inputController);
@@ -103,6 +120,9 @@ public class SceneController {
         this.gameFrame.repaint();
     }
 
+    /**
+     * Renders the entities in the active scene.
+     */
     public void renderEntitiesInScene() {
         if (activeScene.isEmpty())
             return;
@@ -111,10 +131,18 @@ public class SceneController {
             ((GameScene) activeScene.get()).drawGraphics();
     }
 
+    /**
+     * Shows the main menu scene.
+     * 
+     * @param gameStatus the game status to pass to the new scene
+     */
     public void showGameScene(GameStatus gameStatus) {
         this.switchScene(SceneType.GAME_LEVEL, gameStatus);
     }
 
+    /**
+     * Shows pause menu scene.
+     */
     public void setPauseMenuOpen(boolean inMenu) {
         if (inMenu)
             this.switchScene(SceneType.PAUSE_MENU);
@@ -122,6 +150,9 @@ public class SceneController {
             this.switchScene(SceneType.GAME_LEVEL);
     }
 
+    /**
+     * Checks if the active scene is a menu.
+     */
     public boolean isInMenu() {
         if (activeScene.isEmpty())
             return false;
@@ -129,10 +160,16 @@ public class SceneController {
         return activeScene.get().getSceneType().isMenu();
     }
 
+    /**
+     * Returns the active scene.
+     */
     public Optional<SimpleGameScene> getActiveScene() {
         return this.activeScene;
     }
 
+    /**
+     * Changes the resolution of the game window.
+     */
     public void updateResolution() {
         this.gameFrame.setSize(Globals.RESOLUTION.getWidth(), Globals.RESOLUTION.getHeight());
     }
