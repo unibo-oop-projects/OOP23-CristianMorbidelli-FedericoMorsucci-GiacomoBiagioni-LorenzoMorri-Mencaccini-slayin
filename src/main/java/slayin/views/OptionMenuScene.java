@@ -26,7 +26,7 @@ public class OptionMenuScene implements SimpleGameScene {
 
     @Override
     public Container getContent() {
-        Image backgroundImage = AssetsManager.getImageAsset(Asset.MAIN_MENU_BG);
+        Image backgroundImage = AssetsManager.getInstance().getImageAsset(Asset.MAIN_MENU_BG);
 
         SlayinLabel title = new SlayinLabel("Impostazioni", true);
         SlayinSliderMenu<GameResolution> sliderMenu = new SlayinSliderMenu<GameResolution>(Globals.RESOLUTION,

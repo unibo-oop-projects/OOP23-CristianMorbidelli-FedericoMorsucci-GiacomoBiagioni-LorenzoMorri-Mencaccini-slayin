@@ -65,7 +65,7 @@ public class Engine {
         /** Numerical attributes for the tick time. The time passed in its loop is also used at every game status' update for numerical calculations. */
         long startTime, timePassed, previousTime;
 
-        AssetsManager.loadAssets();
+        AssetsManager.getInstance().loadAssets();
         sceneController.createWindow();
         sceneController.switchScene(SceneType.MAIN_MENU);
 

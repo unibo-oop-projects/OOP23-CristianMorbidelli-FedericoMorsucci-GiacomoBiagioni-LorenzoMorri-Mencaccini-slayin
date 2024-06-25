@@ -11,13 +11,23 @@ import javax.imageio.ImageIO;
  * Utility class to load and manage the assets of the game.
  */
 public class AssetsManager {
-    private static HashMap<Asset, Image> imageAssets = new HashMap<>();
+    private static AssetsManager instance;
+
+    private HashMap<Asset, Image> imageAssets = new HashMap<>();
+
+    public static AssetsManager getInstance()
+    {
+        if (instance == null)
+            instance = new AssetsManager();
+
+        return instance;
+    }
 
     /**
      * Loads all the assets of the game that are defined inside the enum Asset.
      * {@link slayin.model.utility.assets.Asset}.
      */
-    public static void loadAssets() {
+    public void loadAssets() {
         long assetsTimeStart = System.currentTimeMillis();
         System.out.println("[AssetsManager] Loading assets...");
         for (Asset asset : Asset.values()) {
@@ -40,7 +50,7 @@ public class AssetsManager {
      * @param asset The asset to get the image from.
      * @return The image asset or null if the asset doesn't exists.
      */
-    public static Image getImageAsset(Asset asset) {
+    public Image getImageAsset(Asset asset) {
         return imageAssets.get(asset);
     }
 
@@ -50,7 +60,7 @@ public class AssetsManager {
      * @param path The path of the image to load.
      * @return The loaded image or null if an error occurred.
      */
-    private static Image loadAssetImage(Asset asset) {
+    private Image loadAssetImage(Asset asset) {
         try {
             InputStream imageUrl = ClassLoader.getSystemResourceAsStream(asset.getPath());
             Image image = ImageIO.read(imageUrl);

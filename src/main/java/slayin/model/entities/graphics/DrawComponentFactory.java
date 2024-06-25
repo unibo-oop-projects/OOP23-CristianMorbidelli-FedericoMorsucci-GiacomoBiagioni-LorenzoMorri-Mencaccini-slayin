@@ -184,7 +184,7 @@ public class DrawComponentFactory {
             resetDrawSettings(g);
 
             var imageWidth = 25;
-            Image hp = AssetsManager.getImageAsset(Asset.LIFE_HEART);
+            Image hp = AssetsManager.getInstance().getImageAsset(Asset.LIFE_HEART);
             g.drawImage(hp, 5, 0, imageWidth, 25, null);
             g.setFont(g.getFont().deriveFont(Font.BOLD, 20));
             g.drawString(String.valueOf(knightHealth.getHealth()), 10 + imageWidth, 20);
@@ -193,7 +193,7 @@ public class DrawComponentFactory {
 
     public static DrawComponent graphicsComponentWorld(World w) {
         return (g) -> {
-            Image bImage = AssetsManager.getImageAsset(Asset.GAME_BG);
+            Image bImage = AssetsManager.getInstance().getImageAsset(Asset.GAME_BG);
             g.drawImage(bImage, 0, 0, Globals.RESOLUTION.getWidth(), Globals.RESOLUTION.getHeight(), null);
         };
     }
