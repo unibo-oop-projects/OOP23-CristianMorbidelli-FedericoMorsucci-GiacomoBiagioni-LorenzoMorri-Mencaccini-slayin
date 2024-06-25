@@ -126,7 +126,16 @@ public class CharacterImpl extends GameObject implements Character{
         this.weapons.add(weapon);
     }
 
-    
+    /**
+     * Updates the character's movement vector based on the input from the MovementController.
+     * 
+     * <p>This method handles jumping and horizontal movement (left and right). If the character is 
+     * jumping and is currently on the ground, it will perform the jump action. If the character is 
+     * moving left or right, it will update the movement vector accordingly and set the character's 
+     * direction.</p>
+     * 
+     * @param input The MovementController object that provides the current input state.
+     */
     public void updateVectorMovement(MovementController input) {
         if(input.isJumping() && this.getWorld().isTouchingGround(this) && !(jumpIsBlocked())){
             this.jumpFunc.accept(this);
