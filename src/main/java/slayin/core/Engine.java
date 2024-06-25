@@ -90,7 +90,7 @@ public class Engine {
 
     /** A function that makes the gameLoop sleep in order to wait for the tickTime
      * 
-     * @param timePassed - How long the current tick has lasted
+     * @param timePassed - How long the current frame has lasted
      */
     private void waitForNextTick(long timePassed) {
         if (timePassed < tickTime) { /* wait until tickTime before next frame */
@@ -105,7 +105,7 @@ public class Engine {
     /** A function that takes care of managing every aspect of the logical status of the game:
      * adding or removing entities, moving them in the scene, etc...
      * 
-     * @param deltaTime - The difference in milliseconds between the last tick and the current one
+     * @param deltaTime - The difference in milliseconds between the last frame and the current one
      */
     private void updateGameStatus(int deltaTime) {
         if(sceneController.isInMenu()) return;  // If the game is at the menu frame, there is no status to update
@@ -126,6 +126,7 @@ public class Engine {
         checkShotCollisions();
     }
 
+    /** A function that checks the collisions that enemies have with Character's weapon (or shots)*/
     private void checkCharacterCollisions(){
         CharacterImpl character = status.getCharacter();
         List<MeleeWeapon> weapons = character.getWeapons();
@@ -144,6 +145,7 @@ public class Engine {
         });
     }
 
+    /** A function that checks the collisions of shots with world boundaries, enemies or the character itself */
     private void checkShotCollisions(){
         //check if goes outside of the screen
         this.status.getShots().stream()
@@ -156,6 +158,7 @@ public class Engine {
     }
 
 
+    /** Through this class, the Engine checks the inputs received from the player and process them */
     private void processInputs() {
         if(sceneController.isInMenu()) return;
         if(inputController.isJumping()){
