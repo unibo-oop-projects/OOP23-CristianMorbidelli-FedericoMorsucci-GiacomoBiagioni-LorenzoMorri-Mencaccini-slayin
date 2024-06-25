@@ -12,4 +12,4 @@
 - Federico Morsucci federico.morsucci@studio.unibo.it
 
 ## How to run
-`java -jar slayin-all.jar`
+`java -jar slayin.jar`
